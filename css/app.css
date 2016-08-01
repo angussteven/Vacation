@@ -1,0 +1,31 @@
+#calendar {
+	max-width: 900px;
+	margin: 0 auto;
+}
+
+#wrap {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+body {
+  background: #F0F0F3;
+}
+
+.login-box {
+  background: #80b3ff;
+  border: 10px solid #737373;
+  border-radius: 10px; 
+  margin: 100px 0;
+  padding: 40px 20px 0 20px;
+}
+
+
+#title {
+	text-align: center;
+}
+
+#createProfileModal, #viewProfileModal, #addEventModal, #viewEventModal {
+	margin-top: 4%;
+	max-width: 1100px;
+}
