@@ -7,3 +7,12 @@
   };
 
   firebase.initializeApp(config);
+
+/*Test Connection*/
+  firebase.child('.info/connected').on('value', function(connectedSnap) {
+  if (connectedSnap.val() === true) {
+  		console.log("ON");
+    } else {
+  		console.log("off");
+  }
+});
