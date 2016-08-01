@@ -5,5 +5,5 @@
     databaseURL: "https://vacationtracker-5d242.firebaseio.com",
     storageBucket: "",
   };
-  
+
   firebase.initializeApp(config);
