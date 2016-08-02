@@ -1,10 +1,10 @@
  // Initialize Firebase
  var config = {
- 	apiKey: "AIzaSyD9OmNJrHYUapJgcRyqTfaUF6usMRRXYO4",
- 	authDomain: "vacationtracker-218b9.firebaseapp.com",
- 	databaseURL: "https://vacationtracker-218b9.firebaseio.com",
- 	storageBucket: "vacationtracker-218b9.appspot.com",
- };
+    apiKey: "AIzaSyAeUUth3tU5auemQujKCmxRE3VS-y4QQxE",
+    authDomain: "vacationtracker-5d242.firebaseapp.com",
+    databaseURL: "https://vacationtracker-5d242.firebaseio.com",
+    storageBucket: "vacationtracker-5d242.appspot.com",
+  };
  firebase.initializeApp(config);
 
 
