@@ -31,3 +31,11 @@
  int getManagerCount() {
  	return 0;
  }
+
+ /**
+  * getTeamCount(), this method returns the
+  * total number of teams in the database 
+  */
+ int getTeamCount() {
+ 	return 0;
+ }
