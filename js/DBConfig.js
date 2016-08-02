@@ -5,12 +5,13 @@
  	databaseURL: "https://vacationtracker-218b9.firebaseio.com",
  	storageBucket: "vacationtracker-218b9.appspot.com",
  };
- firebase.initializeApp(config);
 
+ firebase.initializeApp(config);
 
  /*Get reference*/
  var value;
  var dbRef = firebase.database().ref().child('text');
- dbRef.on('value',snap => value);
 
- console.log("value:", value)
+dbRef.on('value', function(snapshot) {
+  console.log(snapshot.val());
+});
