@@ -193,6 +193,7 @@ function updateTotals(){
     });
     $("#notifyBtn, #changeEventBtn").click(function() {
       id+=1;
+      endOriginal = $("#endDate").val();
       eventData = {
         id: id,
         title: title,
