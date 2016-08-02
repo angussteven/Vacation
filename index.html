@@ -8,10 +8,10 @@
 
 	<!--Linked CSS files-->
   <link rel="stylesheet" href="css/foundation.css">
-  <link rel="stylesheet" href="css/app.css">
 	<link href='css/fullcalendar.css' rel='stylesheet' />
 	<link href='css/fullcalendar.print.css' rel='stylesheet' media='print' />
-  	
+	<link rel="stylesheet" href="css/app.css">
+
 	<!--Linked JS files-->
   <script src='js/moment.min.js'></script>
 	<script src='js/jquery.min.js'></script>
@@ -27,17 +27,43 @@
 	<!--Sources are Foundation and for calendar: http://fullcalendar.io/-->
 </HEAD>
 <body>
-
-    <h1>Vacation Calendar</h1>  
-      <div id="leftSideBar">
-      <button id="createEventBtn" class="button" unselectable="on">Create Event</button> 
-    <button id="viewProfileBtn" class="button" unselectable="on">View Profile</button>
-  </div>
-    <div id='wrap'>
-        <div id='calendar'></div>
-        <div style='clear:both'></div>
-        <!--<span class="text-center">Select the date(s) you would like to take off</span>-->
-    </div> 
+	<div id="header">
+	  Vacation Calendar
+	</div>
+	<div id="sidebar">
+	    <div class="row">
+	          <div class="panel text-center">
+	                <img class="circle" src="img/82.jpg">
+	                <h4>Jane Wozniak</h4>
+	                <p>Director of Resources</p>
+	                <hr>
+	           </div>
+	    </div>
+	    <form>
+	      <div class="row">
+	          <div class="panel text-center">
+	            <label>Select Employees To View</label>
+	            <select id="emp-dropdown">
+	              <option value="husker">All</option>
+	              <option value="starbuck">Employees Under Manager</option>
+	              <option value="hotdog">Manager</option>
+	              <option value="apollo">?</option>
+	            </select>
+	            <br />
+	            <br />
+	            <a href="#features" class="button">Create Event</a>
+	            <a href="#features" class="button">Delete Event</a>
+	          </div>
+	      </div>
+	    </form>
+	  </div>
+		<div id="wrapper">
+	    <div id='wrap'>
+	        <div id='calendar'></div>
+	        <div style='clear:both'></div>
+	        <!--<span class="text-center">Select the date(s) you would like to take off</span>-->
+	    </div>
+		</div>
     <div id="viewProfileModal" class="reveal-modal large-centered" data-reveal aria labelledby="modalTitle" aria-hidden="true" role="dialog" data-close-on-click="false">
         <div class="callout secondary" data-closeable>
             <h1>View Profile</h1>
