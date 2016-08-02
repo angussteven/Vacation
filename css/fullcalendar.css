@@ -191,12 +191,12 @@ NOTE: use percentage font sizes or else old IE chokes
 
 /* icons in buttons */
 
-.fc button .fc-icon { /* non-theme */
+/*.fc button .fc-icon { /* non-theme */
 	position: relative;
 	top: -0.05em; /* seems to be a good adjustment across browsers */
 	margin: 0 .2em;
 	vertical-align: middle;
-}
+}/*
 	
 /*
   button states
