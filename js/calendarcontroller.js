@@ -3,24 +3,54 @@ $(document).foundation();
 
 function updateTotals(){
     vacationDays = 0;
-    if (oneDay){
-    }
-    $("#daysSelected").val(1);
-    vacationDays = 0.5;
-}
 
-function addDay(day) {
-    day = day.split('-');
-    day[2] = parseInt(day[2]);
-    day[2]+=1;
-    day = day[0] + '-' + day[1] + '-' + day[2];
-    return day;
-  };
+    $("#daysSelected").val(vacationDays);
+
+}
 
   function subtractDay(day) {
     day = day.split('-');
-    day[2]-='1';
-    day = day[0] + '-' + day[1] + '-' + day[2];
+    endOriginal = day[0] + day[1] + day[2];
+    console.log(endOriginal + " endOriginal");
+
+    if (day[2] === "01"){//if the day is 1 it is actually the last day of the previous month
+        console.log(day + "day[2] === 01");
+        switch (day[1]){//switching on month
+          case 01: 
+              day = (day[0] - 1) + '-' + "12" + '-' + "31";
+            break;
+
+          case 03: 
+            if ((day[0] % 4 == 0) && (day[0] % 100 != 0) || (day[0] % 400 == 0)){
+              day = day[0] + '-' + "02" + '-' + "29";
+            } else {
+              day = day[0] + '-' + "02" + '-' + "28";
+            }
+            
+            break;
+
+          case 05: case 07: case 08: case 10:
+            day = day[0] + '-0' + (day[1] - 1) + '-' + "30";
+            break;
+
+          case 12:
+            day = day[0] + '-' + (day[1] - 1) + '-' + "30";
+            break;
+
+            case 02: case 04: case 06: case 09:
+          default:
+            day = day[0] + '-0' + (day[1] - 1) + '-' + "31";
+            break;
+        }
+        console.log("if");
+      } else {
+        console.log("else");
+        day[2]-='1';
+        if (day[2] <= 9){ day[2] = "0" + day[2];}
+        day = day[0] + '-' + day[1] + '-' + day[2];
+      }
+
+    console.log(day + " taken away");
     return day;
   }
 
@@ -45,7 +75,6 @@ function addDay(day) {
   }; 
 
   var id = 0;
-  var oneDay = false;
 	$(document).ready(function() {
     var popup2 = new Foundation.Reveal($('#viewProfileModal'));
     var popup3 = new Foundation.Reveal($('#addEventModal'));
@@ -66,16 +95,11 @@ function addDay(day) {
 			select: function(start, end) {
 				title = $("#firstName").val() + ' ' + $("#lastName").val();
 				if (title) {
-
-		          popup3.open();
-		          $("#startDate").val(start.toISOString());
-		          console.log(oneDay);
-		          if (oneDay){
-		            $("#endDate").val(start.toISOString());
-		          } else {
-
-		            $("#endDate").val(subtractDay(end.toISOString()));
-		          }
+          popup3.open();
+          console.log(end);
+          console.log(start);
+          $("#startDate").val(start.toISOString());
+          $("#endDate").val(subtractDay(end.toISOString()));
 				}
 				$('#calendar').fullCalendar('unselect');
 			},
@@ -94,8 +118,7 @@ function addDay(day) {
 			eventLimit: true, // allow "more" link when too many events
 
       dayClick: function(date) {
-        $("#daysSelected").val(1);
-        oneDay = true;
+        $("#daysSelected").val(1);//Should be added to vacation balance calculator
       }
 //			events: [
 //				{
@@ -166,7 +189,6 @@ function addDay(day) {
         popup2.close();
     });
     $("#addCloseBtn").click(function () {
-    	oneDay = false;
       popup3.close();
     });
     $("#notifyBtn, #changeEventBtn").click(function() {
@@ -175,89 +197,21 @@ function addDay(day) {
         id: id,
         title: title,
         start: $("#startDate").val(),
-        end: addDay($("#endDate").val()),
+        end: endOriginal,
         url: 'click'
       };
       $('#calendar').fullCalendar('renderEvent', eventData, true);
       popup3.close();
       
       //ICS File
-      radioStart = $('input:radio[name=start]:checked').val();
-      radioEnd = $('input:radio[name=end]:checked').val();
       startDay = $("#startDate").val().split('-');
       startDay = startDay[0] + startDay[1] + startDay[2];
-      endDay = $("#endDate").val().split('-');
-      console.log(endDay);
-
-      if (endDay[2] === 01){//if the day is 1 it is actually the last day of the previous month
-        console.log(endDay + "endDay[2] === 01");
-        switch (endDay[1]){//switching on month
-          case 01: 
-              endDay = (endDay[0] - 1) + "12" + "31";
-            break;
-
-          case 03: 
-            if ((endDay[0] % 4 == 0) && (endDay[0] % 100 != 0) || (endDay[0] % 400 == 0)){
-              endDay = endDay[0] + "02" + "29";
-            } else {
-              endDay = endDay[0] + "02" + "28";
-            }
-            
-            break;
-
-          case 05: case 07: case 08: case 10: case 12:
-            endDay = endDay[0] + (endDay[1] - 1) + "30";
-            break;
-
-          default:
-            endDay = endDay[0] + (endDay[1] - 1) + "31";
-            break;
-        }
-      } 
-
-      console.log(endDay);
-      //this needs to happen on radio button select
-      if (oneDay){
-        temp = startDay;
-        switch (radioStart){
-          case "AM":
-          startDay += "T080000"
-          endDay = temp + "T120000"
-          break;
-
-          case "PM":
-          startDay += "T120000"
-          endDay = temp + "T170000"
-          break;
-
-          default:
-          break;
-        }
-        oneDay = false;
-      }
-      else {
-        endDay = endDay[0] + endDay[1] + endDay[2];
-        switch(radioStart) {
-          case "PM":
-            startDay+="T120000"
-            break;
-          default:
-            break;
-        }
-
-        switch(radioEnd){
-          case "AM":
-            endDay+="T120000"
-            break;
-          default:
-            break;
-        }
-
-      }
-      console.log(endDay);
-      //20160729T080000 - 8AM; 20160729T120000 - 12PM; 20160729T170000 - 5PM
-
-    //dtstamp autogenerated?
+      //endDay = $("#endDate").val().split('-');
+      //endDay = endDay[0] + endDay[1] + endDay[2];
+      endDay = endOriginal;
+      
+      console.log("startDay right before ICS: " + startDay + "   endDay right before ICS: " + endDay);
+      //dtstamp autogenerated?
       var icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Our Company//NONSGML v1.0//EN\nBEGIN:VEVENT\nDTSTAMP:20120315T170000Z\nATTENDEE;CN=Steven Angus ;RSVP=TRUE:MAILTO:steven.angus@gm.com\nATTENDEE;CN=Robert Kasper IV ;RSVP=TRUE:MAILTO:robert.kasperiv@gm.com\nORGANIZER;CN=Me:MAILTO:steven.angus@gm.com\nDTSTART:" + startDay +"\nDTEND:" + endDay +"\nLOCATION:OOO\nSUMMARY:Vacation - Steven Angus\nX-MICROSOFT-CDO-BUSYSTATUS:OOF\nBEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:Vacation\nTRIGGER:-P1D\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR";
         window.open( "data:text/calendar;charset=utf8," + escape(icsMSG));
     });
@@ -279,5 +233,12 @@ function addDay(day) {
       //clickedEvent.end = $("#viewEndDate").val();
       //$("#calendar").fullCalendar('updateEvent',clickedEvent);
       popup4.close();
+    });
+    $("#createEventBtn").click(function () {
+      var moment = $('#calendar').fullCalendar('getDate');
+      moment.stripTime();
+      $("#startDate").val(moment.format());
+      $("#endDate").val(moment.format());
+      popup3.open();
     })
 	});
