@@ -107,6 +107,7 @@ function updateTotals(){
         if (event.url) {
           clickedID = event.id;
           $("#eventTitle").val(event.title);
+          $("#eventDescription").val(event.description);
           $("#viewStartDate").val(event.start.toISOString());
           $("#viewEndDate").val(event.end.toISOString());
 
@@ -195,9 +196,10 @@ function updateTotals(){
       id+=1;
       eventData = {
         id: id,
-        title: title,
+        title: $("#createEventTitle").val(),
         start: $("#startDate").val(),
         end: endOriginal,
+        description: $("#createEventDescription").val(),
         url: 'click'
       };
       $('#calendar').fullCalendar('renderEvent', eventData, true);

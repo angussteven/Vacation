@@ -91,6 +91,22 @@
         <h1>Add Vacation Time</h1>
         <div class="row">
           <div class="large-6 medium-4 columns">
+            <label>Title (Default is your name)</label>
+            <input type="input" id="createEventTitle" />
+            <label>Description</label>
+            <input type="input" id="createEventDescription" />
+          </div>
+          <div class="large-2 medium-4 columns">
+            <label>Vacation Days Selected</label>
+            <input id="daysSelected" type="number" readonly/>
+          </div>
+          <div class="large-2 medium-4 columns">
+            <label>Vacation Days Remaining</label>
+            <input id="daysLeft" type="number" readonly/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 medium-4 columns">
             <label>Start Date</label>
             <input type="date" id="startDate" />
           </div>
@@ -98,17 +114,6 @@
             <label>End Date</label>
             <input type="date" id="endDate"/>
           </div>
-        </div>
-        <div class="row">
-          <div class="large-2 medium-4 columns">
-            <label>Vacation Days Selected</label>
-            <input id="daysSelected" type="number" readonly/>
-          </div>
-          <div class="large-2 medium-4 columns">
-            <label>Vacation Days Left</label>
-            <input id="daysLeft" type="number" readonly/>
-          </div>
-          <div class="large-8 medium-4 columns"></div>
         </div>
         <div class="row">
           <button id="notifyBtn" class="success button" type="button" >Add Event</button>
@@ -122,9 +127,13 @@
       <div class="callout secondary" data-closeable>
         <h1>View Event</h1>
         <div class="row">
-          <div class="large-4 medium-4 columns">
+          <div class="large-6 medium-4 columns">
             <label>Event Title</label>
             <input id="eventTitle" type="text" readonly/>
+          </div>
+          <div class="large-6 medium-4 columns">
+            <label>Event Description</label>
+            <input id="eventDescription" type="text" readonly/>
           </div>
         </div>
         <div class="row">
