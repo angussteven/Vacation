@@ -1,22 +1,16 @@
- var firebase = require(vendor/firebase.js);
+ // Initialize Firebase
  var config = {
- 	apiKey: "AIzaSyAeUUth3tU5auemQujKCmxRE3VS-y4QQxE",
- 	authDomain: "vacationtracker-5d242.firebaseapp.com",
- 	databaseURL: "https://vacationtracker-5d242.firebaseio.com",
- 	storageBucket: "",
+ 	apiKey: "AIzaSyD9OmNJrHYUapJgcRyqTfaUF6usMRRXYO4",
+ 	authDomain: "vacationtracker-218b9.firebaseapp.com",
+ 	databaseURL: "https://vacationtracker-218b9.firebaseio.com",
+ 	storageBucket: "vacationtracker-218b9.appspot.com",
  };
-
  firebase.initializeApp(config);
 
 
+ /*Get reference*/
+ var value;
+ var dbRef = firebase.database().ref().child('text');
+ dbRef.on('value',snap => value);
 
- /*Test Connection*/
- var firebaseRef = new Firebase('http://INSTANCE.firebaseio.com');
-
- firebaseRef.child('.info/connected').on('value', function(connectedSnap) {
- 	if (connectedSnap.val() === true) {
- 		console.log("ON");
- 	} else {
- 		console.log("off");
- 	}
- });
+ console.log("value:", value)
