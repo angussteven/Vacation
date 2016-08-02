@@ -10,7 +10,7 @@
 
  /*Get reference*/
  var value;
- var dbRef = firebase.database().ref().child('text');
+ var dbRef = firebase.database().ref().child('employee');
 
 dbRef.on('value', function(snapshot) {
   console.log(snapshot.val());
