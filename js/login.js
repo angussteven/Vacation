@@ -1,4 +1,12 @@
-
+function fireSignOut(){
+	firebase.auth().signOut().then(function() {
+  		alert("Success");
+  		$("#loginWrap").show();
+	    $("#wrap").hide();
+}, function(error) {
+  alert("Fail");
+});
+}
 function logIn(){
 	var email = document.getElementById('email').value;
 	var password = document.getElementById('password').value;
