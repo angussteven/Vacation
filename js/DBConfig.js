@@ -39,3 +39,90 @@
  int getTeamCount() {
  	return 0;
  }
+
+//saveEmployee("zach","dicino",15,15,1,["michael.eilers@gm.com"],[1],false,"zachary.dicino@gm.com","1234");
+//saveManager("michael.eilers@gm.com",["zachary.dicino@gm.com"],"michael.eilers@gm.com");
+//saveTeam(1,["zachary.dicino@gm.com"],["michael.eilers@gm.com"]);
+//saveEvent("zachary.dicino@gm.com",1,"08-29-2016","08-31-2016");
+//saveHoliday(["01-01-2016","01-18-2016","03-25-2016","03-28-2016","05-30-2016","07-04-2016","09-05-2016","11-08-2016","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"]);
+
+/*
+	Save an employee into the database
+	totalVacation = int
+	daysLeft = int
+	teamID = int
+	managers = array of strings
+	events = array of ints (ids)
+	isManager = bool
+	everything else string	
+*/
+function saveEmployee(firstname, lastname, totalVacation, daysleft, teamID, managers, events, isManager, email, password){
+	firebase.database().ref('employee').push({
+		firstName: firstname,
+		lastName: lastname,
+		totalVacationDays: totalVacation,
+		daysLeft: daysleft,
+		team: teamID,
+		manager: managers,
+		event: events,
+		isManager: isManager,
+		email: email,
+		empID: email,
+		password: password
+	});
+}
+
+/*
+	Save a manager into the database
+	email = string
+	employees = array of strings (emails) 
+	managerID = string (email)
+*/
+function saveManager(managerID, email, employees){
+	firebase.database().ref('manager').push({
+		email: email,
+		employee: employees,
+		manID: managerID
+	});
+}
+
+/*
+	Save a team into the database
+	teamID = int 
+	employees = array of strings (emails)
+	managers = array of strings (emails)
+*/
+function saveTeam(teamID, employees, managers){
+	firebase.database().ref('team').push({
+		teamID: teamID,
+		employee: employees,
+		manager: managers
+	});
+}
+
+/*
+	Save an event into the database
+	employeeID: string (email)
+	eventID: int
+	startDate: string (ex. "08-29-2016")
+	endDate: string (ex. "08-31-2016")
+*/
+function saveEvent(employeeID, eventID, startDate, endDate){
+	firebase.database().ref('event').push({
+		empID: employeeID,
+		evID: eventID,
+		startDate: startDate,
+		endDate: endDate
+	});
+}
+
+/*
+	Save holidays in the database
+	holidayArray = array of strings of all base holidays to not count towards vacation days
+	already hard coded into database
+*/
+function saveHoliday(holidayArray){
+	firebase.database().ref('holiday').push({
+		day: holidayArray
+	});
+}
