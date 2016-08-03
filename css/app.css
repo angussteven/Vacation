@@ -3,7 +3,16 @@
 	margin: 0 auto;
 	resize: both;
 }
+#container {
+	text-align: left;
+}
 
+ul {
+	list-style-type:none;
+}
+#sidebar_choice {
+	padding-right: 5px;
+}
 #wrap {
 	position: relative;
 	top: 3%;
