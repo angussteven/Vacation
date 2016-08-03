@@ -1,16 +1,3 @@
-function Account(GMIN, First, Last, Email, Manager, TotalVacation, UsedVacation) {
-    this.GMIN = GMIN;
-    this.First = First;
-    this.Last = Last;
-    this.Email = Email;
-    this.Manager = Manager;
-    this.TotalVacation = TotalVacation;
-    this.UsedVacation = UsedVacation;
-};
-var robert = Account("242348733", "Robert", "Kasper", "robert.kasperiv@gm.com", "Michael Eilers", "15", "3");
-
-var steven = Account("546461651", "Steven", "Angus", "steven.angus@gm.com", "Michael Eilers", "15", "0");
-	
 $(document).ready(function() {
     var popup = new Foundation.Reveal($('#createProfileModal'));
     $("#newUserBtn").click(function () {
