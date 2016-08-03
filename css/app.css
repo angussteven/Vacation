@@ -1,6 +1,7 @@
 #calendar {
 	max-width: 900px;
 	margin: 0 auto;
+	resize: both;
 }
 
 #wrap {
@@ -11,7 +12,7 @@
 	margin: 0 auto;
 	border: solid 1px lightgrey;
 	border-radius: 4px;
-	padding: .5% 0% 2%;
+	padding: .5% 0% 2% 2;
 }
 
 body {
