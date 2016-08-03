@@ -15,9 +15,9 @@ function removeTime(date) {
 
 function subtractDay(day) {
   day = day.split('-');
-  endDay = day[0] + day[1] + day[2];
+  //endDay = day[0] + day[1] + day[2];
 
-  if (day[2] === "01"){//if the day is 1 it is actually the last day of the previous month
+  if (day[2] === 01){//if the day is 1 it is actually the last day of the previous month
       switch (day[1]){//switching on month
         case 01: 
             day = (day[0] - 1) + '-' + "12" + '-' + "31";
@@ -58,25 +58,28 @@ function addDay(eventDay) {
   eventDay = eventDay.split('-');
   switch(eventDay[1]) {
     case '01': case '03': case '05': case '07': case '08': case '10':
-      if (eventDay[2] === '31')
+      if (eventDay[2] === '31') {
         eventDay[2] = '0';
         var tempMonth = parseInt(eventDay[1]);
         eventDay[1] = (tempMonth + 1).toString();
+      }
       break;
 
     case '04': case '06': case '09': case '11':
-      if (eventDay[2] === '30')
+      if (eventDay[2] === '30') {
         eventDay[2] = '0';
         tempMonth = parseInt(eventDay[1]);
         eventDay[1] = (tempMonth + 1).toString();
+      }
       break;
 
     case '12':
-      if (eventDay[2] === '31')
+      if (eventDay[2] === '31') {
         eventDay[2] = '0';
         eventDay[1] = '1';
         var tempYear = parseInt(eventDay[0]);
         eventDay[0] = (tempYear + 1).toString();
+      }
       break;
 
     case '02':
@@ -241,7 +244,7 @@ function addDay(eventDay) {
         id: id,
         title: $("#createEventTitle").val(),
         start: $("#startDate").val(),
-        end: endDay,
+        end: addDay($("#endDate").val()),
         description: $("#createEventDescription").val(),
 //        url: 'click'
       };
@@ -251,6 +254,8 @@ function addDay(eventDay) {
       //ICS File
       startDay = $("#startDate").val().split('-');
       startDay = startDay[0] + startDay[1] + startDay[2];
+      endDay = addDay($("#endDate").val()).split('-');
+      endDay = endDay[0] + endDay[1] + endDay[2];
       
       alert = $('input:radio[name=alert]:checked').val();
       isVacation = $('input:radio[name=isVacation]:checked').val();
