@@ -70,13 +70,15 @@ function addDay(eventDay) {
         eventDay[2] = '0';
         tempMonth = parseInt(eventDay[1]);
         eventDay[1] = (tempMonth + 1).toString();
+        if (eventDay[1] <= 9)
+          eventDay[1] = "0" + eventDay[1];
       }
       break;
 
     case '12':
       if (eventDay[2] === '31') {
         eventDay[2] = '0';
-        eventDay[1] = '1';
+        eventDay[1] = '01';
         var tempYear = parseInt(eventDay[0]);
         eventDay[0] = (tempYear + 1).toString();
       }
@@ -100,10 +102,7 @@ function addDay(eventDay) {
   eventDay[2] = num.toString();
   if (eventDay[2] <= 9)
     eventDay[2] = "0" + eventDay[2];
-  if (eventDay[1] <= 9)
-    eventDay[1] = "0" + eventDay[1];
   eventDay = eventDay[0] + '-' + eventDay[1] + '-' + eventDay[2];
-  console.log(eventDay);
   return eventDay;
 }
 
