@@ -99,6 +99,7 @@ function updateTotals(){
       eventClick: function(event) {
         clickedID = event.id;
         $("#eventTitle").val(event.title);
+        $("#eventDescription").val(event.description);
         $("#viewStartDate").val(event.start._d.toISOString());
         $("#viewEndDate").val(event.end.toISOString());
         popup4.open();
@@ -174,9 +175,11 @@ function updateTotals(){
       id+=1;
       eventData = {
         id: id,
-        title: title,
+        title: $("#createEventTitle").val(),
         start: $("#startDate").val(),
-        end: endOriginal
+        end: endOriginal,
+        description: $("#createEventDescription").val(),
+//        url: 'click'
       };
       $('#calendar').fullCalendar('renderEvent', eventData, true);
       popup3.close();
