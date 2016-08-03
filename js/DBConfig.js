@@ -14,13 +14,11 @@
  	console.log(snapshot.val());
  });
 
-
-
- /**
+/**
   * getEmployeeCount(), this method returns the
   * total number of employees in the database 
   */
- int getEmployeeCount() {
+ function getEmployeeCount() {
  	return 0;
  }
 
@@ -28,7 +26,7 @@
   * getManagerCount(), this method returns the
   * total number of managers in the database 
   */
- int getManagerCount() {
+ function getManagerCount() {
  	return 0;
  }
 
@@ -36,11 +34,11 @@
   * getTeamCount(), this method returns the
   * total number of teams in the database 
   */
- int getTeamCount() {
+ function getTeamCount() {
  	return 0;
  }
 
-//saveEmployee("zach","dicino",15,15,1,["michael.eilers@gm.com"],[1],false,"zachary.dicino@gm.com","1234");
+//saveEmployee("andrew","moawad",15,15,1,["michael.eilers@gm.com"],[1],true,"andrew.moawad@gm.com","1234");
 //saveManager("michael.eilers@gm.com",["zachary.dicino@gm.com"],"michael.eilers@gm.com");
 //saveTeam(1,["zachary.dicino@gm.com"],["michael.eilers@gm.com"]);
 //saveEvent("zachary.dicino@gm.com",1,"08-29-2016","08-31-2016");
@@ -70,6 +68,18 @@ function saveEmployee(firstname, lastname, totalVacation, daysleft, teamID, mana
 		empID: email,
 		password: password
 	});
+
+	//if you are a manager, save the employee as a manager in the database
+	//setting the employee array to null for now
+	if(isManager){
+		saveManager(email, email, null);
+	}
+
+	/**
+	*	Now we must add this employee in their manager's employees list
+	*	Do a get Manager call based on each manager in the managers array
+	* 	insert this employee in the manager's employee list
+	*/
 }
 
 /*
