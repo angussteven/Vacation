@@ -1,5 +1,3 @@
-$(document).foundation();
-
 function Account(GMIN, First, Last, Email, Manager, TotalVacation, UsedVacation) {
     this.GMIN = GMIN;
     this.First = First;
