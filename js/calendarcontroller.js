@@ -71,15 +71,15 @@ function addDay(eventDay) {
         eventDay[1] = (tempMonth + 1).toString();
       break;
 
-    case 12:
-      if (eventDay === '31')
+    case '12':
+      if (eventDay[2] === '31')
         eventDay[2] = '0';
-        eventDay[1] = '01';
-        var tempYear = parseInt(eventDay[2]);
+        eventDay[1] = '1';
+        var tempYear = parseInt(eventDay[0]);
         eventDay[0] = (tempYear + 1).toString();
-        break;
+      break;
 
-    case 2:
+    case '02':
       var testYear = parseInt(eventDay[0]);
       if ((testYear % 4 == 0) && (testYear % 100 != 0) || (testYear % 400 == 0)) {
         if (eventDay[2] === '29')
@@ -148,7 +148,7 @@ function addDay(eventDay) {
           popup3.open();
           $("#startDate").val(start.toISOString());
           $("#endDate").val(subtractDay(end.toISOString()));
-				}
+				};
 				$('#calendar').fullCalendar('unselect');
 			},
       eventClick: function(event) {
