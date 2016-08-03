@@ -17,13 +17,20 @@
 	<script src='js/jquery.min.js'></script>
 	<script src='js/jquery-ui.custom.min.js'></script>
 
+    <!--FIREBASE_DATABASE-->
+  <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
+  <script src="js/DBConfig.js"></script>
+  <script src="js/RestService.js"></script>
+
 	<!--Foundation JS-->
 	<script src="js/vendor/what-input.js"></script>
 	<script src="js/vendor/jquery.js"></script>
   <script src="js/vendor/foundation.min.js"></script>
-  <script src="DBConfig.js"></script>
+  <!--<script src="DBConfig.js"></script>-->
   <script src="js/app.js"></script>
   <script src="js/calendarcontroller.js"></script>
+
+  <script src="js/login.js"></script>
 	<!--Sources are Foundation and for calendar: http://fullcalendar.io/-->
 </HEAD>
 <body>
@@ -51,13 +58,46 @@
 	            </select>
 	            <br />
 	            <br />
-	            <a href="#features" class="button">Create Event</a>
 	            <a href="#features" class="button">Delete Event</a>
 	          </div>
 	      </div>
 	    </form>
 	  </div>
 		<div id="wrapper">
+      <div id="loginWrap">
+        <div class="row align-center">
+  <div class="large-6 large-centered columns">
+  <div class="login-box">
+  <h1 id="title">Login</h1> 
+  <!--Form to select your account and continue to the next page-->
+  <div class="row align-center">
+        <div class="large-12 columns">
+
+            <form id="loginForm">
+              <div class="row">
+              <div class="large-12 columns">
+                <label>Email
+                  <input id="email" type="text" placeholder="Email" />
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="large-12 columns">
+                <label>Password
+                  <input id="password" type="password" placeholder="Password" />
+                </label>
+              </div>
+            </div>
+            <button type="submit" id="loginBtn" onclick="logIn()" class="success button" unselectable="on">Log In</button>
+           
+            </form>
+             <button id="newUserBtn" class="button" unselectable="on">Create New Profile</button>
+        </div>
+    </div>
+  </div>
+  </div>
+  </div>
+      </div>
 	    <div id='wrap'>
 	        <div id='calendar'></div>
 	        <div style='clear:both'></div>
