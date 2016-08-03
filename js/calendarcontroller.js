@@ -8,6 +8,11 @@ function updateTotals(){
 
 }
 
+function removeTime(date) {
+  var dateArray = date.split('T');
+  return dateArray[0];
+}
+
   function subtractDay(day) {
     day = day.split('-');
     endDay = day[0] + day[1] + day[2];
@@ -100,8 +105,9 @@ function updateTotals(){
         clickedID = event.id;
         $("#eventTitle").val(event.title);
         $("#eventDescription").val(event.description);
-        $("#viewStartDate").val(event.start._d.toISOString());
-        $("#viewEndDate").val(event.end.toISOString());
+        $("#viewStartDate").val(removeTime(event.start.toISOString()));
+        var tempEnd = removeTime(event.end.toISOString());
+        $("#viewEndDate").val(subtractDay(tempEnd));
         popup4.open();
         return false;
       },
