@@ -108,6 +108,14 @@ function removeTime(date) {
         $("#viewStartDate").val(removeTime(event.start.toISOString()));
         var tempEnd = removeTime(event.end.toISOString());
         $("#viewEndDate").val(subtractDay(tempEnd));
+        $("#changeEventBtn").click(function () {
+          event.title = $("#eventTitle").val();
+          event.description = $("#eventDescription").val();
+          event.start = $("#viewStartDate").val();
+          event.end = $("#viewEndDate").val();
+          $('#calendar').fullCalendar('updateEvent', event);
+          popup4.close();
+        });
         popup4.open();
         return false;
       },
@@ -177,7 +185,7 @@ function removeTime(date) {
     $("#addCloseBtn").click(function () {
       popup3.close();
     });
-    $("#notifyBtn, #changeEventBtn").click(function() {
+    $("#notifyBtn").click(function() {
       id+=1;
       eventData = {
         id: id,
@@ -208,12 +216,5 @@ function removeTime(date) {
       var ans = confirm("Are you sure you want to exit? All progress will be lost.");
       if (ans == true)
         popup4.close();
-    });
-    $("#changeEventBtn").click(function () {
-      var clickedEvent = $("#calendar").fullCalendar('clientEvents', clickedID);
-      //clickedEvent.start = $("#viewStartDate").val();
-      //clickedEvent.end = $("#viewEndDate").val();
-      //$("#calendar").fullCalendar('updateEvent',clickedEvent);
-      popup4.close();
     })
 	});
