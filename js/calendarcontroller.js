@@ -13,46 +13,96 @@ function removeTime(date) {
   return dateArray[0];
 }
 
-  function subtractDay(day) {
-    day = day.split('-');
-    endDay = day[0] + day[1] + day[2];
+function subtractDay(day) {
+  day = day.split('-');
+  endDay = day[0] + day[1] + day[2];
 
-    if (day[2] === "01"){//if the day is 1 it is actually the last day of the previous month
-        switch (day[1]){//switching on month
-          case 01: 
-              day = (day[0] - 1) + '-' + "12" + '-' + "31";
-            break;
+  if (day[2] === "01"){//if the day is 1 it is actually the last day of the previous month
+      switch (day[1]){//switching on month
+        case 01: 
+            day = (day[0] - 1) + '-' + "12" + '-' + "31";
+          break;
 
-          case 03: 
-            if ((day[0] % 4 == 0) && (day[0] % 100 != 0) || (day[0] % 400 == 0)){
-              day = day[0] + '-' + "02" + '-' + "29";
-            } else {
-              day = day[0] + '-' + "02" + '-' + "28";
-            }
-            
-            break;
+        case 03: 
+          if ((day[0] % 4 == 0) && (day[0] % 100 != 0) || (day[0] % 400 == 0)){
+            day = day[0] + '-' + "02" + '-' + "29";
+          } else {
+            day = day[0] + '-' + "02" + '-' + "28";
+          }
+          
+          break;
 
-          case 05: case 07: case 08: case 10:
-            day = day[0] + '-0' + (day[1] - 1) + '-' + "30";
-            break;
+        case 05: case 07: case 08: case 10:
+          day = day[0] + '-0' + (day[1] - 1) + '-' + "30";
+          break;
 
-          case 12:
-            day = day[0] + '-' + (day[1] - 1) + '-' + "30";
-            break;
+        case 12:
+          day = day[0] + '-' + (day[1] - 1) + '-' + "30";
+          break;
 
-            case 02: case 04: case 06: case 09:
-          default:
-            day = day[0] + '-0' + (day[1] - 1) + '-' + "31";
-            break;
-        }
-      } else {
-        day[2]-='1';
-        if (day[2] <= 9){ day[2] = "0" + day[2];}
-        day = day[0] + '-' + day[1] + '-' + day[2];
+          case 02: case 04: case 06: case 09:
+        default:
+          day = day[0] + '-0' + (day[1] - 1) + '-' + "31";
+          break;
       }
+    } else {
+      day[2]-='1';
+      if (day[2] <= 9){ day[2] = "0" + day[2];}
+      day = day[0] + '-' + day[1] + '-' + day[2];
+    }
 
-    return day;
+  return day;
+}
+
+function addDay(eventDay) {
+  eventDay = eventDay.split('-');
+  switch(eventDay[1]) {
+    case '01': case '03': case '05': case '07': case '08': case '10':
+      if (eventDay[2] === '31')
+        eventDay[2] = '0';
+        var tempMonth = parseInt(eventDay[1]);
+        eventDay[1] = (tempMonth + 1).toString();
+      break;
+
+    case '04': case '06': case '09': case '11':
+      if (eventDay[2] === '30')
+        eventDay[2] = '0';
+        tempMonth = parseInt(eventDay[1]);
+        eventDay[1] = (tempMonth + 1).toString();
+      break;
+
+    case 12:
+      if (eventDay === '31')
+        eventDay[2] = '0';
+        eventDay[1] = '01';
+        var tempYear = parseInt(eventDay[2]);
+        eventDay[0] = (tempYear + 1).toString();
+        break;
+
+    case 2:
+      var testYear = parseInt(eventDay[0]);
+      if ((testYear % 4 == 0) && (testYear % 100 != 0) || (testYear % 400 == 0)) {
+        if (eventDay[2] === '29')
+          eventDay[2] = '0';
+          eventDay[1] = '03';
+      } 
+      else if (eventDay[2] === '28') {
+        eventDay[2] = '0';
+        eventDay[1] = '03';
+      }
+      break;
   }
+  num = parseInt(eventDay[2]);
+  num+=1;
+  eventDay[2] = num.toString();
+  if (eventDay[2] <= 9)
+    eventDay[2] = "0" + eventDay[2];
+  if (eventDay[1] <= 9)
+    eventDay[1] = "0" + eventDay[1];
+  eventDay = eventDay[0] + '-' + eventDay[1] + '-' + eventDay[2];
+  console.log(eventDay);
+  return eventDay;
+}
 
   function Account(GMIN, First, Last, Email, Manager, TotalVacation, UsedVacation) {
     this.GMIN = GMIN;
@@ -112,7 +162,7 @@ function removeTime(date) {
           event.title = $("#eventTitle").val();
           event.description = $("#eventDescription").val();
           event.start = $("#viewStartDate").val();
-          event.end = $("#viewEndDate").val();
+          event.end = addDay($("#viewEndDate").val());
           $('#calendar').fullCalendar('updateEvent', event);
           popup4.close();
         });
