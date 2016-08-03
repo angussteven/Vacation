@@ -21,11 +21,6 @@ $(document).ready(function() {
       	if (ans == true)
             popup.close();
 		});
-    $("#createBtn").click(function () {
-        var account = new Account($("#GMIN").val(), $("#firstName").val(), $("#lastName").val(),
-                                  $("#emailAddress").val(), "Michael Eilers", $("#vacationDaysTotal").val(), $("#vacationDaysUsed").val());
-        popup.close();
-    });
 });
 
 function setData(){
