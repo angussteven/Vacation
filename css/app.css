@@ -107,3 +107,8 @@ body {
 #emp-dropdown{
 	width: 90%;
 }
+
+/*This hides the 12a on event titles*/
+.fc-time {
+	display: none;
+}
