@@ -160,9 +160,9 @@
         <div class="row">
           <div class="large-6 medium-4 columns">
             <label>Title (Default is your name)</label>
-            <input type="input" id="createEventTitle" />
+            <input class="fullWidth" type="input" id="createEventTitle" />
             <label>Description</label>
-            <input type="input" id="createEventDescription" />
+            <input class="fullWidth" type="input" id="createEventDescription" />
           </div>
           <div class="large-2 medium-4 columns">
             <label>Vacation Days Selected</label>
@@ -181,6 +181,19 @@
           <div class="large-6 medium-4 columns">
             <label>End Date</label>
             <input type="date" id="endDate"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 medium-4 columns">
+            <legend>When would you like to be alerted?</legend>
+            <input type="radio" name="alert" value="alertOne" checked="checked"><label>1 Day Before</label>
+            <input type="radio" name="alert" value="alertFour"><label>4 Days Before</label>
+            <input type="radio" name="alert" value="alertWeek"><label>1 Week Before</label>
+          </div>
+          <div class="large-6 medium-4 columns">
+            <legend>Is this Vacation or Business Travel?</legend>
+            <input type="radio" name="isVacation" value="vacation" checked="checked"><label>Vacation</label>
+            <input type="radio" name="isVacation" value="travel"><label>Business Travel</label>
           </div>
         </div>
         <div class="row">

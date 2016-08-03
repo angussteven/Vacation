@@ -112,3 +112,7 @@ body {
 .fc-time {
 	display: none;
 }
+
+.fullWidth {
+	width: 100%;
+}
