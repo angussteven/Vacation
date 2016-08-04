@@ -7,6 +7,19 @@
  };
  firebase.initializeApp(config);
 
+var employeeCount = 0;
+
+console.log("Start");
+
+var test = $.Deferred(getEmployeeCount);
+
+test.done(function(data){
+  console.log(myCount);
+});
+/*while(completed != true){
+	console.log(myCount);
+	myCount++;
+}*/
 
 
  /*Get reference example=*/
@@ -28,22 +41,15 @@
   */
  function getEmployeeCount() {
  	var count = 0;
- 	var result = 0;
- 	var def = $.Deferred();
+
  	var ref = firebase.database().ref().child('employee');
  	ref.on('value', function(snapshot) {
- 		//this will allow to travers all the employees
- 		snapshot.forEach(function(data) {
- 			//console.log(data.val().firstName);
- 		});
  		count = snapshot.numChildren();
- 		def.resolve(count);
-
+ 		console.log("Inside getEmployeeCount " + count);
+ 		myCount = count;
+ 		test.resolve();
  	});
- 	return def.promise();
  }
-
-
  /**
   * getTeamCount(), this method returns the
   * total number of teams in the database 
@@ -156,8 +162,8 @@
  and also store the rest of the information in the database
  */
  function addUser(email, password,firstName,lastName,totalVacationDays
- 					,dayslefts,isManager,managers,team,employees,pathToPicture
- 					title {
+ 					,dayslefts,isManager,managers,team,employees,pathToPicture,
+ 					title) {
  	firebase.auth().createUserWithEmailAndPassword(email, password)
  		.then(function(data) {
  			saveUsertoDatabase(email, password);
