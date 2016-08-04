@@ -8,7 +8,23 @@ $(document).ready(function() {
       	if (ans == true)
             popup.close();
 		});
+
+        //prevent createProfileForm form from posting
+    	$("#createProfileForm").submit(function(event){
+	     event.preventDefault();
+	});
 });
+
+var isNew = false;
+function createProfile(){
+        isNew = true;
+    	var email = document.getElementById('emailAddress').value;
+	    var emailVerify = document.getElementById('emailAddressVerify').value;
+        var firstName = document.getElementById('firstName').value;
+        var lastName = document.getElementById('lastName').value;
+
+
+}
 
 function setData(){
     var select = document.getElementById('gmin');

@@ -246,7 +246,7 @@
   <!--Create a new user modal-->
   <div id="createProfileModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true"
     role="dialog" data-close-on-click="false">
-    <form data-abide name="createProfile">
+    <form data-abide id="createProfileForm" name="createProfile">
       <div class="callout secondary" data-closable>
         <h1>Create a New Profile</h1>
         <div class="row">
@@ -297,11 +297,9 @@
           </div>
         </div>
         <div class="row">
-          <a href="index.html"><button id="createBtn" class="success button" type="submit" unselectable="on">Create</button></a>
+          <button id="createProfileBtn" class="success button" type="submit" onclick="createProfile()" unselectable="on">Create</button>
         </div>
-        <button id="createCloseBtn" class="close-button" unselectable="on">
-    		<span aria-hidden="true">&times;</span>
-  		</button>
+        <button id="createCloseBtn" class="close-button" unselectable="on"><span aria-hidden="true">&times;</span></button>
       </div>
     </form>
   </div>
