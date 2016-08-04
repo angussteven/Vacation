@@ -268,7 +268,6 @@ function addDay(eventDay) {
         start: $("#startDate").val(),
         end: addDay($("#endDate").val()),
         description: $("#createEventDescription").val(),
-//        url: 'click'
       };
       $('#calendar').fullCalendar('renderEvent', eventData, true);
       popup3.close();
