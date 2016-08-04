@@ -1,5 +1,6 @@
 $(document).foundation();
 
+$(document).ready(function() {
 
 function updateTotals(){
     vacationDays = 0;
@@ -127,7 +128,6 @@ function addDay(eventDay) {
   }; 
 
   var id = 0;
-	$(document).ready(function() {
     var popup2 = new Foundation.Reveal($('#viewProfileModal'));
     var popup3 = new Foundation.Reveal($('#addEventModal'));
     var popup4 = new Foundation.Reveal($("#viewEventModal"));
@@ -153,6 +153,7 @@ function addDay(eventDay) {
 				};
 				$('#calendar').fullCalendar('unselect');
 			},
+      // HERRRREEEEEE
       eventClick: function(event) {
         clickedID = event.id;
         $("#eventTitle").val(event.title);
@@ -166,6 +167,8 @@ function addDay(eventDay) {
           event.start = $("#viewStartDate").val();
           event.end = addDay($("#viewEndDate").val());
           $('#calendar').fullCalendar('updateEvent', event);
+          var events = $('#calendar').fullCalendar('clientEvents');
+          console.log(events);
           popup4.close();
         });
         popup4.open();
