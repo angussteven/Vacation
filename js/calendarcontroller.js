@@ -2,25 +2,33 @@ $(document).foundation();
 
 $(document).ready(function() {
 
-function createICSFile(managerName, managerEmail, userName, userEmail, startDate, endDate, alert) {
+function createICSFile(managerName, managerEmail, userName, userEmail, startDate, endDate, isVacation, alert) {
   startDate = startDate.split('-');
   startDate = startDate[0] + startDate[1] + startDate[2];
   endDate = endDate.split('-');
   endDate = endDate[0] + endDate[1] + endDate[2];
   switch (alert) {
-  case "alertFour":
-    alert = "-PT5760M";
-    break;
+    case "alertFour":
+      alert = "-PT5760M";
+      break;
 
-  case "alertWeek":
-    alert = "-PT10080M";
-    break;
+    case "alertWeek":
+      alert = "-PT10080M";
+      break;
 
-  default:
-    alert = "-P1D";
-    break;
+    default:
+      alert = "-P1D";
+      break;
   }
-  var icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Our Company//NONSGML v1.0//EN\nBEGIN:VEVENT\nDTSTAMP:20120315T170000Z\nATTENDEE;CN=" + userName + " ;RSVP=TRUE:MAILTO:" + userEmail + "\nATTENDEE;CN=" + managerName + " ;RSVP=TRUE:MAILTO:" + managerEmail + "\nORGANIZER;CN=Me:MAILTO:" + userEmail + "\nDTSTART:" + startDate +"\nDTEND:" + endDate +"\nLOCATION:OOO\nSUMMARY:Vacation - " + userName + "\nX-MICROSOFT-CDO-BUSYSTATUS:OOF\nBEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:Vacation\nTRIGGER:" + alert + "\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR";
+  switch (isVacation) {
+    case "vacation":
+      isVacation = "Vacation - ";
+      break;
+    case "travel":
+      isVacation = "Business Travel - ";
+      break;
+  }
+  var icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Our Company//NONSGML v1.0//EN\nBEGIN:VEVENT\nDTSTAMP:20120315T170000Z\nATTENDEE;CN=" + userName + " ;RSVP=TRUE:MAILTO:" + userEmail + "\nATTENDEE;CN=" + managerName + " ;RSVP=TRUE:MAILTO:" + managerEmail + "\nORGANIZER;CN=Me:MAILTO:" + userEmail + "\nDTSTART:" + startDate +"\nDTEND:" + endDate +"\nLOCATION:OOO\nSUMMARY:"+ isVacation + userName + "\nX-MICROSOFT-CDO-BUSYSTATUS:OOF\nBEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:Vacation\nTRIGGER:" + alert + "\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR";
   return icsMSG;
 }
 
@@ -266,7 +274,7 @@ function addDay(eventDay) {
       popup3.close();
       alert = $('input:radio[name=alert]:checked').val();
       isVacation = $('input:radio[name=isVacation]:checked').val();
-      var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), alert);
+      var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
       window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
     });
     $("#deleteBtn").click(function() {
