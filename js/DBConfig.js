@@ -7,25 +7,33 @@
  };
  firebase.initializeApp(config);
 
- /*Get reference example=*/
- /*var value;
- var dbRef = firebase.database().ref().child('employee');
- dbRef.on('value', function(snapshot) {
- 	console.log(snapshot.val());
- });*/
+
+//example of how to call the getEmployeeCount function
+getEmployeeCount().then(function(count){console.log(count)});
 
 /**
   * getEmployeeCount(), this method returns the
   * total number of employees in the database 
   */
  function getEmployeeCount() {
- 	//var ref = new Firebase("https://vacationtracker-5d242.firebaseio.com");
+ 	var count = 0;
+ 	var result = 0;
+ 	var def = $.Deferred();
  	var ref = firebase.database().ref().child('employee');
  	ref.on('value',function(snapshot){
+ 		//this will allow to travers all the employees
  		snapshot.forEach(function(data){
- 			console.log(data.val().firstName);
+ 			//console.log(data.val().firstName);
  		});
+ 		count = snapshot.numChildren();
+ 		def.resolve(count);
+
  	});
+ 	return def.promise();
+ }
+
+ function callback(){
+
  }
 
  /**
