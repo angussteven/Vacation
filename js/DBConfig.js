@@ -1,11 +1,12 @@
  // Initialize Firebase
  var config = {
- 	apiKey: "AIzaSyD9OmNJrHYUapJgcRyqTfaUF6usMRRXYO4",
- 	authDomain: "vacationtracker-218b9.firebaseapp.com",
- 	databaseURL: "https://vacationtracker-218b9.firebaseio.com",
- 	storageBucket: "vacationtracker-218b9.appspot.com",
+ 	apiKey: "AIzaSyAeUUth3tU5auemQujKCmxRE3VS-y4QQxE",
+ 	authDomain: "vacationtracker-5d242.firebaseapp.com",
+ 	databaseURL: "https://vacationtracker-5d242.firebaseio.com",
+ 	storageBucket: "vacationtracker-5d242.appspot.com",
  };
  firebase.initializeApp(config);
+
 
 
  /*Get reference example=*/
@@ -15,27 +16,33 @@
  	console.log(snapshot.val());
  });*/
 
+ //example of how to call the getEmployeeCount function
+ // getEmployeeCount().then(function(count) {
+ // 	console.log(count)
+ // });
+
+
  /**
   * getEmployeeCount(), this method returns the
   * total number of employees in the database 
   */
  function getEmployeeCount() {
- 	//var ref = new Firebase("https://vacationtracker-5d242.firebaseio.com");
+ 	var count = 0;
+ 	var result = 0;
+ 	var def = $.Deferred();
  	var ref = firebase.database().ref().child('employee');
  	ref.on('value', function(snapshot) {
+ 		//this will allow to travers all the employees
  		snapshot.forEach(function(data) {
- 			console.log(data.val().firstName);
+ 			//console.log(data.val().firstName);
  		});
+ 		count = snapshot.numChildren();
+ 		def.resolve(count);
+
  	});
+ 	return def.promise();
  }
 
- /**
-  * getManagerCount(), this method returns the
-  * total number of managers in the database 
-  */
- function getManagerCount() {
- 	return 0;
- }
 
  /**
   * getTeamCount(), this method returns the
@@ -65,7 +72,7 @@
  */
 
  function saveEmployee(firstname, lastname, totalVacation, daysleft,
- 	teamID, managers, events, isManager, email, password) {
+ 						teamID, managers, events, isManager, email, password) {
  	firebase.database().ref('employee').push({
  		firstName: firstname,
  		lastName: lastname,
@@ -119,7 +126,8 @@
  	title: string
  	description: string
  */
- function saveEvent(email, eventID, startDate, endDate, vacationType, eventTitle, eventDescription) {
+ function saveEvent(email, eventID, startDate, endDate, vacationType, 
+ 					  eventTitle, eventDescription) {
  	firebase.database().ref('event').push({
  		email: email,
  		eventID: eventID,
@@ -133,7 +141,8 @@
 
  /*
  	Save holidays in the database
- 	holidayArray = array of strings of all base holidays to not count towards vacation days
+ 	holidayArray = array of strings of all base 
+ 	holidays to not count towards vacation days
  	already hard coded into database
  */
  function saveHoliday(holidayArray) {
@@ -142,23 +151,33 @@
  	});
  }
 
+/**
+ This method will add the user to the User table(firebase),
+ and also store the rest of the information in the database
+ */
+ function addUser(email, password,firstName,lastName,totalVacationDays
+ 					,dayslefts,isManager,managers,team,employees,pathToPicture
+ 					title {
+ 	firebase.auth().createUserWithEmailAndPassword(email, password)
+ 		.then(function(data) {
+ 			saveUsertoDatabase(email, password);
+ 		})
+ 		.catch(function(error) {
+ 			var errorCode = error.code;
+ 			var errorMessage = error.message;
 
+ 			if (errorCode == 'auth/weak-password') {
+ 				console.log(errorCode);
+ 			} else if (errorCode == 'auth/email-already-in-use') {
+ 				console.log(errorCode);
+ 			} else if (errorCode == 'auth/invalid-email') {
+ 				console.log(errorCode);
+ 			} else {
+ 				console.log(errorMessage);
+ 			}
+ 		});
+ }
 
-
- function addUser(email,password) {
- 	// [START createwithemail]
- 	firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
- 		// Handle Errors here.
- 		var errorCode = error.code;
- 		var errorMessage = error.message;
- 		// [START_EXCLUDE]
- 		if (errorCode == 'auth/weak-password') {
- 			alert('The password is too weak.');
- 		} else {
- 			alert(errorMessage);
- 		}
- 		console.log(error);
- 		// [END_EXCLUDE]
- 	});
- 	// [END createwithemail]
+ function saveUsertoDatabase(email, password){
+ 	console.log(email,password);
  }
