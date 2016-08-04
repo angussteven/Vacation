@@ -38,6 +38,7 @@
  	return 0;
  }
 
+
 //saveEmployee("andrew","moawad",15,15,1,["michael.eilers@gm.com"],[1],true,"andrew.moawad@gm.com","1234");
 //saveManager("michael.eilers@gm.com",["zachary.dicino@gm.com"],"michael.eilers@gm.com");
 //saveTeam(1,["zachary.dicino@gm.com"],["michael.eilers@gm.com"]);
@@ -54,7 +55,9 @@
 	isManager = bool
 	everything else string	
 */
-function saveEmployee(firstname, lastname, totalVacation, daysleft, teamID, managers, events, isManager, email, password){
+
+function saveEmployee(firstname, lastname, totalVacation, daysleft, 
+						teamID, managers, events, isManager, email, password){
 	firebase.database().ref('employee').push({
 		firstName: firstname,
 		lastName: lastname,
