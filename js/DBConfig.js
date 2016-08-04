@@ -8,18 +8,24 @@
  firebase.initializeApp(config);
 
  /*Get reference example=*/
- var value;
+ /*var value;
  var dbRef = firebase.database().ref().child('employee');
  dbRef.on('value', function(snapshot) {
  	console.log(snapshot.val());
- });
+ });*/
 
 /**
   * getEmployeeCount(), this method returns the
   * total number of employees in the database 
   */
  function getEmployeeCount() {
- 	return 0;
+ 	//var ref = new Firebase("https://vacationtracker-5d242.firebaseio.com");
+ 	var ref = firebase.database().ref().child('employee');
+ 	ref.on('value',function(snapshot){
+ 		snapshot.forEach(function(data){
+ 			console.log(data.val().firstName);
+ 		});
+ 	});
  }
 
  /**
@@ -53,6 +59,7 @@
 	managers = array of strings
 	events = array of ints (ids)
 	isManager = bool
+	employees = array of strings (emails) default null for now
 	everything else string	
 */
 
@@ -64,18 +71,18 @@ function saveEmployee(firstname, lastname, totalVacation, daysleft,
 		totalVacationDays: totalVacation,
 		daysLeft: daysleft,
 		team: teamID,
-		manager: managers,
-		event: events,
+		managers: managers,
+		events: events,
 		isManager: isManager,
 		email: email,
-		empID: email,
-		password: password
+		password: password,
+		employees: null
 	});
 
 	//if you are a manager, save the employee as a manager in the database
 	//setting the employee array to null for now
 	if(isManager){
-		saveManager(email, email, null);
+		//still figuring this out
 	}
 
 	/**
@@ -85,19 +92,6 @@ function saveEmployee(firstname, lastname, totalVacation, daysleft,
 	*/
 }
 
-/*
-	Save a manager into the database
-	email = string
-	employees = array of strings (emails) 
-	managerID = string (email)
-*/
-function saveManager(managerID, email, employees){
-	firebase.database().ref('manager').push({
-		email: email,
-		employee: employees,
-		manID: managerID
-	});
-}
 
 /*
 	Save a team into the database
@@ -115,17 +109,24 @@ function saveTeam(teamID, employees, managers){
 
 /*
 	Save an event into the database
-	employeeID: string (email)
+	email: string (email)
 	eventID: int
 	startDate: string (ex. "08-29-2016")
 	endDate: string (ex. "08-31-2016")
+	vacationType: stirng (vaction or business)
+	eventTitle: string
+	title: string
+	description: string
 */
-function saveEvent(employeeID, eventID, startDate, endDate){
+function saveEvent(email, eventID, startDate, endDate, vacationType, eventTitle, eventDescription){
 	firebase.database().ref('event').push({
-		empID: employeeID,
-		evID: eventID,
+		email: email,
+		eventID: eventID,
 		startDate: startDate,
-		endDate: endDate
+		endDate: endDate,
+		type: vacationType,
+		title: eventTitle,
+		description: eventDescription
 	});
 }
 
