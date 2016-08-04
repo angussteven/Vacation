@@ -153,24 +153,13 @@ function addDay(eventDay) {
 				};
 				$('#calendar').fullCalendar('unselect');
 			},
-      // HERRRREEEEEE
-      eventClick: function(event) {
+      eventClick: function(event, element) {
         clickedID = event.id;
         $("#eventTitle").val(event.title);
         $("#eventDescription").val(event.description);
         $("#viewStartDate").val(removeTime(event.start.toISOString()));
         var tempEnd = removeTime(event.end.toISOString());
         $("#viewEndDate").val(subtractDay(tempEnd));
-        $("#changeEventBtn").click(function () {
-          event.title = $("#eventTitle").val();
-          event.description = $("#eventDescription").val();
-          event.start = $("#viewStartDate").val();
-          event.end = addDay($("#viewEndDate").val());
-          $('#calendar').fullCalendar('updateEvent', event);
-          var events = $('#calendar').fullCalendar('clientEvents');
-          console.log(events);
-          popup4.close();
-        });
         popup4.open();
         return false;
       },
@@ -290,5 +279,17 @@ function addDay(eventDay) {
       var ans = confirm("Are you sure you want to exit? All progress will be lost.");
       if (ans == true)
         popup4.close();
+    });
+    $("#changeEventBtn").click(function () {
+      $('#calendar').fullCalendar('removeEvents', clickedID);
+      changedEvent = {
+        id: clickedID,
+        title: $("#eventTitle").val(),
+        start: $("#viewStartDate").val(),
+        end: addDay($("#viewEndDate").val()),
+        description: $("#eventDescription").val(),
+      };
+      $('#calendar').fullCalendar('renderEvent', changedEvent, true);
+      popup4.close();
     })
 	});
