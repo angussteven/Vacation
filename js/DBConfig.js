@@ -184,6 +184,8 @@ test.done(function(data){
  		});
  }
 
- function saveUsertoDatabase(email, password){
+ function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
+ 					,dayslefts,isManager,managers,team,employees,pathToPicture
+ 					title){
  	console.log(email,password);
  }
