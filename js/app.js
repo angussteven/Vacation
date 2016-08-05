@@ -32,7 +32,7 @@ $(document).foundation()
 			"margin-right": b.right - 1
 		})
 	}
- 
+
 	function f(a) {
 		a.css({
 			"margin-left": "",
