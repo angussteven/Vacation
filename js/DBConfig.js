@@ -13,11 +13,16 @@ var teamCount = 0;
 console.log("Start");
 
 // Implementation of getEmployeeCount
-var test = $.Deferred(getEmployeeCount);
-test.done(function(data){
-  console.log(myCount);
+var test1 = $.Deferred(getEmployeeCount);
+test1.done(function(data){
+  console.log("Employee Count: " + employeeCount);
 });
 
+// Implementation of getEmployeeCount
+var test2 = $.Deferred(getTeamCount);
+test2.done(function(data){
+  console.log("Team Count: " + teamCount);
+});
 
  /*Get reference example=*/
  /*var value;
@@ -101,9 +106,8 @@ function getEmployee(userID, emailAddress){
  	var ref = firebase.database().ref().child('employee');
  	ref.on('value', function(snapshot) {
  		count = snapshot.numChildren();
- 		console.log("Inside getEmployeeCount " + count);
  		employeeCount = count;
- 		test.resolve();
+ 		test1.resolve();
  	});
  }
 
@@ -182,9 +186,8 @@ function getTeam(){
  	var ref = firebase.database().ref().child('team');
  	ref.on('value', function(snapshot) {
  		count = snapshot.numChildren();
- 		console.log("Inside getEmployeeCount " + count);
- 		myCount = count;
- 		test.resolve();
+ 		teamCount = count;
+ 		test2.resolve();
  	});
  }
 
@@ -266,7 +269,7 @@ function getHolidays(startDate, endDate){
  }
 
  function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
- 					,dayslefts,isManager,managers,team,employees,pathToPicture
+ 					,dayslefts,isManager,managers,team,employees,pathToPicture,
  					title){
  	console.log(email,password);
  }
