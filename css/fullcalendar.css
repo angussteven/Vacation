@@ -181,7 +181,6 @@ NOTE: use percentage font sizes or else old IE chokes
 
 /* Previous month button */
 .fc-state-default.fc-corner-left { /* non-theme */
-	border-radius: 4px;
 	position: absolute;
 	top: 1%;
 	right: 85%;
@@ -189,7 +188,6 @@ NOTE: use percentage font sizes or else old IE chokes
 
 /* Next month button */
 .fc-state-default.fc-corner-right { /* non-theme */
-	border-radius: 4px;
 	position: absolute;
 	top: 1%;
 	right: 10%;
@@ -197,7 +195,6 @@ NOTE: use percentage font sizes or else old IE chokes
 
 /* Today button */
 .fc-state-default.fc-corner-left.fc-corner-right {
-	border-radius: 4px;
 	position: absolute;
 	top: 8%;
 	right: 47%;
@@ -218,20 +215,18 @@ NOTE: use percentage font sizes or else old IE chokes
 */
 
 .fc-state-default {
-	background-color: #00bfff;
+	background-color: #2199e8;
 	border-color: #e6e6e6 #e6e6e6 #bfbfbf;
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	color: white;
-	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .fc-state-hover,
 .fc-state-down,
 .fc-state-active,
 .fc-state-disabled {
-	color: #333333;
-	background-color: #e6e6e6;
+	color: #fefefe;
+	background-color: #2199e8;
 }
 
 .fc-state-hover {
@@ -248,7 +243,6 @@ NOTE: use percentage font sizes or else old IE chokes
 .fc-state-active {
 	background-color: #cccccc;
 	background-image: none;
-	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .fc-state-disabled {
