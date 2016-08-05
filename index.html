@@ -21,7 +21,6 @@
   <!--FIREBASE_DATABASE-->
   <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
   <script src="js/DBConfig.js"></script>
-  <script src="js/RestService.js"></script>
 
   <!--Foundation JS-->
   <script src="js/vendor/what-input.js"></script>
@@ -277,63 +276,71 @@
 
   <!--Create a new user modal-->
   <div id="createProfileModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true"
-    role="dialog" data-close-on-click="false">
-    <form data-abide id="createProfileForm" name="createProfile">
-      <div class="callout secondary" data-closable>
-        <h1>Create a New Profile</h1>
-        <div class="row">
-          <div class="large-6 medium-6 columns">
-            <label>First Name</label>
-            <input type="text" id="firstName" required/>
-          </div>
-          <div class="large-6 medium-6 columns">
-            <label>Last Name</label>
-            <input type="text" id="lastName" required/>
-          </div>
+  role="dialog" data-close-on-click="false">
+  <form data-abide id="createProfileForm" name="createProfile">
+    <div class="callout secondary" data-closable>
+      <h1>Create a New Profile</h1>
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <label>First Name</label>
+          <input type="text" id="profileFirstName" required/>
         </div>
-        <div class="row">
-          <div class="large-6 medium-6 columns">
-            <label>Email Address</label>
-            <input type="email" id="emailAddress" required/>
-          </div>
-          <div class="large-6 medium-6 columns">
-            <label>Verify Email Address</label>
-            <input type="email" id="emailAddressVerify" required autocomplete="off"/>
-          </div>
+        <div class="large-6 medium-6 columns">
+          <label>Last Name</label>
+          <input type="text" id="profileLastName" required/>
         </div>
-        <div class="row">
-          <fieldset class="large-6 columns">
-            <form id="managerRadioBtn">
-              <legend>Are You a Manager?</legend>
-              <input type="radio" name="managerLabel" value="Yes"><label>Yes</label>
-              <input type="radio" name="managerLabel" value="No"><label>No</label>
-            </form>
-          </fieldset>
-        </div>
-        <div class="row" id="selectManagerRow">
-          <div class="large-12 columns">
-            <label>Select Manager</label>
-            <select>
-                <option value="Manager1" required>Michael Eilers </option>
-              </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="large-6 medium-4 columns">
-            <label>Number of Total Vacation Days</label>
-            <input type="number" id="vacationDaysTotal" />
-          </div>
-          <div class="large-6 medium-4 columns">
-            <label>Number of Used Vacation Days</label>
-            <input type="number" id="vacationDaysUsed" />
-          </div>
-        </div>
-        <div class="row">
-          <button id="createProfileBtn" class="success button" type="submit" onclick="createProfile()" unselectable="on">Create</button>
-        </div>
-        <button id="createCloseBtn" class="close-button" unselectable="on"><span aria-hidden="true">&times;</span></button>
       </div>
-    </form>
-  </div>
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <label>Email Address</label>
+          <input type="email" id="emailAddress" required/>
+        </div>
+        <div class="large-6 medium-6 columns">
+          <label>Verify Email Address</label>
+          <input type="email" id="emailAddressVerify" required autocomplete="off" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <label>Password</label>
+          <input type="password" id="profilePassword" required/>
+        </div>
+        <div class="large-6 medium-6 columns">
+          <label>Verify Password</label>
+          <input type="password" id="profilePasswordVerify" required autocomplete="off" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns">
+          <label>Are you a manager?</label>
+          <input type="radio" name="ismanager" value="Yes" id="yesMan"><label for="yesMan">Yes</label>
+          <input type="radio" name="ismanager" value="No" id="noMan"><label for="noMan">No</label>
+        </div>
+      </div>
+      <div class="row" id="selectManagerRow">
+        <div class="large-12 columns">
+          <label>Select Manager</label>
+          <select id="selectedManager">
+                <option value="Manager1" required>Michael Eilers </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-6 medium-4 columns">
+          <label>Number of Total Vacation Days</label>
+          <input type="number" id="vacationDaysTotal" />
+        </div>
+        <div class="large-6 medium-4 columns">
+          <label>Number of Used Vacation Days</label>
+          <input type="number" id="vacationDaysLeft" />
+        </div>
+      </div>
+      <div class="row">
+        <button id="createProfileBtn" class="success button" type="submit" unselectable="on">Create</button>
+      </div>
+      <button id="createCloseBtn" class="close-button" unselectable="on"><span aria-hidden="true">&times;</span></button>
+    </div>
+  </form>
+</div>
 </body>
 </html>
