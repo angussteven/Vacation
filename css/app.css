@@ -10,7 +10,7 @@
 
 ul {
 	list-style-type:none;
-	
+
 }
 li {
 	color: white;
@@ -26,7 +26,6 @@ li {
 	height: 90%;
 	margin: 0 auto;
 	border: solid 1px lightgrey;
-	border-radius: 4px;
 	padding: .5% 0% 2% 2;
 }
 
