@@ -1,9 +1,6 @@
 
 $(document).ready(function () {
     var popup = new Foundation.Reveal($('#createProfileModal'));
-    $("#newUserBtn").click(function () {
-        popup.open();
-    });
     $("#createCloseBtn").click(function () {
             popup.close();
     });
@@ -12,6 +9,7 @@ $(document).ready(function () {
     $("#createProfileForm").submit(function (event) {
         event.preventDefault();
         createProfile();
+        $('#createProfileModal').foundation('close');
     });
 
     // $("#createProfileBtn").click(function(){

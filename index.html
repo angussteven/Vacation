@@ -96,7 +96,7 @@
                   <button type="submit" id="loginBtn" onclick="logIn()" class="success button" unselectable="on">Log In</button>
 
                 </form>
-                <button id="newUserBtn" class="button" unselectable="on">Create New Profile</button>
+                <button id="newUserBtn" class="button" unselectable="on" data-open="createProfileModal">Create New Profile</button>
               </div>
             </div>
           </div>
@@ -275,7 +275,7 @@
   </div>
 
   <!--Create a new user modal-->
-  <div id="createProfileModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true"
+  <div id="createProfileModal" class="reveal" data-reveal aria-labelledby="modalTitle" aria-hidden="true"
   role="dialog" data-close-on-click="false">
   <form data-abide id="createProfileForm" name="createProfile">
     <div class="callout secondary" data-closable>

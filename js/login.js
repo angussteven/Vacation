@@ -41,7 +41,6 @@ $( document ).ready(function() {
    	firebase.auth().onAuthStateChanged(function(user) {
 	  if(isNewAccount){
 			//create employee in firebase databse
-			popup.close();
 		}
 		if (user) {
 	    console.log(user.email);
