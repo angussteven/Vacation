@@ -276,7 +276,6 @@ function addDay(eventDay) {
       popup3.close();
       alert = $('input:radio[name=alert]:checked').val();
       isVacation = $('input:radio[name=isVacation]:checked').val();
-      console.log($("#downloadICSCheckbox").is(':checked'));
       if ($("#downloadICSCheckbox").is(':checked') === true) {
         var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
         window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
@@ -307,5 +306,11 @@ function addDay(eventDay) {
       };
       $('#calendar').fullCalendar('renderEvent', changedEvent, true);
       popup4.close();
+      alert = $('input:radio[name=alert_viewModal]:checked').val();
+      isVacation = $('input:radio[name=isVacation_viewModal]:checked').val();
+      if ($("#downloadICSCheckbox_viewModal").is(':checked') === true) {
+        var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
+        window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
+      }
     })    
 	});

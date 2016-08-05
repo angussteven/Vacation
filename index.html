@@ -167,14 +167,10 @@
         <div class="large-6 medium-4 columns">
           <label>Title (Default is your name)</label>
           <input type="text" id="createEventTitle" />
-          <label>Description</label>
-          <input type="text" id="createEventDescription" />
         </div>
         <div class="large-6 medium-4 columns">
-          <label>Vacation Days Selected</label>
-          <input id="daysSelected" type="number" readonly/>
-          <label>Vacation Days Remaining</label>
-          <input id="daysLeft" type="number" readonly/>
+          <label>Description</label>
+          <input type="text" id="createEventDescription" />
         </div>
       </div>
       <div class="row">
@@ -185,6 +181,16 @@
         <div class="large-6 medium-4 columns">
           <label>End Date</label>
           <input type="date" id="endDate" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-6 medium-4 columns">
+          <label>Vacation Days Selected</label>
+          <input id="daysSelected" type="number" readonly/>
+        </div>
+        <div class="large-6 medium-4 columns">
+          <label>Vacation Days Remaining</label>
+          <input id="daysLeft" type="number" readonly/>
         </div>
       </div>
       <div class="row">
@@ -237,6 +243,26 @@
         <div class="large-6 medium-4 columns">
           <label>End Date</label>
           <input type="date" id="viewEndDate" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-4 medium-4 columns">
+          <legend>When would you like to be alerted?</legend>
+          <input type="radio" name="alert_viewModal" value="alertOne" checked="checked"><label>1 Day</label>
+          <input type="radio" name="alert_viewModal" value="alertFour"><label>4 Days</label>
+          <input type="radio" name="alert_viewModal" value="alertWeek"><label>1 Week</label>
+        </div>
+        <div class="large-4 medium-4 columns">
+          <legend>Is this Vacation or Business Travel?</legend>
+          <input type="radio" name="isVacation_viewModal" value="vacation" checked="checked"><label>Vacation</label>
+          <input type="radio" name="isVacation_viewModal" value="travel"><label>Business Travel</label>
+        </div>
+        <div class="large-4 medium-4 columns">
+          <legend>Would you like to download an ISC File?</legend>
+          <div class="switch">
+            <input id="downloadICSCheckbox_viewModal" type="checkbox">
+            <label for="downloadICSCheckbox_viewModal">Yes/No</label>
+          </div> 
         </div>
       </div>
       <div class="row">
