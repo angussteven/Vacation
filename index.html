@@ -32,6 +32,7 @@
 
   <script src="js/login.js"></script>
   <script src="js/logincontroller.js"></script>
+  <script src="js/jstree/jstree.js"></script>
   <!--Sources are Foundation and for calendar: http://fullcalendar.io/-->
 </HEAD>
 
@@ -53,17 +54,8 @@
       <div class="row">
         <div class="panel text-center">
           <label>Select Employees To View</label>
-          <select id="emp-dropdown">
-	              <option value="husker">All</option>
-	              <option value="starbuck">Employees Under Manager</option>
-	              <option value="hotdog">Manager</option>
-	              <option value="apollo">?</option>
-	            </select>
-          <br />
-          <br />
-          <a href="#features" class="button">Delete Event</a>
+            <div id="container"></div>
           <a href="" onclick="fireSignOut()" class="button">Sign Out</a>
-
         </div>
       </div>
     </form>
@@ -342,5 +334,7 @@
     </div>
   </form>
 </div>
+
+<script src="js/jstreecontroller.js"></script>
 </body>
 </html>
