@@ -5,13 +5,19 @@
 }
 #container {
 	text-align: left;
+	/*overflow: scroll;*/
 }
 
 ul {
 	list-style-type:none;
+	
 }
+li {
+	color: white;
+}
+
 #sidebar_choice {
-	padding-right: 5px;
+	padding-right: 10em;
 }
 #wrap {
 	position: relative;
@@ -91,6 +97,7 @@ body {
 	padding-top: 2%;
 }
 #sidebar {
+	color: white;
 	position: absolute;
 	height: 90%;
 	width: 20%;
