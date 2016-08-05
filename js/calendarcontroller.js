@@ -257,9 +257,11 @@ function addDay(eventDay) {
 //				}
 //			]
 		});
+
     $("#addCloseBtn").click(function () {
       popup3.close();
     });
+
     $("#notifyBtn").click(function() {
       id+=1;
       eventData = {
@@ -269,24 +271,31 @@ function addDay(eventDay) {
         end: addDay($("#endDate").val()),
         description: $("#createEventDescription").val(),
       };
+
       $('#calendar').fullCalendar('renderEvent', eventData, true);
       popup3.close();
       alert = $('input:radio[name=alert]:checked').val();
       isVacation = $('input:radio[name=isVacation]:checked').val();
-      var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
-      window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
+      console.log($("#downloadICSCheckbox").is(':checked'));
+      if ($("#downloadICSCheckbox").is(':checked') === true) {
+        var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
+        window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
+      }
     });
+
     $("#deleteBtn").click(function() {
       var ans = confirm("Are you sure you want to remove this event?");
       if (ans == true)
         $("#calendar").fullCalendar('removeEvents',clickedID);
         popup4.close();
     });
+
     $("#viewEventCloseBtn").click(function () {
       var ans = confirm("Are you sure you want to exit? All progress will be lost.");
       if (ans == true)
         popup4.close();
     });
+
     $("#changeEventBtn").click(function () {
       $('#calendar').fullCalendar('removeEvents', clickedID);
       changedEvent = {
@@ -298,5 +307,5 @@ function addDay(eventDay) {
       };
       $('#calendar').fullCalendar('renderEvent', changedEvent, true);
       popup4.close();
-    })
+    })    
 	});
