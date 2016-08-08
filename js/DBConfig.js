@@ -47,7 +47,6 @@ var getEmployeeCallback = $.Deferred(getEmployee);
 getEmployeeCallback.done(function(data){
 	console.log("Employee: " + employee);
 });
-
  /*Get reference example=*/
  /*var value;
  var dbRef = firebase.database().ref().child('employee');
@@ -59,13 +58,12 @@ getEmployeeCallback.done(function(data){
  // getEmployeeCount().then(function(count) {
  // 	console.log(count)
  // });
-
+//deleteEvent(2);
  //saveEmployee("andrew","moawad",15,15,1,["michael.eilers@gm.com"],[1],true,"andrew.moawad@gm.com","1234");
  //saveManager("michael.eilers@gm.com",["zachary.dicino@gm.com"],"michael.eilers@gm.com");
  //saveTeam(1,["zachary.dicino@gm.com"],["michael.eilers@gm.com"]);
- //saveEvent("zachary.dicino@gm.com",1,"08-29-2016","08-31-2016");
+ //saveEvent("zachary.dicino@gm.com",3,"08-29-2016","08-31-2016","business","vacation I need time","why");
  //saveHoliday(["01-01-2016","01-18-2016","03-25-2016","03-28-2016","05-30-2016","07-04-2016","09-05-2016","11-08-2016","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"]);
-
  
 // Events //
 function addEvent(userID, startDate, endDate, title, description, alert, isBusiness, vacationUsed){
@@ -73,8 +71,18 @@ function addEvent(userID, startDate, endDate, title, description, alert, isBusin
 
 	// Remove appropriate vacation days from employee
 }
+var keyToObject ;
 
 function deleteEvent(eventID){
+	
+	var ref = firebase.database().ref().child('event');	
+	ref.orderByChild("eventID").equalTo(eventID).on('value', function(snapshot) {
+ 	keyToObject = Object.keys(snapshot.val()).toString();
+ 	ref.child(keyToObject).remove();
+ 	//snapshot.ref().remove();
+ });
+	
+	 //ref.remove();
 	// Delete the event via the eventID
 }
 
@@ -246,8 +254,38 @@ function getTeam(teamID){
  }
 
 function removeEmpFromTeam(userID, teamID){
-	// Remove employee from a team
+	var refs = firebase.database().ref().child('team');
+	var parent;	
+	var child;
+	refs.orderByChild("teamID").equalTo(5).on('value', function(snapshot) {
+ 	//ref.remove();
+ 	parent = Object.keys(snapshot.val());
+ 	console.log(snapshot.val());
+ 	console.log("this is the parent of that table:" + parent)
+ 	snapshot.forEach(function(childSnapshot){
+ 				//console.log("Team ID: " + childSnapshot.child('employee').val());
+ 				console.log(childSnapshot.val());
+ 				 	childSnapshot.child('employee').forEach(function(grandchildSnapshot){
+ 				//console.log("Team ID: " + childSnapshot.child('employee').val());
+ 				console.log(grandchildSnapshot.val() + " in grand child \n");
+ 				if(grandchildSnapshot.val().toString() === userID)
+ 				{
+ 					child = Object.keys(grandchildSnapshot.val());
+ 					console.log(grandchildSnapshot);
+ 					//works but deleted the wrong child 
+ 					//refs.child(parent.toString()).child("employee").child(child[0].toString()).remove();
+ 				}
+ 			});
+ 			});
+ 	// keyToObject = Object.keys(snapshot.val()).toString();
+ 	// ref.child(keyToObject).remove();
+ 	//snapshot.ref().remove();
+ });
+	
+	 //ref.remove();
+	// Delete the event via the eventID
 }
+
 
 /*
  	Save a team into the database
