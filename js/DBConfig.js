@@ -12,6 +12,7 @@ var teamCount = 0;
 var allTeams = [];
 var team;
 var employee;
+var teamsEmployees;
 
 var hiddenEmpField = $('#employeeCount');
 console.log("Start");
@@ -20,32 +21,48 @@ console.log("Start");
 var getEmpCountTest = $.Deferred(getEmployeeCount);
 getEmpCountTest.done(function(data){
   console.log("Employee Count: " + employeeCount);
-  //hiddenEmpField.value = employeeCount; // use jQuery or we can use document.getElementByID("employeeCount").value = employeeCount
-  //console.log("Hidden Emp Field Value: " + employeeCount);
 });
 
 // Implementation of getEmployeeCount
 var getTeamCountTest = $.Deferred(getTeamCount);
 getTeamCountTest.done(function(data){
   console.log("Team Count: " + teamCount);
-
 });
 
+// Implementation of getAllTeams
 var getAllTeamsCallback = $.Deferred(getAllTeams);
 getAllTeamsCallback.done(function(data){
 	console.log("All da teams: ");
 	console.log(allTeams);
 });
 
+// Implementation of getTeam
 var getTeamCallback = $.Deferred(getTeam);
 getTeamCallback.done(function(data){
 	console.log("Team: " + team);
 });
 
-var getEmployeeCallback = $.Deferred(getEmployee("", "AnnaSmith@gmail.com"));
+// Implementation of getEmployee
+var getEmployeeCallback = $.Deferred(getEmployee("andrew.moawad@gm.com"));
 getEmployeeCallback.done(function(data){
-	console.log(employee);
-	console.log(employee.firstName + " " + employee.lastName);
+	if(employee == null){
+		console.log("No employee found");
+	}else{
+		console.log("Name: " + employee.firstName + " " + employee.lastName);
+		console.log("Email: " + employee.email);
+		console.log("Total Vacation Days: " + employee.totalVacationDays);
+		console.log("Remaining Vacation Days: " + employee.daysLeft);
+	}
+});
+
+// Implementation of getEmployeesOnTeam
+var getEmployeesOnTeamCallback = $.Deferred(getEmployeesOnTeam("Quantum"));
+getEmployeesOnTeamCallback.done(function(data){
+	if(teamsEmployees == null){
+		console.log("Team has no employees");
+	}else{
+		console.log(teamsEmployees);
+	}
 });
 
 /**
@@ -97,6 +114,10 @@ function deleteEvent(eventID){
 
 function getEmployeeEvents(userID){
 	// Get all the vacation days for a given employee
+	var ref = firebase.database().ref.child('event');
+	ref.on('value', function(snapshot){
+		console.log(snapshot.val());
+	});
 }
 
 function getTeamEvents(teamID){
@@ -134,20 +155,35 @@ function updateEvent(){
 
 // Employee //
 
-function getEmployee(userID, emailAddress){
-	// Get the employee from the DB using either email address or userID
-	var ref = firebase.database().ref().child('employee');
+// Get employee with given email address [[DONE]]
+function getEmployee(emailAddress){
+	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+	ref.once('value', function(snapshot){
+		if(snapshot.exists()){
+			employee = snapshot.val();
+		}
+		else{
+			employee = null;
+		}
+		getEmployeeCallback.resolve();
+	})
+}
 
-	// Get the employee with matching email
- 	ref.orderByChild("email").equalTo(emailAddress).once('value', function(snapshot) { 
+// Get the employee with matching email
+ 	/*ref.orderByChild("email").equalTo(emailAddress).once('value', function(snapshot) { 
  		if(snapshot.val() != null){
+ 			console.log(snapshot.val());
  			var id = Object.keys(snapshot.val()).toString();
+ 			console.log(id);
  			var empObject = snapshot.child(id).val();
  			employee = empObject;
+ 		}else{
+ 			console.log("No Employee Returned");
  		}
  		getEmployeeCallback.resolve();
- 	})
-}
+ 	})*/
+
+
 
 // Try this from andrew: ref.orderByChild("eventID").equalTo(2).on('value', function(snapshot) { 
 
@@ -159,14 +195,21 @@ function getEmployee(userID, emailAddress){
  	var count = 0;
  	var ref = firebase.database().ref().child('employee');
  	ref.on('value', function(snapshot) {
- 		count = snapshot.numChildren();
- 		employeeCount = count;
+ 		employeeCount = snapshot.numChildren();
  		getEmpCountTest.resolve();
  	});
  }
 
 function getEmployeesOnTeam(teamID){
 	// Get all the employees that are on a team
+	var ref = firebase.database().ref().child('employee');
+	ref.orderByChild("team").equalTo(teamID).once('value', function(snapshot){
+		if(snapshot.exists()){
+			console.log(snapshot.val());
+		}
+		getEmployeesOnTeamCallback.resolve();
+	})
+
 }
 
 /*
@@ -229,11 +272,8 @@ function getAllTeams(){
 	var ref = firebase.database().ref().child('team');
  	ref.on('value', function(snapshot) {
  		snapshot.forEach(function(childSnapshot){
- 				allTeams.push(childSnapshot.child("name").val());
- 			});
-
-
-
+ 			allTeams.push(childSnapshot.child("name").val());
+		});
  		getAllTeamsCallback.resolve();
  	});
 }
