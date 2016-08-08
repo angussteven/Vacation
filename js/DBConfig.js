@@ -43,9 +43,10 @@ getTeamCallback.done(function(data){
 	console.log("Team: " + team);
 });
 
-var getEmployeeCallback = $.Deferred(getEmployee);
+var getEmployeeCallback = $.Deferred(getEmployee("", "AnnaSmith@gmail.com"));
 getEmployeeCallback.done(function(data){
-	console.log("Employee: " + employee);
+	console.log(employee);
+	console.log(employee.firstName + " " + employee.lastName);
 });
  /*Get reference example=*/
  /*var value;
@@ -128,16 +129,15 @@ function getEmployee(userID, emailAddress){
 	// Get the employee from the DB using either email address or userID
 	var ref = firebase.database().ref().child('employee');
 
- 	ref.on('value', function(snapshot) {
- 			console.log(snapshot.val());
- 			snapshot.forEach(function(childSnapshot){
- 				console.log("Team ID: " + childSnapshot.child('team').val());
- 			});
-
+	// Get the employee with matching email
+ 	ref.orderByChild("email").equalTo(emailAddress).once('value', function(snapshot) { 
+ 		if(snapshot.val() != null){
+ 			var id = Object.keys(snapshot.val()).toString();
+ 			var empObject = snapshot.child(id).val();
+ 			employee = empObject;
+ 		}
  		getEmployeeCallback.resolve();
- 	});
-
- 	//ref.orderByChild("email").equalTo(emailAddress).on('value', function(snapshot) { console.log(snapshot.val());})
+ 	})
 }
 
 // Try this from andrew: ref.orderByChild("eventID").equalTo(2).on('value', function(snapshot) { 
