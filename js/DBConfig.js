@@ -9,19 +9,43 @@
 
 var employeeCount = 0;
 var teamCount = 0;
+var allTeams = [];
+var team;
+var employee;
 
+var hiddenEmpField = $('#employeeCount');
 console.log("Start");
 
+
 // Implementation of getEmployeeCount
-var test1 = $.Deferred(getEmployeeCount);
-test1.done(function(data){
+var getEmpCountTest = $.Deferred(getEmployeeCount);
+getEmpCountTest.done(function(data){
   console.log("Employee Count: " + employeeCount);
+  //hiddenEmpField.value = employeeCount; // use jQuery or we can use document.getElementByID("employeeCount").value = employeeCount
+  //console.log("Hidden Emp Field Value: " + employeeCount);
 });
 
 // Implementation of getEmployeeCount
-var test2 = $.Deferred(getTeamCount);
-test2.done(function(data){
+var getTeamCountTest = $.Deferred(getTeamCount);
+getTeamCountTest.done(function(data){
   console.log("Team Count: " + teamCount);
+
+});
+
+var getAllTeamsCallback = $.Deferred(getAllTeams);
+getAllTeamsCallback.done(function(data){
+	console.log("All da teams: ");
+	console.log(allTeams);
+});
+
+var getTeamCallback = $.Deferred(getTeam);
+getTeamCallback.done(function(data){
+	console.log("Team: " + team);
+});
+
+var getEmployeeCallback = $.Deferred(getEmployee);
+getEmployeeCallback.done(function(data){
+	console.log("Employee: " + employee);
 });
 
  /*Get reference example=*/
@@ -94,20 +118,33 @@ function updateEvent(){
 
 function getEmployee(userID, emailAddress){
 	// Get the employee from the DB using either email address or userID
-	
+	var ref = firebase.database().ref().child('employee');
+
+ 	ref.on('value', function(snapshot) {
+ 			console.log(snapshot.val());
+ 			snapshot.forEach(function(childSnapshot){
+ 				console.log("Team ID: " + childSnapshot.child('team').val());
+ 			});
+
+ 		getEmployeeCallback.resolve();
+ 	});
+
+ 	//ref.orderByChild("email").equalTo(emailAddress).on('value', function(snapshot) { console.log(snapshot.val());})
 }
+
+// Try this from andrew: ref.orderByChild("eventID").equalTo(2).on('value', function(snapshot) { 
 
 /*
 	getEmployeeCount(), this method returns the
 	total number of employees in the database 
 */
- function getEmployeeCount() {
+ function getEmployeeCount(jQueryObject) {
  	var count = 0;
  	var ref = firebase.database().ref().child('employee');
  	ref.on('value', function(snapshot) {
  		count = snapshot.numChildren();
  		employeeCount = count;
- 		test1.resolve();
+ 		getEmpCountTest.resolve();
  	});
  }
 
@@ -171,10 +208,27 @@ function addEmpToTeam(userID, teamID){
 
 function getAllTeams(){
 	// Get all the teams 
+	var ref = firebase.database().ref().child('team');
+ 	ref.on('value', function(snapshot) {
+ 		snapshot.forEach(function(childSnapshot){
+ 				allTeams.push(childSnapshot.child("name").val());
+ 			});
+
+
+
+ 		getAllTeamsCallback.resolve();
+ 	});
 }
 
-function getTeam(){
+function getTeam(teamID){
+	var ref = firebase.database().ref().child('team');
+ 	ref.on('value', function(snapshot) {
 
+ 		// TODO 
+
+
+ 		getTeamCallback.resolve();
+ 	});
 }
 
 /*
@@ -187,7 +241,7 @@ function getTeam(){
  	ref.on('value', function(snapshot) {
  		count = snapshot.numChildren();
  		teamCount = count;
- 		test2.resolve();
+ 		getTeamCountTest.resolve();
  	});
  }
 
