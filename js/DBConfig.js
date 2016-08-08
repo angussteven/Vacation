@@ -13,6 +13,7 @@ var allTeams = [];
 var team;
 var employee;
 var teamsEmployees;
+var keyToObject ;
 
 var hiddenEmpField = $('#employeeCount');
 console.log("Start");
@@ -56,14 +57,13 @@ getEmployeeCallback.done(function(data){
 });
 
 // Implementation of getEmployeesOnTeam
-var getEmployeesOnTeamCallback = $.Deferred(getEmployeesOnTeam("Quantum"));
+var getEmployeesOnTeamCallback = $.Deferred(getEmployeesOnTeam("quantum"));
 getEmployeesOnTeamCallback.done(function(data){
 	if(teamsEmployees == null){
 		console.log("Team has no employees");
 	}else{
 		console.log(teamsEmployees);
 	}
-	console.log(employee);
 	//console.log(employee.firstName + " " + employee.lastName);               COMMENTED OUT BECAUSE OF JAVASCRIPT ERROR; cannot find property firstName of undefined
 });
 
@@ -94,13 +94,15 @@ function fixEmail(tempEmail){
  //saveHoliday(["01-01-2016","01-18-2016","03-25-2016","03-28-2016","05-30-2016","07-04-2016","09-05-2016","11-08-2016","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"]);
 
 // Events //
+
+// Adds a new event [TODO]
 function addEvent(userID, startDate, endDate, title, description, alert, isBusiness, vacationUsed){
 	// Create a new event
 
 	// Remove appropriate vacation days from employee
 }
-var keyToObject ;
 
+// Deletes an event [UNKNOWN]
 function deleteEvent(eventID){
 
 	var ref = firebase.database().ref().child('event');
@@ -114,6 +116,7 @@ function deleteEvent(eventID){
 	// Delete the event via the eventID
 }
 
+// Gets all the events for a given employee [TODO]
 function getEmployeeEvents(userID){
 	// Get all the vacation days for a given employee
 	var ref = firebase.database().ref.child('event');
@@ -122,6 +125,7 @@ function getEmployeeEvents(userID){
 	});
 }
 
+// Get all the events for the employees of a given team [TODO]
 function getTeamEvents(teamID){
 	// Get all the vacation days for all employees in a given team
 }
@@ -138,6 +142,7 @@ function getTeamEvents(teamID){
  	title: string
  	description: string
  */
+ // Add a new employee to the db [NEEDS TO BE TESTED]
  function saveEvent(email, eventID, startDate, endDate, vacationType,
  					  eventTitle, eventDescription) {
  	var tempEmail = fixEmail(email);
@@ -151,13 +156,15 @@ function getTeamEvents(teamID){
  		description: eventDescription
  	});
  }
+
+ // Updates a given event [TODO]
 function updateEvent(){
 	// Update the information for an event
 }
 
 // Employee //
 
-// Get employee with given email address [[DONE]]
+// Get employee with given email address [DONE]
 function getEmployee(emailAddress){
 	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
 	ref.once('value', function(snapshot){
@@ -192,11 +199,8 @@ function getEmployee(emailAddress){
 
 // Try this from andrew: ref.orderByChild("eventID").equalTo(2).on('value', function(snapshot) {
 
-/*
-	getEmployeeCount(), this method returns the
-	total number of employees in the database
-*/
- function getEmployeeCount(jQueryObject) {
+// Gets the total number of employees in a database (included managers) [DONE]
+ function getEmployeeCount() {
  	var count = 0;
  	var ref = firebase.database().ref().child('employee');
  	ref.on('value', function(snapshot) {
@@ -205,12 +209,16 @@ function getEmployee(emailAddress){
  	});
  }
 
-function getEmployeesOnTeam(teamID){
+// Gets all the employees that are on a given team
+function getEmployeesOnTeam(teamName){
 	// Get all the employees that are on a team
+
 	var ref = firebase.database().ref().child('employee');
-	ref.orderByChild("team").equalTo(teamID).once('value', function(snapshot){
+	ref.orderByChild("team").equalTo(teamName.toLowerCase()).once('value', function(snapshot){
 		if(snapshot.exists()){
-			console.log(snapshot.val());
+			teamsEmployees = snapshot.val();
+		} else{
+			teamEmployees = null;
 		}
 		getEmployeesOnTeamCallback.resolve();
 	})
