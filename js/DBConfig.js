@@ -314,24 +314,6 @@ function getTeamManager(teamID){
 	// Get the manager for the team
 }
 
-
-// Holiday
-function getHolidays(startDate, endDate){
-	// Get the holiday events within a given start and end date
-}
-
-/*
- 	Save holidays in the database
- 	holidayArray = array of strings of all base 
- 	holidays to not count towards vacation days
- 	already hard coded into database
- */
- function saveHoliday(holidayArray) {
- 	firebase.database().ref('holiday').push({
- 		day: holidayArray
- 	});
- }
-
 // User
 /*
 	 This method will add the user to the User table(firebase),
