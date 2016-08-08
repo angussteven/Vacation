@@ -304,7 +304,7 @@ function getHolidays(startDate, endDate){
  					title) {
  	firebase.auth().createUserWithEmailAndPassword(email, password)
  		.then(function(data) {
- 			saveUsertoDatabase(email, password);
+ 			saveEmployee(firstName, lastName, totalVacationDays, dayslefts, team, managers, "EVENTSSS", isManager, email, "WHY DO WE SAVE PASSWORD??");
  		})
  		.catch(function(error) {
  			var errorCode = error.code;
@@ -325,6 +325,7 @@ function getHolidays(startDate, endDate){
  function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
  					,dayslefts,isManager,managers,team,employees,pathToPicture,
  					title){
+
  	console.log(email,password);
  }
 

@@ -96,7 +96,7 @@
                   <button type="submit" id="loginBtn" onclick="logIn()" class="success button" unselectable="on">Log In</button>
 
                 </form>
-                <button id="newUserBtn" class="button" unselectable="on">Create New Profile</button>
+                <button id="newUserBtn" class="button" unselectable="on" data-open="createProfileModal">Create New Profile</button>
               </div>
             </div>
           </div>
@@ -165,17 +165,11 @@
       <div class="row">
         <div class="large-6 medium-4 columns">
           <label>Title (Default is your name)</label>
-          <input class="fullWidth" type="input" id="createEventTitle" />
+          <input type="text" id="createEventTitle" />
+        </div>
+        <div class="large-6 medium-4 columns">
           <label>Description</label>
-          <input class="fullWidth" type="input" id="createEventDescription" />
-        </div>
-        <div class="large-2 medium-4 columns">
-          <label>Vacation Days Selected</label>
-          <input id="daysSelected" type="number" readonly/>
-        </div>
-        <div class="large-2 medium-4 columns">
-          <label>Vacation Days Remaining</label>
-          <input id="daysLeft" type="number" readonly/>
+          <input type="text" id="createEventDescription" />
         </div>
       </div>
       <div class="row">
@@ -190,15 +184,32 @@
       </div>
       <div class="row">
         <div class="large-6 medium-4 columns">
-          <legend>When would you like to be alerted?</legend>
-          <input type="radio" name="alert" value="alertOne" checked="checked"><label>1 Day Before</label>
-          <input type="radio" name="alert" value="alertFour"><label>4 Days Before</label>
-          <input type="radio" name="alert" value="alertWeek"><label>1 Week Before</label>
+          <label>Vacation Days Selected</label>
+          <input id="daysSelected" type="number" readonly/>
         </div>
         <div class="large-6 medium-4 columns">
+          <label>Vacation Days Remaining</label>
+          <input id="daysLeft" type="number" readonly/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-4 medium-4 columns">
+          <legend>When would you like to be alerted?</legend>
+          <input type="radio" name="alert" value="alertOne" checked="checked"><label>1 Day</label>
+          <input type="radio" name="alert" value="alertFour"><label>4 Days</label>
+          <input type="radio" name="alert" value="alertWeek"><label>1 Week</label>
+        </div>
+        <div class="large-4 medium-4 columns">
           <legend>Is this Vacation or Business Travel?</legend>
           <input type="radio" name="isVacation" value="vacation" checked="checked"><label>Vacation</label>
           <input type="radio" name="isVacation" value="travel"><label>Business Travel</label>
+        </div>
+        <div class="large-4 medium-4 columns">
+          <legend>Would you like to download an ISC File?</legend>
+          <div class="switch">
+            <input id="downloadICSCheckbox" type="checkbox">
+            <label for="downloadICSCheckbox">Yes/No</label>
+          </div> 
         </div>
       </div>
       <div class="row">
@@ -234,6 +245,26 @@
         </div>
       </div>
       <div class="row">
+        <div class="large-4 medium-4 columns">
+          <legend>When would you like to be alerted?</legend>
+          <input type="radio" name="alert_viewModal" value="alertOne" checked="checked"><label>1 Day</label>
+          <input type="radio" name="alert_viewModal" value="alertFour"><label>4 Days</label>
+          <input type="radio" name="alert_viewModal" value="alertWeek"><label>1 Week</label>
+        </div>
+        <div class="large-4 medium-4 columns">
+          <legend>Is this Vacation or Business Travel?</legend>
+          <input type="radio" name="isVacation_viewModal" value="vacation" checked="checked"><label>Vacation</label>
+          <input type="radio" name="isVacation_viewModal" value="travel"><label>Business Travel</label>
+        </div>
+        <div class="large-4 medium-4 columns">
+          <legend>Would you like to download an ISC File?</legend>
+          <div class="switch">
+            <input id="downloadICSCheckbox_viewModal" type="checkbox">
+            <label for="downloadICSCheckbox_viewModal">Yes/No</label>
+          </div> 
+        </div>
+      </div>
+      <div class="row">
         <button id="changeEventBtn" class="success button" unselectable="on">Change Event</button>
         <button id="deleteBtn" class="alert button" unselectable="on">Remove Event</button>
       </div>
@@ -244,74 +275,72 @@
   </div>
 
   <!--Create a new user modal-->
-  <div id="createProfileModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true"
-    role="dialog" data-close-on-click="false">
-    <form data-abide id="createProfileForm" name="createProfile">
-      <div class="callout secondary" data-closable>
-        <h1>Create a New Profile</h1>
-        <div class="row">
-          <div class="large-6 medium-6 columns">
-            <label>First Name</label>
-            <input type="text" id="firstName" required/>
-          </div>
-          <div class="large-6 medium-6 columns">
-            <label>Last Name</label>
-            <input type="text" id="lastName" required/>
-          </div>
+  <div id="createProfileModal" class="reveal" data-reveal aria-labelledby="modalTitle" aria-hidden="true"
+  role="dialog" data-close-on-click="false">
+  <form data-abide id="createProfileForm" name="createProfile">
+    <div class="callout secondary" data-closable>
+      <h1>Create a New Profile</h1>
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <label>First Name</label>
+          <input type="text" id="profileFirstName" required/>
         </div>
-        <div class="row">
-          <div class="large-6 medium-6 columns">
-            <label>Email Address</label>
-            <input type="email" id="emailAddress" required/>
-          </div>
-          <div class="large-6 medium-6 columns">
-            <label>Verify Email Address</label>
-            <input type="email" id="emailAddressVerify" required autocomplete="off"/>
-          </div>
+        <div class="large-6 medium-6 columns">
+          <label>Last Name</label>
+          <input type="text" id="profileLastName" required/>
         </div>
-        <div class="row">
-          <div class="large-6 medium-6 columns">
-            <label>Password</label>
-            <input type="email" id="profilePassword" required/>
-          </div>
-          <div class="large-6 medium-6 columns">
-            <label>Verify Password</label>
-            <input type="email" id="profilePasswordVerify" required autocomplete="off"/>
-          </div>
-        </div>
-        <div class="row">
-          <fieldset class="large-6 columns">
-            <form id="managerRadioBtn">
-              <legend>Are You a Manager?</legend>
-              <input type="radio" name="managerLabel" value="Yes"><label>Yes</label>
-              <input type="radio" name="managerLabel" value="No"><label>No</label>
-            </form>
-          </fieldset>
-        </div>
-        <div class="row" id="selectManagerRow">
-          <div class="large-12 columns">
-            <label>Select Manager</label>
-            <select>
-                <option value="Manager1" required>Michael Eilers </option>
-              </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="large-6 medium-4 columns">
-            <label>Number of Total Vacation Days</label>
-            <input type="number" id="vacationDaysTotal" />
-          </div>
-          <div class="large-6 medium-4 columns">
-            <label>Number of Used Vacation Days</label>
-            <input type="number" id="vacationDaysUsed" />
-          </div>
-        </div>
-        <div class="row">
-          <button id="createProfileBtn" class="success button" type="submit" onclick="createProfile()" unselectable="on">Create</button>
-        </div>
-        <button id="createCloseBtn" class="close-button" unselectable="on"><span aria-hidden="true">&times;</span></button>
       </div>
-    </form>
-  </div>
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <label>Email Address</label>
+          <input type="email" id="emailAddress" required/>
+        </div>
+        <div class="large-6 medium-6 columns">
+          <label>Verify Email Address</label>
+          <input type="email" id="emailAddressVerify" required autocomplete="off" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <label>Password</label>
+          <input type="password" id="profilePassword" required/>
+        </div>
+        <div class="large-6 medium-6 columns">
+          <label>Verify Password</label>
+          <input type="password" id="profilePasswordVerify" required autocomplete="off" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns">
+          <label>Are you a manager?</label>
+          <input type="radio" name="ismanager" value="Yes" id="yesMan"><label for="yesMan">Yes</label>
+          <input type="radio" name="ismanager" value="No" id="noMan"><label for="noMan">No</label>
+        </div>
+      </div>
+      <div class="row" id="selectManagerRow">
+        <div class="large-12 columns">
+          <label>Select Manager</label>
+          <select id="selectedManager">
+                <option value="Manager1" required>Michael Eilers </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-6 medium-4 columns">
+          <label>Number of Total Vacation Days</label>
+          <input type="number" id="vacationDaysTotal" />
+        </div>
+        <div class="large-6 medium-4 columns">
+          <label>Number of Used Vacation Days</label>
+          <input type="number" id="vacationDaysLeft" />
+        </div>
+      </div>
+      <div class="row">
+        <button id="createProfileBtn" class="success button" type="submit" unselectable="on">Create</button>
+      </div>
+      <button id="createCloseBtn" class="close-button" unselectable="on"><span aria-hidden="true">&times;</span></button>
+    </div>
+  </form>
+</div>
 </body>
 </html>
