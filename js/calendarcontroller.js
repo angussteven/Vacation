@@ -180,6 +180,11 @@ function addDay(eventDay) {
           popup3.open();
           $("#startDate").val(start.toISOString());
           $("#endDate").val(subtractDay(end.toISOString()));
+          $("#alertOne").prop("checked", true);
+          $("#vacationRadio").prop("checked", true);
+          $("#downloadICSCheckbox").prop("checked", false);
+          $("#createEventDescription").val("");
+          $("#createEventTitle").val("Variable for your name");//update to include name dynamically
 				};
 				$('#calendar').fullCalendar('unselect');
 			},
