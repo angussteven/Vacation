@@ -16,7 +16,6 @@ var employee;
 var hiddenEmpField = $('#employeeCount');
 console.log("Start");
 
-
 // Implementation of getEmployeeCount
 var getEmpCountTest = $.Deferred(getEmployeeCount);
 getEmpCountTest.done(function(data){
@@ -48,6 +47,15 @@ getEmployeeCallback.done(function(data){
 	console.log(employee);
 	console.log(employee.firstName + " " + employee.lastName);
 });
+
+/**
+*this function takes an email and returns the email with no special characters
+*/
+function fixEmail(tempEmail){
+ 	var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
+ 	return result;
+ }
+
  /*Get reference example=*/
  /*var value;
  var dbRef = firebase.database().ref().child('employee');
@@ -62,7 +70,7 @@ getEmployeeCallback.done(function(data){
 //deleteEvent(2);
  //saveEmployee("andrew","moawad",15,15,1,["michael.eilers@gm.com"],[1],true,"andrew.moawad@gm.com","1234");
  //saveManager("michael.eilers@gm.com",["zachary.dicino@gm.com"],"michael.eilers@gm.com");
- //saveTeam(1,["zachary.dicino@gm.com"],["michael.eilers@gm.com"]);
+ //saveTeam(1,["zachary.dicino@gm.com"],["michael.eilers@gm.com"],"Quantum");
  //saveEvent("zachary.dicino@gm.com",3,"08-29-2016","08-31-2016","business","vacation I need time","why");
  //saveHoliday(["01-01-2016","01-18-2016","03-25-2016","03-28-2016","05-30-2016","07-04-2016","09-05-2016","11-08-2016","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"]);
  
@@ -109,7 +117,8 @@ function getTeamEvents(teamID){
  */
  function saveEvent(email, eventID, startDate, endDate, vacationType, 
  					  eventTitle, eventDescription) {
- 	firebase.database().ref('event').push({
+ 	var tempEmail = fixEmail(email);
+ 	firebase.database().ref('event/' + tempEmail).set({
  		email: email,
  		eventID: eventID,
  		startDate: startDate,
@@ -174,7 +183,8 @@ function getEmployeesOnTeam(teamID){
 
  function saveEmployee(firstname, lastname, totalVacation, daysleft,
  						teamID, managers, events, isManager, email, password) {
- 	firebase.database().ref('employee').push({
+ 	var tempEmail = fixEmail(email);
+ 	firebase.database().ref('employee/' + tempEmail).set({
  		firstName: firstname,
  		lastName: lastname,
  		totalVacationDays: totalVacation,
@@ -293,11 +303,12 @@ function removeEmpFromTeam(userID, teamID){
  	employees = array of strings (emails)
  	managers = array of strings (emails)
  */
- function saveTeam(teamID, employees, managers) {
- 	firebase.database().ref('team').push({
+ function saveTeam(teamID, employees, managers, teamName) {
+ 	firebase.database().ref('team/' + teamName).set({
  		teamID: teamID,
  		employee: employees,
- 		manager: managers
+ 		manager: managers,
+ 		name: teamName
  	});
  }
 
