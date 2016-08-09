@@ -34,18 +34,7 @@ getAllTeamsCallback.done(function(data){
 	console.log(allTeams);
 });
 
-// Implementation of getEmployee
-var getEmployeeCallback = $.Deferred(getEmployee("andrew.moawad@gm.com"));
-getEmployeeCallback.done(function(data){
-	if(employee == null){
-		console.log("No employee found");
-	}else{
-		console.log("Name: " + employee.firstName + " " + employee.lastName);
-		console.log("Email: " + employee.email);
-		console.log("Total Vacation Days: " + employee.totalVacationDays);
-		console.log("Remaining Vacation Days: " + employee.daysLeft);
-	}
-});
+
 
 // Implementation of getEmployeesOnTeam
 var getEmployeesOnTeamCallback = $.Deferred(getEmployeesOnTeam("quantum"));
@@ -156,21 +145,7 @@ function updateEvent(){
 	// Update the information for an event
 }
 
-// Employee //
 
-// Get employee with given email address [DONE]
-function getEmployee(emailAddress){
-	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
-	ref.once('value', function(snapshot){
-		if(snapshot.exists()){
-			employee = snapshot.val();
-		}
-		else{
-			employee = null;
-		}
-		getEmployeeCallback.resolve();
-	})
-}
 
 // Get the employee with matching email
  	/*ref.orderByChild("email").equalTo(emailAddress).once('value', function(snapshot) { 
