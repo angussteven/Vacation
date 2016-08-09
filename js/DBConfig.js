@@ -141,7 +141,7 @@ function getTeamEvents(teamID){
  function saveEvent(email, eventID, startDate, endDate, vacationType,
  					  eventTitle, eventDescription) {
  	var tempEmail = fixEmail(email);
- 	firebase.database().ref('event/' + tempEmail).set({
+ 	firebase.database().ref('event/' + eventID).set({
  		email: email,
  		eventID: eventID,
  		startDate: startDate,
@@ -150,6 +150,14 @@ function getTeamEvents(teamID){
  		title: eventTitle,
  		description: eventDescription
  	});
+
+ 	//add the event id into the employee
+ 	addEventToEmp(email, eventID);
+ }
+
+ function addEventToEmp(email, eventID){
+ 	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
  }
 
  // Updates a given event [TODO]
@@ -227,7 +235,7 @@ function getEmployeesOnTeam(teamName){
  	everything else string
  */
  function saveEmployee(firstname, lastname, totalVacation, daysleft,
- 						teamName, managers, events, isManager, email, password) {
+ 						teamName, managers, isManager, email, password) {
  	var tempEmail = fixEmail(email);
  	firebase.database().ref('employee/' + tempEmail).set({
  		firstName: firstname,
@@ -236,7 +244,6 @@ function getEmployeesOnTeam(teamName){
  		daysLeft: daysleft,
  		team: teamName,
  		managers: managers,
- 		events: events,
  		isManager: isManager,
  		email: email,
  		password: password,
