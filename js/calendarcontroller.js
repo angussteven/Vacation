@@ -2,14 +2,28 @@ $(document).foundation();
 
 $(document).ready(function() {
 
+var emailAddress;
+
+firebase.auth().onAuthStateChanged(function (user) {
+  if(user) {
+    emailAddress = user.email;
+    emailAddress = fixEmail(emailAddress);
+  }
+});
+
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
       .substring(1);
   }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+  return s4() + s4() + s4() + s4() +
+    s4() + s4() + s4() + s4();
+}
+
+function fixEmail(tempEmail){
+  var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
+  return result;
 }
 
 function createICSFile(managerName, managerEmail, userName, userEmail, startDate, endDate, isVacation, alert) {
@@ -278,8 +292,9 @@ function addDay(eventDay) {
     });
 
     $("#notifyBtn").click(function() {
+      var id = guid();
       eventData = {
-        id: guid(),
+        id: id,
         title: $("#createEventTitle").val(),
         start: $("#startDate").val(),
         end: addDay($("#endDate").val()),
@@ -287,9 +302,11 @@ function addDay(eventDay) {
       };
 
       $('#calendar').fullCalendar('renderEvent', eventData, true);
-      popup3.close();
       alert = $('input:radio[name=alert]:checked').val();
       isVacation = $('input:radio[name=isVacation]:checked').val();
+      console.log(emailAddress);
+      saveEvent(emailAddress, id, $("#startDate").val(), addDay($("#endDate").val()), isVacation, $("#createEventTitle").val(), $("#createEventDescription").val());
+      popup3.close();
       if ($("#downloadICSCheckbox").is(':checked') === true) {
         var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
         window.open( "data:text/calendar;charset=utf8," + escape(icsFile));

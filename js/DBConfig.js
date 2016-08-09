@@ -20,9 +20,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 	profileEmail = user.email;
 
 
-
-removeManagerFromTeam("michael.eilers@gm.com","quantum");
-
 // Implementation of getEmployeeCount
 var getEmpCountTest = $.Deferred(getEmployeeCount);
 getEmpCountTest.done(function(data){
@@ -41,9 +38,10 @@ getAllTeamsCallback.done(function(data){
 	console.log("All da teams: ");
 	console.log(allTeams);
 });
-
+console.log(profileEmail);
 // Implementation of getEmployee
 var getEmployeeCallback = $.Deferred(getEmployee(profileEmail));
+
 getEmployeeCallback.done(function(data){
 	if(employee == null){
 		console.log("No employee found");
@@ -72,7 +70,7 @@ function getEmployee(emailAddress) {
 }
 
 // Implementation of getEmployee - returns vacation days
-var getVacationDaysCallback = $.Deferred(getVacationDays("andrew.moawad@gm.com"));
+var getVacationDaysCallback = $.Deferred(getVacationDays(profileEmail));
 getVacationDaysCallback.done(function(data){
 	if(employee == null){
 		console.log("No employee found");
@@ -174,27 +172,9 @@ function getTeamEvents(teamID){
  	description: string
  */
  // Add a new employee to the db [UNTESTED]
- function saveEvent(email, eventID, startDate, endDate, vacationType,
- 					  eventTitle, eventDescription) {
- 	var tempEmail = fixEmail(email);
- 	firebase.database().ref('event/' + eventID).set({
- 		email: email,
- 		eventID: eventID,
- 		startDate: startDate,
- 		endDate: endDate,
- 		type: vacationType,
- 		title: eventTitle,
- 		description: eventDescription
- 	});
 
- 	//add the event id into the employee
- 	addEventToEmp(email, eventID);
- }
 
- function addEventToEmp(email, eventID){
- 	var tempEmail = fixEmail(email);
-	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
- }
+
 
  // Updates a given event [TODO]
 function updateEvent(){
@@ -612,7 +592,29 @@ function calculateVacationDays(start_date, end_date){
 
 // TRakes an email and returns the email with no special characters [DONE]
 function fixEmail(tempEmail){
-	var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
-	return result;
+  var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
+  return result;
 }
 });
+
+function saveEvent(email, eventID, startDate, endDate, vacationType,
+          eventTitle, eventDescription) {
+//var tempEmail = fixEmail(email);
+firebase.database().ref('event/' + eventID).set({
+  email: email,
+  eventID: eventID,
+  startDate: startDate,
+  endDate: endDate,
+  type: vacationType,
+  title: eventTitle,
+  description: eventDescription
+});
+
+//add the event id into the employee
+addEventToEmp(email, eventID);
+}
+
+function addEventToEmp(email, eventID){
+  firebase.database().ref().child('employee').child(email.toLowerCase()).child('events').push(eventID);
+}
+
