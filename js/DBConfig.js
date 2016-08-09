@@ -13,8 +13,15 @@ var allTeams = [];
 var team;
 var employee;
 var teamsEmployees;
-var keyToObject;
-var employeesManagers = [];
+var keyToObject ;
+var profileEmail;
+
+firebase.auth().onAuthStateChanged(function (user) {
+	profileEmail = user.email;
+
+
+
+removeManagerFromTeam("michael.eilers@gm.com","quantum");
 
 // Implementation of getEmployeeCount
 var getEmpCountTest = $.Deferred(getEmployeeCount);
@@ -36,15 +43,43 @@ getAllTeamsCallback.done(function(data){
 });
 
 // Implementation of getEmployee
-var getEmployeeCallback = $.Deferred(getEmployee("andrew.moawad@gm.com"));
+var getEmployeeCallback = $.Deferred(getEmployee(profileEmail));
 getEmployeeCallback.done(function(data){
 	if(employee == null){
 		console.log("No employee found");
 	}else{
-		console.log("Name: " + employee.firstName + " " + employee.lastName);
+		document.getElementById("profileName").innerHTML = employee.firstName + " " + employee.lastName
 		console.log("Email: " + employee.email);
 		console.log("Total Vacation Days: " + employee.totalVacationDays);
 		console.log("Remaining Vacation Days: " + employee.daysLeft);
+	}
+});
+// Employee //
+
+
+// Get employee with given email address [DONE]
+function getEmployee(emailAddress) {
+	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+	ref.once('value', function (snapshot) {
+		if (snapshot.exists()) {
+			employee = snapshot.val();
+		}
+		else {
+			employee = null;
+		}
+		getEmployeeCallback.resolve();
+	})
+}
+
+// Implementation of getEmployee - returns vacation days
+var getVacationDaysCallback = $.Deferred(getVacationDays("andrew.moawad@gm.com"));
+getVacationDaysCallback.done(function(data){
+	if(employee == null){
+		console.log("No employee found");
+	}else{
+    var vdays = document.getElementById("vacationdays");
+    var info = "Total Days: " + employee.totalVacationDays + "<br>Remaining Days: " + employee.daysLeft;
+    vdays.innerHTML = info;
 	}
 });
 
@@ -92,12 +127,13 @@ getEmpManagerCallback.done(function(data){
  // 	console.log(count)
  // });
 //deleteEvent(2);
- //saveEmployee("andrew","moawad",15,15,1,["michael.eilers@gm.com"],[1],true,"andrew.moawad@gm.com","1234");
+  //saveEmployee("zach","dicino",15,15,"quantum",["michael.eilers@gm.com","manager2@gm.com"],[1],false,"zachaddry.dicino@gm.com","1234");
+ //removeManagerFromTeam("michael.eilers@gm.com","quantum");
+ //saveEmployee("manager","manager",15,15,1,["managersboss@gm.com"],[1],true,"manager2@gm.com","1234");
  //saveManager("michael.eilers@gm.com",["zachary.dicino@gm.com"],"michael.eilers@gm.com");
  //saveTeam(1,["zachary.dicino@gm.com"],["michael.eilers@gm.com"],"Quantum");
  //saveEvent("zachary.dicino@gm.com",3,"08-29-2016","08-31-2016","business","vacation I need time","why");
  //saveHoliday(["01-01-2016","01-18-2016","03-25-2016","03-28-2016","05-30-2016","07-04-2016","09-05-2016","11-08-2016","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"]);
-
 // Events //
 
 // Adds a new event [TODO]
@@ -111,7 +147,7 @@ function addEvent(userID, startDate, endDate, title, description, alert, isBusin
 function deleteEvent(eventID){
 
 	var ref = firebase.database().ref().child('event');
-	ref.orderByChild("eventID").equalTo(eventID).on('value', function(snapshot) {
+	ref.orderByChild("eventID").equalTo(eventID).once('value', function(snapshot) {
  	keyToObject = Object.keys(snapshot.val()).toString();
  	ref.child(keyToObject).remove();
  	//snapshot.ref().remove();
@@ -151,7 +187,7 @@ function getTeamEvents(teamID){
  function saveEvent(email, eventID, startDate, endDate, vacationType,
  					  eventTitle, eventDescription) {
  	var tempEmail = fixEmail(email);
- 	firebase.database().ref('event/' + tempEmail).set({
+ 	firebase.database().ref('event/' + eventID).set({
  		email: email,
  		eventID: eventID,
  		startDate: startDate,
@@ -160,6 +196,14 @@ function getTeamEvents(teamID){
  		title: eventTitle,
  		description: eventDescription
  	});
+
+ 	//add the event id into the employee
+ 	addEventToEmp(email, eventID);
+ }
+
+ function addEventToEmp(email, eventID){
+ 	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
  }
 
  // Updates a given event [TODO]
@@ -167,9 +211,7 @@ function updateEvent(){
 	// Update the information for an event
 }
 
-// Employee //
-
-// Get employee with given email address [DONE]
+// Get employee with given email address [[DONE]]
 function getEmployee(emailAddress){
 	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
 	ref.once('value', function(snapshot){
@@ -183,8 +225,24 @@ function getEmployee(emailAddress){
 	})
 }
 
+
+// Get vacation days for employee
+function getVacationDays(emailAddress){
+	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+	ref.once('value', function(snapshot){
+		if(snapshot.exists()){
+			employee = snapshot.val();
+		}
+		else{
+			employee = null;
+		}
+		getVacationDaysCallback.resolve();
+	})
+}
+
+
 // Get the employee with matching email
- 	/*ref.orderByChild("email").equalTo(emailAddress).once('value', function(snapshot) { 
+ 	/*ref.orderByChild("email").equalTo(emailAddress).once('value', function(snapshot) {
 
 	// Get the employee with matching email
  	ref.orderByChild("email").equalTo(emailAddress).once('value', function(snapshot) {
@@ -230,7 +288,7 @@ function getEmployeesOnTeam(teamName){
  	Save an employee into the database [DONE]
  	totalVacation = int
  	daysLeft = int
- 	teamID = int
+ 	teamName = string 
  	managers = array of strings
  	events = array of ints (ids)
  	isManager = bool
@@ -238,38 +296,62 @@ function getEmployeesOnTeam(teamName){
  	everything else string
  */
  function saveEmployee(firstname, lastname, totalVacation, daysleft,
- 						teamID, managers, events, isManager, email, password) {
+ 						teamName, managers, isManager, email, password) {
  	var tempEmail = fixEmail(email);
  	firebase.database().ref('employee/' + tempEmail).set({
  		firstName: firstname,
  		lastName: lastname,
  		totalVacationDays: totalVacation,
  		daysLeft: daysleft,
- 		team: teamID,
+ 		team: teamName,
  		managers: managers,
- 		events: events,
  		isManager: isManager,
  		email: email,
  		password: password,
  		employees: null
  	});
 
- 	//if you are a manager, save the employee as a manager in the database
- 	//setting the employee array to null for now
- 	if (isManager) {
- 		//still figuring this out
- 	}
-
  	/**
  	 *	Now we must add this employee in their manager's employees list
  	 *	Do a get Manager call based on each manager in the managers array
  	 * 	insert this employee in the manager's employee list
  	 */
+	for(var i = 0; i < managers.length; i++){
+		addEmpToManager(managers[i],email);
+	}
+
+	/**
+	*	Now we must add the employee to their team 
+	*/
+	if(isManager){
+		addManagerToTeam(email, teamName);
+	}else{
+		addEmpToTeam(email, teamName);
+	}
+
+
  }
+
+ function addEmpToManager(managerEmail, email){
+	var tempEmail = fixEmail(managerEmail);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('employees').push(email);
+ }
+
+
+function addEmpToTeam(email, teamName){
+	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('team').child(teamName.toLowerCase()).child('employee').push(email);
+}
+
+function addManagerToTeam(email, teamName){
+	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('team').child(teamName.toLowerCase()).child('manager').push(email);
+}
+
 
 // Update the employee with the given userID [UNKNOWN]
 function updateEmployee(userID, firstName, lastName, emailAddress, totalVacation, usedVacation, manager, isManager, teamID){
-	
+
   //managers[managers.length()] = manager;
   var tempData = {
     firstName: firstName,
@@ -285,7 +367,7 @@ function updateEmployee(userID, firstName, lastName, emailAddress, totalVacation
   updates[userID] = tempData;
   return firebase.database().ref('employee').update(updates);
 
-  // Test for updateEmployee (successful): 
+  // Test for updateEmployee (successful):
   //	updateEmployee("andrewmoawadgmcom", "andrew", "moawad", "andrew.moawad@gm.com", 100, 50, "michael.eilers@gm.com", true, 1);
 }
 
@@ -295,10 +377,6 @@ function addTeam(teamName){
 
 }
 
-// Updates a team to include an employee and updates the team for the employee [TODO]
-function addEmpToTeam(userID, teamID){
-	// Add employee to team
-}
 
 
 // Pushes all team names to a string array [DONE]
@@ -336,40 +414,45 @@ function getTeamCount() {
  	});
 }
 
-// Removes employee from team [UNKNOWN]
-function removeEmpFromTeam(userID, teamID){
-	var refs = firebase.database().ref().child('team');
-	var parent;
-	var child;
-	refs.orderByChild("teamID").equalTo(5).on('value', function(snapshot) {
- 	//ref.remove();
- 	parent = Object.keys(snapshot.val());
- 	console.log(snapshot.val());
- 	console.log("this is the parent of that table:" + parent)
- 	snapshot.forEach(function(childSnapshot){
- 				//console.log("Team ID: " + childSnapshot.child('employee').val());
- 				console.log(childSnapshot.val());
- 				 	childSnapshot.child('employee').forEach(function(grandchildSnapshot){
- 				//console.log("Team ID: " + childSnapshot.child('employee').val());
- 				console.log(grandchildSnapshot.val() + " in grand child \n");
- 				if(grandchildSnapshot.val().toString() === userID)
+// Removes employee from team [Andrew]
+	function removeEmpFromTeam(userID, teamName){
+	var refs = firebase.database().ref().child('team').child(teamName);
+	var employeeIndex;
+	refs.child('employee').once('value', function(snapshot) {
+		snapshot.forEach(function(childSnapshot){
+			 	if(childSnapshot.val().toString() === userID)
  				{
- 					child = Object.keys(grandchildSnapshot.val());
- 					console.log(grandchildSnapshot);
- 					//works but deleted the wrong child
- 					//refs.child(parent.toString()).child("employee").child(child[0].toString()).remove();
+ 				
+ 					employeeIndex = childSnapshot.getKey();
  				}
- 			});
- 			});
- 	// keyToObject = Object.keys(snapshot.val()).toString();
- 	// ref.child(keyToObject).remove();
- 	//snapshot.ref().remove();
- });
+ 			});	
+		refs.child('employee').child(employeeIndex).remove();
+	});
+	var userIDWithoutSpecial = userID.replace(/[^a-zA-Z ]/g, "");
+	var empRef = firebase.database().ref().child('employee').child(userIDWithoutSpecial).child('team');
+	empRef.remove();
 
-	 //ref.remove();
-	// Delete the event via the eventID
+
 }
+//
+// Removes employee from team [Andrew]
+	function removeManagerFromTeam(userID, teamName){
+	var refs = firebase.database().ref().child('team').child(teamName);
+	var managerIndex;
+	console.log("I am inside 1");
+	refs.child('manager').once('value', function(snapshot) {
+		snapshot.forEach(function(childSnapshot){
+				console.log("I am inside 1");
+			 	if(childSnapshot.val().toString() === userID)
+ 				{
+ 				managerIndex = childSnapshot.getKey();
+ 				console.log("I am inside 1" + managerIndex );
+ 				}
+ 			});	
+		refs.child('manager').child(managerIndex).remove();
+	});
 
+}
 
 /*
  	Save a team into the database [UNTESTED]
@@ -457,13 +540,110 @@ function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
 }
 
 // Misc
-// Takes a start and end date and returns the number of vacation days an employee would use [TODO]
-function calculateVacationDays(startDate, endDate){
+// Function takes 2 dates and returns inclusive number of business days (no weekends/holidays)
+function calculateVacationDays(start_date, end_date){
+  /*
+  Based off of Suitoku's formula.js library NETWORKDAYS function, license info:
+  Copyright (c) 2014 Sutoiku, Inc. - MIT License (below)
+  Other libraries included:
+  BESSELI, BESSELJ, BESSELK, BESSELY functions:
+  Copyright (c) 2013 SheetJS - MIT License (below)
+  The MIT License (MIT)
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
-}
+    // call parseData to take inputs and convert to Date object
+    start_date = parseDate(start_date);
+    start_date = validStart(start_date);
+    end_date = parseDate(end_date);
+
+    // contants for weekends and holidays; holiday array should include all company holidays in string format "MM-DD-YYYY"
+    weekend = [6,0]; // don't change this
+    holidays = ["09-05-2016","11-08-2015","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"];
+
+    // for loop parses holiday array into Date objects
+    for (var i = 0; i < holidays.length; i++) {
+      var h = parseDate(holidays[i]);
+      holidays[i] = h;
+    }
+
+    // variables used in calculations
+    var days = (end_date - start_date) / (1000 * 60 * 60 * 24) + 1;
+    var total = days;
+    var day = start_date;
+
+    // for loop iterates for each day and decrements the total for each holiday or weekend day
+    for (i = 0; i < days; i++) {
+      var d = (new Date().getTimezoneOffset() > 0) ? day.getUTCDay() : day.getDay();
+      var dec = false;
+      if (d === weekend[0] || d === weekend[1]) {
+        dec = true;
+      }
+      for (var j = 0; j < holidays.length; j++) {
+        var holiday = holidays[j];
+        if (holiday.getDate() === day.getDate() &&
+          holiday.getMonth() === day.getMonth() &&
+          holiday.getFullYear() === day.getFullYear()) {
+          dec = true;
+          break;
+        }
+      }
+      if (dec) {
+        total--;
+      }
+      day.setDate(day.getDate() + 1);
+    }
+    return total;
+  };
+
+  // function checks if start date has passed; if so, today's date is returned
+  function validStart(date) {
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1;
+    var year = today.getFullYear();
+    if(day < 10)
+      day = '0' + day;
+    if(month < 10)
+      month = '0' + month;
+    today = month + '-' + day + '-' + year;
+    today = parseDate(today);
+
+    if(date.getTime() < today.getTime())
+      return today;
+    else
+      return date;
+  }
+
+  // function takes input and returns a Date object
+  function parseDate(date) {
+    if (!isNaN(date)) {
+      if (date instanceof Date) {
+        return new Date(date);
+      }
+      var d = parseInt(date, 10);
+      if (d < 0) {
+        return null;
+      }
+      if (d <= 60) {
+        return new Date(d1900.getTime() + (d - 1) * 86400000);
+      }
+      return new Date(d1900.getTime() + (d - 2) * 86400000);
+    }
+    if (typeof date === 'string') {
+      date = new Date(date);
+      if (!isNaN(date)) {
+        return date;
+      }
+    }
+    return null;
+  };
+
 
 // TRakes an email and returns the email with no special characters [DONE]
 function fixEmail(tempEmail){
 	var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
 	return result;
 }
+});

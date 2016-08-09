@@ -2,6 +2,16 @@ $(document).foundation();
 
 $(document).ready(function() {
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 function createICSFile(managerName, managerEmail, userName, userEmail, startDate, endDate, isVacation, alert) {
   startDate = startDate.split('-');
   startDate = startDate[0] + startDate[1] + startDate[2];
@@ -157,7 +167,6 @@ function addDay(eventDay) {
     $("#usedVacationDays").val(account.UsedVacation);
   }; 
 
-  var id = 0;
     var popup2 = new Foundation.Reveal($('#viewProfileModal'));
     var popup3 = new Foundation.Reveal($('#addEventModal'));
     var popup4 = new Foundation.Reveal($("#viewEventModal"));
@@ -269,9 +278,8 @@ function addDay(eventDay) {
     });
 
     $("#notifyBtn").click(function() {
-      id+=1;
       eventData = {
-        id: id,
+        id: guid(),
         title: $("#createEventTitle").val(),
         start: $("#startDate").val(),
         end: addDay($("#endDate").val()),
@@ -315,7 +323,7 @@ function addDay(eventDay) {
       alert = $('input:radio[name=alert_viewModal]:checked').val();
       isVacation = $('input:radio[name=isVacation_viewModal]:checked').val();
       if ($("#downloadICSCheckbox_viewModal").is(':checked') === true) {
-        var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
+        var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#viewStartDate").val(), addDay($("#viewEndDate").val()), isVacation, alert);
         window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
       }
     })    
