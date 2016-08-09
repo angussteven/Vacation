@@ -70,10 +70,11 @@ getTeamCallback.done(function(data){
 
 var getEmpManagerCallback = $.Deferred(getEmpManager("andrew@gmail.com"));
 getEmpManagerCallback.done(function(data){
-	if(employeesmanager == null){
+	if(employeesManagers == null){
 		console.log("Could not find employee's manager");
 	}else{
-		console.log(employeesManager);
+		console.log("Employee manager:")
+		console.log(employeesManagers);
 	}
 })
 
@@ -393,30 +394,28 @@ function switchTeams(emailAddress, fromTeamID, toTeamID){
 // Manager //
 // Get the manager that oversees given employee email [TODO]
 function getEmpManager(emailAddress){
-	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
-	var tempEmployee;
+
+	var ref = firebase.database().ref().child('employee');
 
 	ref.once('value', function(snapshot){
 		if(snapshot.exists()){
-			tempEmployee = snapshot.val();
+			console.log(snapshot.val());
+			snapshot.forEach(function(childSnapshot){
+				if(childSnapshot.child("isManager").val() == true && childSnapshot.child("employees").val() != null){
+					var employeeArray = childSnapshot.child("employees").val();
+					for(var i = 0; i < employeeArray.length; i++){
+						if(emailAddress == employeeArray[i]){
+							employeesManagers.push(childSnapshot.val());
+						}
+					}
+				}
+			});
 		}
 		else{
-			tempEmployee = null;
 		}
+		getEmpManagerCallback.resolve();
 	})
-	console.log("Temp employee:");
-	console.log(tempEmployee);
-
-	if(tempEmployee != null){
-		for(var i = 0, len = tempEmployee.managers.length; i < len; i++){
-			ref = firebase.database().ref().child('employee/' + fixEmail(tempEmployee.managers[i]));
-			ref.once('value', function(snapshot){
-				employeesManagers.push(snapshot.val());
-			})
-		}
-		
-	}
-	getEmpManagerCallback.resolve();
+	
 }
 
 // Get the managet that oversees a given team [TODO]
