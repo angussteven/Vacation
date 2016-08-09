@@ -15,9 +15,6 @@ var employee;
 var teamsEmployees;
 var keyToObject ;
 
-var hiddenEmpField = $('#employeeCount');
-console.log("Start");
-
 // Implementation of getEmployeeCount
 var getEmpCountTest = $.Deferred(getEmployeeCount);
 getEmpCountTest.done(function(data){
@@ -35,12 +32,6 @@ var getAllTeamsCallback = $.Deferred(getAllTeams);
 getAllTeamsCallback.done(function(data){
 	console.log("All da teams: ");
 	console.log(allTeams);
-});
-
-// Implementation of getTeam
-var getTeamCallback = $.Deferred(getTeam);
-getTeamCallback.done(function(data){
-	console.log("Team: " + team);
 });
 
 // Implementation of getEmployee
@@ -64,16 +55,19 @@ getEmployeesOnTeamCallback.done(function(data){
 	}else{
 		console.log(teamsEmployees);
 	}
-	//console.log(employee.firstName + " " + employee.lastName);               COMMENTED OUT BECAUSE OF JAVASCRIPT ERROR; cannot find property firstName of undefined
 });
 
-/**
-*this function takes an email and returns the email with no special characters
-*/
-function fixEmail(tempEmail){
- 	var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
- 	return result;
- }
+// Implementation of getTeam
+var getTeamCallback = $.Deferred(getTeam("quantum"));
+getTeamCallback.done(function(data){
+	if(team == null){
+		console.log("No team found.");
+	}else{
+		console.log(team);
+	}
+})
+
+
 
  /*Get reference example=*/
  /*var value;
@@ -226,7 +220,7 @@ function getEmployeesOnTeam(teamName){
 }
 
 /*
- 	Save an employee into the database
+ 	Save an employee into the database [DONE]
  	totalVacation = int
  	daysLeft = int
  	teamID = int
@@ -236,7 +230,6 @@ function getEmployeesOnTeam(teamName){
  	employees = array of strings (emails) default null for now
  	everything else string
  */
-
  function saveEmployee(firstname, lastname, totalVacation, daysleft,
  						teamID, managers, events, isManager, email, password) {
  	var tempEmail = fixEmail(email);
@@ -266,9 +259,10 @@ function getEmployeesOnTeam(teamName){
  	 * 	insert this employee in the manager's employee list
  	 */
  }
-//test for updateEmployee (successful): updateEmployee("andrewmoawadgmcom", "andrew", "moawad", "andrew.moawad@gm.com", 100, 50, "michael.eilers@gm.com", true, 1);
+
+// Update the employee with the given userID [UNKNOWN]
 function updateEmployee(userID, firstName, lastName, emailAddress, totalVacation, usedVacation, manager, isManager, teamID){
-	// Update the employee with the given userID
+	
   //managers[managers.length()] = manager;
   var tempData = {
     firstName: firstName,
@@ -283,17 +277,24 @@ function updateEmployee(userID, firstName, lastName, emailAddress, totalVacation
   var updates = {};
   updates[userID] = tempData;
   return firebase.database().ref('employee').update(updates);
+
+  // Test for updateEmployee (successful): 
+  //	updateEmployee("andrewmoawadgmcom", "andrew", "moawad", "andrew.moawad@gm.com", 100, 50, "michael.eilers@gm.com", true, 1);
 }
 
 // Team //
+// Add a new team to the database [TODO]
 function addTeam(teamName){
 
 }
 
+// Updates a team to include an employee and updates the team for the employee [TODO]
 function addEmpToTeam(userID, teamID){
 	// Add employee to team
 }
 
+
+// Pushes all team names to a string array [DONE]
 function getAllTeams(){
 	// Get all the teams
 	var ref = firebase.database().ref().child('team');
@@ -305,31 +306,30 @@ function getAllTeams(){
  	});
 }
 
-function getTeam(teamID){
-	var ref = firebase.database().ref().child('team');
+// Returns a team with a given name [TODO]
+function getTeam(teamName){
+	var ref = firebase.database().ref().child('team/' + teamName);
+	ref.once('value', function(snapshot){
+		if(snapshot.exists()){
+			team = snapshot.val();
+		}
+		else{
+			team = null;
+		}
+		getTeamCallback.resolve();
+	})
+}
+
+// Gets the total number of teams in the database [DONE]
+function getTeamCount() {
+ 	var ref = firebase.database().ref().child('team');
  	ref.on('value', function(snapshot) {
-
- 		// TODO
-
-
- 		getTeamCallback.resolve();
+ 		teamCount = snapshot.numChildren();
+ 		getTeamCountTest.resolve();
  	});
 }
 
-/*
-  getTeamCount(), this method returns the
-  total number of teams in the database
-*/
- function getTeamCount() {
- 	var count = 0;
- 	var ref = firebase.database().ref().child('team');
- 	ref.on('value', function(snapshot) {
- 		count = snapshot.numChildren();
- 		teamCount = count;
- 		getTeamCountTest.resolve();
- 	});
- }
-
+// Removes employee from team [UNKNOWN]
 function removeEmpFromTeam(userID, teamID){
 	var refs = firebase.database().ref().child('team');
 	var parent;
@@ -365,39 +365,39 @@ function removeEmpFromTeam(userID, teamID){
 
 
 /*
- 	Save a team into the database
+ 	Save a team into the database [UNTESTED]
  	teamID = int
  	employees = array of strings (emails)
  	managers = array of strings (emails)
  */
- function saveTeam(teamID, employees, managers, teamName) {
- 	firebase.database().ref('team/' + teamName).set({
- 		teamID: teamID,
- 		employee: employees,
- 		manager: managers,
- 		name: teamName
- 	});
- }
+function saveTeam(teamID, employees, managers, teamName) {
+	firebase.database().ref('team/' + teamName).set({
+		teamID: teamID,
+		employee: employees,
+		manager: managers,
+		name: teamName
+	});
+}
 
-function switchTeams(userID, fromTeamID, toTeamID){
+// Does all the necessary steps to move employee from one team to another [TODO]
+function switchTeams(emailAddress, fromTeamID, toTeamID){
 
 }
 
 // Manager //
-function getEmpManager(userID){
+// Get the manager that oversees given employee email [TODO]
+function getEmpManager(emailAddress){
 	// Get the employee info for the user's manager
 }
 
-function getTeamManager(teamID){
+// Get the managet that oversees a given team [TODO]
+function getTeamManager(teamName){
 	// Get the manager for the team
 }
 
 // User
-/*
-	 This method will add the user to the User table(firebase),
-	 and also store the rest of the information in the database
- */
- function addUser(email, password,firstName,lastName,totalVacationDays
+//This method will add the user to the User table(firebase), and also store the rest of the information in the database [UNTESTED]
+function addUser(email, password,firstName,lastName,totalVacationDays
  					,dayslefts,isManager,managers,team,employees,pathToPicture,
  					title) {
  	firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -418,16 +418,24 @@ function getTeamManager(teamID){
  				console.log(errorMessage);
  			}
  		});
- }
+}
 
- function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
- 					,dayslefts,isManager,managers,team,employees,pathToPicture,
- 					title){
+// Saves a user in the database [TODO]
+function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
+					,dayslefts,isManager,managers,team,employees,pathToPicture,
+					title){
 
- 	console.log(email,password);
- }
+	console.log(email,password);
+}
 
- // Misc
+// Misc
+// Takes a start and end date and returns the number of vacation days an employee would use [TODO]
 function calculateVacationDays(startDate, endDate){
 
+}
+
+// TRakes an email and returns the email with no special characters [DONE]
+function fixEmail(tempEmail){
+	var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
+	return result;
 }
