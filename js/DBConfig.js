@@ -300,38 +300,25 @@ function getTeamCount() {
  	});
 }
 
-// Removes employee from team [UNKNOWN]
-function removeEmpFromTeam(userID, teamID){
-	var refs = firebase.database().ref().child('team');
-	var parent;
-	var child;
-	refs.orderByChild("teamID").equalTo(5).on('value', function(snapshot) {
- 	//ref.remove();
- 	parent = Object.keys(snapshot.val());
- 	console.log(snapshot.val());
- 	console.log("this is the parent of that table:" + parent)
- 	snapshot.forEach(function(childSnapshot){
- 				//console.log("Team ID: " + childSnapshot.child('employee').val());
- 				console.log(childSnapshot.val());
- 				 	childSnapshot.child('employee').forEach(function(grandchildSnapshot){
- 				//console.log("Team ID: " + childSnapshot.child('employee').val());
- 				console.log(grandchildSnapshot.val() + " in grand child \n");
- 				if(grandchildSnapshot.val().toString() === userID)
+// Removes employee from team [Andrew]
+	function removeEmpFromTeam(userID, teamName){
+	var refs = firebase.database().ref().child('team').child(teamName);
+	var employeeIndex;
+	refs.child('employee').once('value', function(snapshot) {
+		snapshot.forEach(function(childSnapshot){
+			 	if(childSnapshot.val().toString() === userID)
  				{
- 					child = Object.keys(grandchildSnapshot.val());
- 					console.log(grandchildSnapshot);
- 					//works but deleted the wrong child
- 					//refs.child(parent.toString()).child("employee").child(child[0].toString()).remove();
+ 				
+ 					employeeIndex = childSnapshot.getKey();
  				}
- 			});
- 			});
- 	// keyToObject = Object.keys(snapshot.val()).toString();
- 	// ref.child(keyToObject).remove();
- 	//snapshot.ref().remove();
- });
+ 			});	
+		refs.child('employee').child(employeeIndex).remove();
+	});
+	var userIDWithoutSpecial = userID.replace(/[^a-zA-Z ]/g, "");
+	var empRef = firebase.database().ref().child('employee').child(userIDWithoutSpecial).child('team');
+	empRef.remove();
 
-	 //ref.remove();
-	// Delete the event via the eventID
+
 }
 
 
