@@ -640,7 +640,7 @@ function saveEvent(email, eventID, startDate, endDate, vacationType,
 
  	//add the event id into the employee
  	addEventToEmp(email, eventID);
- 	var vacation = calculateVacationDays(startDate, endDate);
+ 	//var vacation = calculateVacationDays(startDate, endDate);
  }
 
 function addEventToEmp(email, eventID){
