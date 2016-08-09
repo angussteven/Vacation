@@ -101,6 +101,16 @@ getTeamCallback.done(function(data){
 	}else{
 		console.log(team);
 	}
+});
+
+var getEmpManagerCallback = $.Deferred(getEmpManager("andrew@gmail.com"));
+getEmpManagerCallback.done(function(data){
+	if(employeesManagers == null){
+		console.log("Could not find employee's manager");
+	}else{
+		console.log("Employee manager:")
+		console.log(employeesManagers);
+	}
 })
 
 
@@ -466,7 +476,28 @@ function switchTeams(emailAddress, fromTeamID, toTeamID){
 // Manager //
 // Get the manager that oversees given employee email [TODO]
 function getEmpManager(emailAddress){
-	// Get the employee info for the user's manager
+
+	var ref = firebase.database().ref().child('employee');
+
+	ref.once('value', function(snapshot){
+		if(snapshot.exists()){
+			console.log(snapshot.val());
+			snapshot.forEach(function(childSnapshot){
+				if(childSnapshot.child("isManager").val() == true && childSnapshot.child("employees").val() != null){
+					var employeeArray = childSnapshot.child("employees").val();
+					for(var i = 0; i < employeeArray.length; i++){
+						if(emailAddress == employeeArray[i]){
+							employeesManagers.push(childSnapshot.val());
+						}
+					}
+				}
+			});
+		}
+		else{
+		}
+		getEmpManagerCallback.resolve();
+	})
+	
 }
 
 // Get the managet that oversees a given team [TODO]
