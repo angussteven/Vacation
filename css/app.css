@@ -1,8 +1,24 @@
 #calendar {
 	max-width: 900px;
 	margin: 0 auto;
+	resize: both;
+}
+#container {
+	text-align: left;
+	/*overflow: scroll;*/
 }
 
+ul {
+	list-style-type:none;
+
+}
+li {
+	color: white;
+}
+
+#sidebar_choice {
+	padding-right: 10em;
+}
 #wrap {
 	position: relative;
 	top: 3%;
@@ -10,8 +26,7 @@
 	height: 90%;
 	margin: 0 auto;
 	border: solid 1px lightgrey;
-	border-radius: 4px;
-	padding: .5% 0% 2%;
+	padding: .5% 0% 2% 2;
 	display: none;
 }
 
@@ -82,6 +97,7 @@ body {
 	padding-top: 2%;
 }
 #sidebar {
+	color: white;
 	position: absolute;
 	height: 90%;
 	width: 20%;

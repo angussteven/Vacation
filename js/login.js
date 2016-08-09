@@ -39,7 +39,7 @@ $( document ).ready(function() {
 	});
 	//event thatchecks if user is logged in or just signed on
    	firebase.auth().onAuthStateChanged(function(user) {
-	  if(isNew){
+	  if(isNewAccount){
 			//create employee in firebase databse
 		}
 		if (user) {
