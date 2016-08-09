@@ -126,3 +126,9 @@ body {
 label{
 	color: white;
 }
+.reveal-modal, .reveal{
+	background: #80b3ff;
+  border: 10px solid #737373;
+  border-radius: 10px;
+  padding: 40px 20px 0 20px;
+}
