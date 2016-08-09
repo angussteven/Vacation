@@ -64,6 +64,7 @@ $(document).ready(function () {
 				if (employee == null) {
 					console.log("No employee found");
 				} else {
+					document.getElementById("profileName").innerHTML = employee.firstName + " " + employee.lastName
 					console.log("Name: " + employee.firstName + " " + employee.lastName);
 					console.log("Email: " + employee.email);
 					console.log("Total Vacation Days: " + employee.totalVacationDays);
