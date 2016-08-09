@@ -154,10 +154,13 @@
 /**
  This method will add the user to the User table(firebase),
  and also store the rest of the information in the database
- */
- function addUser(email, password,firstName,lastName,totalVacationDays
+ ,firstName,lastName,totalVacationDays
  					,dayslefts,isManager,managers,team,employees,pathToPicture
- 					title {
+ 					title
+ */
+
+ function addUser(email, password){
+
  	firebase.auth().createUserWithEmailAndPassword(email, password)
  		.then(function(data) {
  			saveUsertoDatabase(email, password);
@@ -178,8 +181,6 @@
  		});
  }
 
- function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
- 					,dayslefts,isManager,managers,team,employees,pathToPicture
- 					title){
+ function saveUsertoDatabase(mail, password){
  	console.log(email,password);
  }
