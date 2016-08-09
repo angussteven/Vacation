@@ -15,7 +15,6 @@ function getTeamEvents(teamID){
 function deleteEvent(eventID){
 	// Delete the event via the eventID
 }
-
 	// Give the employee back their vacation days
 function updateEvent(){
 	// Update the information for an event
@@ -45,6 +44,7 @@ function addEmployee(firstName, lastName, emailAddress, totalVacation, manager, 
 
 function getEmployee(userID, emailAddress){
 	// Get the employee from the DB using either email address or userID
+	
 }
 
 function getEmployeesOnTeam(teamID){

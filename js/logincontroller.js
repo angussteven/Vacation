@@ -22,6 +22,8 @@ function createProfile(){
 	    var emailVerify = document.getElementById('emailAddressVerify').value;
         var firstName = document.getElementById('firstName').value;
         var lastName = document.getElementById('lastName').value;
+        var password = document.getElementById('firstName').value;
+        var passwordVerify = document.getElementById('lastName').value;
 
 
 }
