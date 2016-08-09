@@ -43,34 +43,6 @@ $(document).ready(function () {
 			//create employee in firebase databse
 		}
 		if (user) {
-			// Employee //
-
-			// Get employee with given email address [DONE]
-			function getEmployee(emailAddress) {
-				var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
-				ref.once('value', function (snapshot) {
-					if (snapshot.exists()) {
-						employee = snapshot.val();
-					}
-					else {
-						employee = null;
-					}
-					getEmployeeCallback.resolve();
-				})
-			}
-			// Implementation of getEmployee
-			var getEmployeeCallback = $.Deferred(getEmployee(user.email));
-			getEmployeeCallback.done(function (data) {
-				if (employee == null) {
-					console.log("No employee found");
-				} else {
-					document.getElementById("profileName").innerHTML = employee.firstName + " " + employee.lastName
-					console.log("Name: " + employee.firstName + " " + employee.lastName);
-					console.log("Email: " + employee.email);
-					console.log("Total Vacation Days: " + employee.totalVacationDays);
-					console.log("Remaining Vacation Days: " + employee.daysLeft);
-				}
-			});
 			$("#loginWrap").hide();
 			$("#wrap").show();
 			$('#calendar').fullCalendar('render');

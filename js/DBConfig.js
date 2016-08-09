@@ -14,6 +14,11 @@ var team;
 var employee;
 var teamsEmployees;
 var keyToObject ;
+var profileEmail;
+
+firebase.auth().onAuthStateChanged(function (user) {
+	profileEmail = user.email;
+
 
 // Implementation of getEmployeeCount
 var getEmpCountTest = $.Deferred(getEmployeeCount);
@@ -35,18 +40,32 @@ getAllTeamsCallback.done(function(data){
 });
 
 // Implementation of getEmployee
-var getEmployeeCallback = $.Deferred(getEmployee("andrew.moawad@gm.com"));
+var getEmployeeCallback = $.Deferred(getEmployee(profileEmail));
 getEmployeeCallback.done(function(data){
 	if(employee == null){
 		console.log("No employee found");
 	}else{
-		console.log("Name: " + employee.firstName + " " + employee.lastName);
+		document.getElementById("profileName").innerHTML = employee.firstName + " " + employee.lastName
 		console.log("Email: " + employee.email);
 		console.log("Total Vacation Days: " + employee.totalVacationDays);
 		console.log("Remaining Vacation Days: " + employee.daysLeft);
 	}
 });
+// Employee //
 
+// Get employee with given email address [DONE]
+function getEmployee(emailAddress) {
+	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+	ref.once('value', function (snapshot) {
+		if (snapshot.exists()) {
+			employee = snapshot.val();
+		}
+		else {
+			employee = null;
+		}
+		getEmployeeCallback.resolve();
+	})
+}
 // Implementation of getEmployeesOnTeam
 var getEmployeesOnTeamCallback = $.Deferred(getEmployeesOnTeam("quantum"));
 getEmployeesOnTeamCallback.done(function(data){
@@ -526,3 +545,4 @@ function fixEmail(tempEmail){
 	var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
 	return result;
 }
+});
