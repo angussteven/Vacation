@@ -2,6 +2,20 @@ $(document).foundation();
 
 $(document).ready(function() {
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
+console.log(guid());
+console.log(guid());
+console.log(guid());
+
 function createICSFile(managerName, managerEmail, userName, userEmail, startDate, endDate, isVacation, alert) {
   startDate = startDate.split('-');
   startDate = startDate[0] + startDate[1] + startDate[2];
@@ -157,7 +171,6 @@ function addDay(eventDay) {
     $("#usedVacationDays").val(account.UsedVacation);
   }; 
 
-  var id = 0;
     var popup2 = new Foundation.Reveal($('#viewProfileModal'));
     var popup3 = new Foundation.Reveal($('#addEventModal'));
     var popup4 = new Foundation.Reveal($("#viewEventModal"));
@@ -269,9 +282,8 @@ function addDay(eventDay) {
     });
 
     $("#notifyBtn").click(function() {
-      id+=1;
       eventData = {
-        id: id,
+        id: guid(),
         title: $("#createEventTitle").val(),
         start: $("#startDate").val(),
         end: addDay($("#endDate").val()),
