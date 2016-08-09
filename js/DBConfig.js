@@ -240,18 +240,7 @@ function getHolidays(startDate, endDate){
  	});
  }
 
-<<<<<<< HEAD
-/**
- This method will add the user to the User table(firebase),
- and also store the rest of the information in the database
- ,firstName,lastName,totalVacationDays
- 					,dayslefts,isManager,managers,team,employees,pathToPicture
- 					title
- */
 
- function addUser(email, password){
-
-=======
 // User
 /*
 	 This method will add the user to the User table(firebase),
@@ -260,7 +249,6 @@ function getHolidays(startDate, endDate){
  function addUser(email, password,firstName,lastName,totalVacationDays
  					,dayslefts,isManager,managers,team,employees,pathToPicture,
  					title) {
->>>>>>> 82a5f783eabcd2094b512cfb26f1b1260f06e752
  	firebase.auth().createUserWithEmailAndPassword(email, password)
  		.then(function(data) {
  			saveEmployee(firstName, lastName, totalVacationDays, dayslefts, team, managers, "EVENTSSS", isManager, email, "WHY DO WE SAVE PASSWORD??");
@@ -281,14 +269,11 @@ function getHolidays(startDate, endDate){
  		});
  }
 
-<<<<<<< HEAD
- function saveUsertoDatabase(mail, password){
-=======
+
  function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
  					,dayslefts,isManager,managers,team,employees,pathToPicture,
  					title){
 
->>>>>>> 82a5f783eabcd2094b512cfb26f1b1260f06e752
  	console.log(email,password);
  }
 
