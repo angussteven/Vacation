@@ -315,7 +315,7 @@ function addDay(eventDay) {
       alert = $('input:radio[name=alert_viewModal]:checked').val();
       isVacation = $('input:radio[name=isVacation_viewModal]:checked').val();
       if ($("#downloadICSCheckbox_viewModal").is(':checked') === true) {
-        var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
+        var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#viewStartDate").val(), addDay($("#viewEndDate").val()), isVacation, alert);
         window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
       }
     })    
