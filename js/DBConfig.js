@@ -72,7 +72,7 @@ function getEmployee(emailAddress) {
 }
 
 // Implementation of getEmployee - returns vacation days
-var getVacationDaysCallback = $.Deferred(getVacationDays("andrew.moawad@gm.com"));
+var getVacationDaysCallback = $.Deferred(getVacationDays(profileEmail));
 getVacationDaysCallback.done(function(data){
 	if(employee == null){
 		console.log("No employee found");
@@ -103,7 +103,7 @@ getTeamCallback.done(function(data){
 	}
 });
 
-var getEmpManagerCallback = $.Deferred(getEmpManager("andrew@gmail.com"));
+var getEmpManagerCallback = $.Deferred(getEmpManager(profileEmail));
 getEmpManagerCallback.done(function(data){
 	if(employeesManagers == null){
 		console.log("Could not find employee's manager");
@@ -127,13 +127,14 @@ getEmpManagerCallback.done(function(data){
  // 	console.log(count)
  // });
 //deleteEvent(2);
-  //saveEmployee("zach","dicino",15,15,"quantum",["michael.eilers@gm.com","manager2@gm.com"],[1],false,"zachaddry.dicino@gm.com","1234");
+ //saveEmployee("zach","dicino",15,15,"quantum",["michael.eilers@gm.com"],false,"zachary.dicino@gm.com","1234");
  //removeManagerFromTeam("michael.eilers@gm.com","quantum");
  //saveEmployee("manager","manager",15,15,1,["managersboss@gm.com"],[1],true,"manager2@gm.com","1234");
  //saveManager("michael.eilers@gm.com",["zachary.dicino@gm.com"],"michael.eilers@gm.com");
  //saveTeam(1,["zachary.dicino@gm.com"],["michael.eilers@gm.com"],"Quantum");
  //saveEvent("zachary.dicino@gm.com",3,"08-29-2016","08-31-2016","business","vacation I need time","why");
  //saveHoliday(["01-01-2016","01-18-2016","03-25-2016","03-28-2016","05-30-2016","07-04-2016","09-05-2016","11-08-2016","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"]);
+ //updateDaysLeft("zachary.dicino@gm.com",12);
 // Events //
 
 // Adds a new event [TODO]
@@ -183,28 +184,6 @@ function getTeamEvents(teamID){
  	title: string
  	description: string
  */
- // Add a new employee to the db [UNTESTED]
- function saveEvent(email, eventID, startDate, endDate, vacationType,
- 					  eventTitle, eventDescription) {
- 	var tempEmail = fixEmail(email);
- 	firebase.database().ref('event/' + eventID).set({
- 		email: email,
- 		eventID: eventID,
- 		startDate: startDate,
- 		endDate: endDate,
- 		type: vacationType,
- 		title: eventTitle,
- 		description: eventDescription
- 	});
-
- 	//add the event id into the employee
- 	addEventToEmp(email, eventID);
- }
-
- function addEventToEmp(email, eventID){
- 	var tempEmail = fixEmail(email);
-	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
- }
 
  // Updates a given event [TODO]
 function updateEvent(){
@@ -647,3 +626,31 @@ function fixEmail(tempEmail){
 	return result;
 }
 });
+
+ // Add a new employee to the db [UNTESTED]
+ function saveEvent(email, eventID, startDate, endDate, vacationType,
+ 					  eventTitle, eventDescription) {
+ 	firebase.database().ref('event/' + eventID).set({
+ 		email: email,
+ 		eventID: eventID,
+ 		startDate: startDate,
+ 		endDate: endDate,
+ 		type: vacationType,
+ 		title: eventTitle,
+ 		description: eventDescription
+ 	});
+
+ 	//add the event id into the employee
+ 	addEventToEmp(email, eventID);
+ 	var vacation = calculateVacationDays(startDate, endDate);
+ }
+
+ function addEventToEmp(email, eventID){
+ 	//var tempEmail = fixEmail(email);
+	firebase.database().ref().child('employee').child(email.toLowerCase()).child('events').push(eventID);
+ }
+
+ function updateDaysLeft(email, daysLeft){
+ 	//var tempEmail = fixEmail(email);
+  	firebase.database().ref().child('employee').child(email.toLowerCase()).child('daysLeft').set(daysLeft);
+ }
