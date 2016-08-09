@@ -174,6 +174,7 @@ function addDay(eventDay) {
       weekends: false,
 			selectable: true,
 			selectHelper: true,
+      fixedWeekCount: false,
 			select: function(start, end) {
 				title = $("#firstName").val() + ' ' + $("#lastName").val();
 				if (title) {
