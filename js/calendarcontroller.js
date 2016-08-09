@@ -12,10 +12,6 @@ function guid() {
     s4() + '-' + s4() + s4() + s4();
 }
 
-console.log(guid());
-console.log(guid());
-console.log(guid());
-
 function createICSFile(managerName, managerEmail, userName, userEmail, startDate, endDate, isVacation, alert) {
   startDate = startDate.split('-');
   startDate = startDate[0] + startDate[1] + startDate[2];
