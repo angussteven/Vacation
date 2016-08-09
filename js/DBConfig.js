@@ -34,7 +34,18 @@ getAllTeamsCallback.done(function(data){
 	console.log(allTeams);
 });
 
-
+// Implementation of getEmployee
+var getEmployeeCallback = $.Deferred(getEmployee("andrew.moawad@gm.com"));
+getEmployeeCallback.done(function(data){
+	if(employee == null){
+		console.log("No employee found");
+	}else{
+		console.log("Name: " + employee.firstName + " " + employee.lastName);
+		console.log("Email: " + employee.email);
+		console.log("Total Vacation Days: " + employee.totalVacationDays);
+		console.log("Remaining Vacation Days: " + employee.daysLeft);
+	}
+});
 
 // Implementation of getEmployeesOnTeam
 var getEmployeesOnTeamCallback = $.Deferred(getEmployeesOnTeam("quantum"));
@@ -70,7 +81,8 @@ getTeamCallback.done(function(data){
  // 	console.log(count)
  // });
 //deleteEvent(2);
- //saveEmployee("andrew","moawad",15,15,1,["michael.eilers@gm.com"],[1],true,"andrew.moawad@gm.com","1234");
+ //saveEmployee("zach","dicino",15,15,"quantum",["michael.eilers@gm.com","manager2@gm.com"],[1],false,"zachary.dicino@gm.com","1234");
+ //saveEmployee("manager","manager",15,15,1,["managersboss@gm.com"],[1],true,"manager2@gm.com","1234");
  //saveManager("michael.eilers@gm.com",["zachary.dicino@gm.com"],"michael.eilers@gm.com");
  //saveTeam(1,["zachary.dicino@gm.com"],["michael.eilers@gm.com"],"Quantum");
  //saveEvent("zachary.dicino@gm.com",3,"08-29-2016","08-31-2016","business","vacation I need time","why");
@@ -194,7 +206,7 @@ function getEmployeesOnTeam(teamName){
  	Save an employee into the database [DONE]
  	totalVacation = int
  	daysLeft = int
- 	teamID = int
+ 	teamName = string 
  	managers = array of strings
  	events = array of ints (ids)
  	isManager = bool
@@ -202,14 +214,14 @@ function getEmployeesOnTeam(teamName){
  	everything else string
  */
  function saveEmployee(firstname, lastname, totalVacation, daysleft,
- 						teamID, managers, events, isManager, email, password) {
+ 						teamName, managers, events, isManager, email, password) {
  	var tempEmail = fixEmail(email);
  	firebase.database().ref('employee/' + tempEmail).set({
  		firstName: firstname,
  		lastName: lastname,
  		totalVacationDays: totalVacation,
  		daysLeft: daysleft,
- 		team: teamID,
+ 		team: teamName,
  		managers: managers,
  		events: events,
  		isManager: isManager,
@@ -218,18 +230,43 @@ function getEmployeesOnTeam(teamName){
  		employees: null
  	});
 
- 	//if you are a manager, save the employee as a manager in the database
- 	//setting the employee array to null for now
- 	if (isManager) {
- 		//still figuring this out
- 	}
-
  	/**
  	 *	Now we must add this employee in their manager's employees list
  	 *	Do a get Manager call based on each manager in the managers array
  	 * 	insert this employee in the manager's employee list
  	 */
+	for(var i = 0; i < managers.length; i++){
+		addEmpToManager(managers[i],email);
+	}
+
+	/**
+	*	Now we must add the employee to their team 
+	*/
+	if(isManager){
+		addManagerToTeam(email, teamName);
+	}else{
+		addEmpToTeam(email, teamName);
+	}
+
+
  }
+
+ function addEmpToManager(managerEmail, email){
+	var tempEmail = fixEmail(managerEmail);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('employees').push(email);
+ }
+
+
+function addEmpToTeam(email, teamName){
+	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('team').child(teamName.toLowerCase()).child('employee').push(email);
+}
+
+function addManagerToTeam(email, teamName){
+	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('team').child(teamName.toLowerCase()).child('manager').push(email);
+}
+
 
 // Update the employee with the given userID [UNKNOWN]
 function updateEmployee(userID, firstName, lastName, emailAddress, totalVacation, usedVacation, manager, isManager, teamID){
@@ -259,10 +296,6 @@ function addTeam(teamName){
 
 }
 
-// Updates a team to include an employee and updates the team for the employee [TODO]
-function addEmpToTeam(userID, teamID){
-	// Add employee to team
-}
 
 
 // Pushes all team names to a string array [DONE]
