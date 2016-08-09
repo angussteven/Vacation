@@ -189,6 +189,8 @@ function getTeamEvents(teamID){
 
  	//add the event id into the employee
  	addEventToEmp(email, eventID);
+
+ 	//TODO Calculate and Remove appropriate vacation days from employee
  }
 
  function addEventToEmp(email, eventID){
@@ -429,14 +431,11 @@ function getTeamCount() {
 	function removeManagerFromTeam(userID, teamName){
 	var refs = firebase.database().ref().child('team').child(teamName);
 	var managerIndex;
-	console.log("I am inside 1");
 	refs.child('manager').once('value', function(snapshot) {
 		snapshot.forEach(function(childSnapshot){
-				console.log("I am inside 1");
 			 	if(childSnapshot.val().toString() === userID)
  				{
  				managerIndex = childSnapshot.getKey();
- 				console.log("I am inside 1" + managerIndex );
  				}
  			});	
 		refs.child('manager').child(managerIndex).remove();
@@ -475,6 +474,11 @@ function getTeamManager(teamName){
 	// Get the manager for the team
 }
 
+//Get The employess under manager
+function getEmployeesByManager(userID)
+{
+
+}
 // User
 //This method will add the user to the User table(firebase), and also store the rest of the information in the database [UNTESTED]
 function addUser(email, password,firstName,lastName,totalVacationDays
