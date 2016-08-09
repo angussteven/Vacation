@@ -59,7 +59,7 @@ $(document).ready(function () {
 				})
 			}
 			// Implementation of getEmployee
-			var getEmployeeCallback = $.Deferred(getEmployee("andrew.moawad@gm.com"));
+			var getEmployeeCallback = $.Deferred(getEmployee(user.email));
 			getEmployeeCallback.done(function (data) {
 				if (employee == null) {
 					console.log("No employee found");
