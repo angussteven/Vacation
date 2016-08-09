@@ -13,7 +13,8 @@ var allTeams = [];
 var team;
 var employee;
 var teamsEmployees;
-var keyToObject ;
+var keyToObject;
+var employeesManagers = [];
 
 // Implementation of getEmployeeCount
 var getEmpCountTest = $.Deferred(getEmployeeCount);
@@ -64,6 +65,15 @@ getTeamCallback.done(function(data){
 		console.log("No team found.");
 	}else{
 		console.log(team);
+	}
+});
+
+var getEmpManagerCallback = $.Deferred(getEmpManager("andrew@gmail.com"));
+getEmpManagerCallback.done(function(data){
+	if(employeesmanager == null){
+		console.log("Could not find employee's manager");
+	}else{
+		console.log(employeesManager);
 	}
 })
 
@@ -383,7 +393,30 @@ function switchTeams(emailAddress, fromTeamID, toTeamID){
 // Manager //
 // Get the manager that oversees given employee email [TODO]
 function getEmpManager(emailAddress){
-	// Get the employee info for the user's manager
+	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+	var tempEmployee;
+
+	ref.once('value', function(snapshot){
+		if(snapshot.exists()){
+			tempEmployee = snapshot.val();
+		}
+		else{
+			tempEmployee = null;
+		}
+	})
+	console.log("Temp employee:");
+	console.log(tempEmployee);
+
+	if(tempEmployee != null){
+		for(var i = 0, len = tempEmployee.managers.length; i < len; i++){
+			ref = firebase.database().ref().child('employee/' + fixEmail(tempEmployee.managers[i]));
+			ref.once('value', function(snapshot){
+				employeesManagers.push(snapshot.val());
+			})
+		}
+		
+	}
+	getEmpManagerCallback.resolve();
 }
 
 // Get the managet that oversees a given team [TODO]
