@@ -278,7 +278,7 @@ function getEmployeesOnTeam(teamName){
  	Save an employee into the database [DONE]
  	totalVacation = int
  	daysLeft = int
- 	teamName = string 
+ 	teamName = string
  	managers = array of strings
  	events = array of ints (ids)
  	isManager = bool
@@ -311,7 +311,7 @@ function getEmployeesOnTeam(teamName){
 	}
 
 	/**
-	*	Now we must add the employee to their team 
+	*	Now we must add the employee to their team
 	*/
 	if(isManager){
 		addManagerToTeam(email, teamName);
@@ -412,10 +412,10 @@ function getTeamCount() {
 		snapshot.forEach(function(childSnapshot){
 			 	if(childSnapshot.val().toString() === userID)
  				{
- 				
+
  					employeeIndex = childSnapshot.getKey();
  				}
- 			});	
+ 			});
 		refs.child('employee').child(employeeIndex).remove();
 	});
 	var userIDWithoutSpecial = userID.replace(/[^a-zA-Z ]/g, "");
@@ -438,7 +438,7 @@ function getTeamCount() {
  				managerIndex = childSnapshot.getKey();
  				console.log("I am inside 1" + managerIndex );
  				}
- 			});	
+ 			});
 		refs.child('manager').child(managerIndex).remove();
 	});
 
@@ -583,7 +583,7 @@ function calculateVacationDays(start_date, end_date){
       return today;
     else
       return date;
-  }
+  };
 
   // function takes input and returns a Date object
   function parseDate(date) {
