@@ -47,6 +47,18 @@ getEmployeeCallback.done(function(data){
 	}
 });
 
+// Implementation of getEmployee - returns vacation days
+var getVacationDaysCallback = $.Deferred(getVacationDays("andrew.moawad@gm.com"));
+getVacationDaysCallback.done(function(data){
+	if(employee == null){
+		console.log("No employee found");
+	}else{
+    var vdays = document.getElementById("vacationdays");
+    var info = "Total Days: " + employee.totalVacationDays + "<br>Remaining Days: " + employee.daysLeft;
+    vdays.innerHTML = info;
+	}
+});
+
 // Implementation of getEmployeesOnTeam
 var getEmployeesOnTeamCallback = $.Deferred(getEmployeesOnTeam("quantum"));
 getEmployeesOnTeamCallback.done(function(data){
@@ -169,6 +181,20 @@ function getEmployee(emailAddress){
 			employee = null;
 		}
 		getEmployeeCallback.resolve();
+	})
+}
+
+// Get vacation days for employee
+function getVacationDays(emailAddress){
+	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+	ref.once('value', function(snapshot){
+		if(snapshot.exists()){
+			employee = snapshot.val();
+		}
+		else{
+			employee = null;
+		}
+		getVacationDaysCallback.resolve();
 	})
 }
 
