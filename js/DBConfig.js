@@ -48,6 +48,7 @@ getEmployeeCallback.done(function(data){
 		console.log("No employee found");
 	}else{
 		document.getElementById("profileName").innerHTML = employee.firstName + " " + employee.lastName
+		$("#createEventTitle").val(employee.firstName + " " + employee.lastName);
 		console.log("Email: " + employee.email);
 		console.log("Total Vacation Days: " + employee.totalVacationDays);
 		console.log("Remaining Vacation Days: " + employee.daysLeft);

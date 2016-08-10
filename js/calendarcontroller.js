@@ -208,7 +208,7 @@ function addDay(eventDay) {
           $("#vacationRadio").prop("checked", true);
           $("#downloadICSCheckbox").prop("checked", false);
           $("#createEventDescription").val("");
-          $("#createEventTitle").val("Variable for your name");//update to include name dynamically
+          //$("#createEventTitle").val("Variable for your name");//update to include name dynamically
 				};
 				$('#calendar').fullCalendar('unselect');
 			},
