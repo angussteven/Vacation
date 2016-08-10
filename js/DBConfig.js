@@ -143,19 +143,7 @@ function addEvent(userID, startDate, endDate, title, description, alert, isBusin
 	// Remove appropriate vacation days from employee
 }
 
-// Deletes an event [UNKNOWN]
-function deleteEvent(eventID){
 
-	var ref = firebase.database().ref().child('event');
-	ref.orderByChild("eventID").equalTo(eventID).once('value', function(snapshot) {
- 	keyToObject = Object.keys(snapshot.val()).toString();
- 	ref.child(keyToObject).remove();
- 	//snapshot.ref().remove();
- });
-
-	 //ref.remove();
-	// Delete the event via the eventID
-}
 
 // Gets all the events for a given employee [TODO]
 function getEmployeeEvents(userID){
@@ -565,10 +553,21 @@ function addEventToEmp(email, eventID){
   firebase.database().ref().child('employee').child(email.toLowerCase()).child('events').push(eventID);
 }
 
+function updateDaysLeft(email, daysLeft){
+	//var tempEmail = fixEmail(email);
+	firebase.database().ref().child('employee').child(email.toLowerCase()).child('daysLeft').set(daysLeft);
+}
 
+// Deletes an event [UNKNOWN]
+function deleteEvent(eventID){
 
+  var ref = firebase.database().ref().child('event');
+  ref.orderByChild("eventID").equalTo(eventID).once('value', function(snapshot) {
+  keyToObject = Object.keys(snapshot.val()).toString();
+  ref.child(keyToObject).remove();
+  //snapshot.ref().remove();
+ });
 
- function updateDaysLeft(email, daysLeft){
- 	//var tempEmail = fixEmail(email);
-  	firebase.database().ref().child('employee').child(email.toLowerCase()).child('daysLeft').set(daysLeft);
- }
+   //ref.remove();
+  // Delete the event via the eventID
+}
