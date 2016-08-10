@@ -74,17 +74,17 @@ function subtractDay(day) {
 
   if (day[2] === 01){//if the day is 1 it is actually the last day of the previous month
       switch (day[1]){//switching on month
-        case 01: 
+        case 01:
             day = (day[0] - 1) + '-' + "12" + '-' + "31";
           break;
 
-        case 03: 
+        case 03:
           if ((day[0] % 4 == 0) && (day[0] % 100 != 0) || (day[0] % 400 == 0)){
             day = day[0] + '-' + "02" + '-' + "29";
           } else {
             day = day[0] + '-' + "02" + '-' + "28";
           }
-          
+
           break;
 
         case 05: case 07: case 08: case 10:
@@ -145,7 +145,7 @@ function addDay(eventDay) {
         if (eventDay[2] === '29')
           eventDay[2] = '0';
           eventDay[1] = '03';
-      } 
+      }
       else if (eventDay[2] === '28') {
         eventDay[2] = '0';
         eventDay[1] = '03';
@@ -179,7 +179,7 @@ function addDay(eventDay) {
     $("#manager").val(account.Manager);
     $("#totalVacationDays").val(account.TotalVacation);
     $("#usedVacationDays").val(account.UsedVacation);
-  }; 
+  };
 
     var popup2 = new Foundation.Reveal($('#viewProfileModal'));
     var popup3 = new Foundation.Reveal($('#addEventModal'));
@@ -293,11 +293,17 @@ function addDay(eventDay) {
 
     $("#notifyBtn").click(function() {
       var id = guid();
+      var startd = $("#startDate").val();
+      var endd = addDay($("#endDate").val());
+      if(Date.parse(startd) >= Date.parse(endd))
+      {
+        endd = addDay(startd);
+      }
       eventData = {
         id: id,
         title: $("#createEventTitle").val(),
-        start: $("#startDate").val(),
-        end: addDay($("#endDate").val()),
+        start: startd,
+        end: endd,
         description: $("#createEventDescription").val(),
       };
 
@@ -343,5 +349,5 @@ function addDay(eventDay) {
         var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#viewStartDate").val(), addDay($("#viewEndDate").val()), isVacation, alert);
         window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
       }
-    })    
+    })
 	});
