@@ -293,6 +293,7 @@ function addDay(eventDay) {
 
     $("#notifyBtn").click(function() {
       var id = guid();
+      // checks for start date following end date; if event ends before start, it will be set to a one-day event on the start date
       var startd = $("#startDate").val();
       var endd = addDay($("#endDate").val());
       if(Date.parse(startd) >= Date.parse(endd))
@@ -336,6 +337,7 @@ function addDay(eventDay) {
 
     $("#changeEventBtn").click(function () {
       $('#calendar').fullCalendar('removeEvents', clickedID);
+      // checks for start date following end date; if event ends before start, it will be set to a one-day event on the start date
       var news = $("#viewStartDate").val();
       var newe = addDay($("#viewEndDate").val());
       if(Date.parse(news) >= Date.parse(newe))
