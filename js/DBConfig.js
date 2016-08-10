@@ -7,6 +7,8 @@
  };
  firebase.initializeApp(config);
 
+const databaseConnection = firebase.database().ref(); 
+
 var employeeCount = 0;
 var teamCount = 0;
 var allTeams = [];
@@ -59,7 +61,7 @@ getEmployeeCallback.done(function(data){
 
 // Get employee with given email address [DONE]
 function getEmployee(emailAddress) {
-	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+	var ref = databaseConnection.child('employee/' + fixEmail(emailAddress));
 	ref.once('value', function (snapshot) {
 		if (snapshot.exists()) {
 			employee = snapshot.val();
@@ -117,7 +119,7 @@ getEmpManagerCallback.done(function(data){
 
  /*Get reference example=*/
  /*var value;
- var dbRef = firebase.database().ref().child('employee');
+ var dbRef = databaseConnection.child('employee');
  dbRef.on('value', function(snapshot) {
  	console.log(snapshot.val());
  });*/
@@ -147,7 +149,7 @@ function addEvent(userID, startDate, endDate, title, description, alert, isBusin
 // Deletes an event [UNKNOWN]
 function deleteEvent(eventID){
 
-	var ref = firebase.database().ref().child('event');
+	var ref = databaseConnection.child('event');
 	ref.orderByChild("eventID").equalTo(eventID).once('value', function(snapshot) {
  	keyToObject = Object.keys(snapshot.val()).toString();
  	ref.child(keyToObject).remove();
@@ -192,7 +194,7 @@ function updateEvent(){
 
 // Get employee with given email address [[DONE]]
 function getEmployee(emailAddress){
-	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+	var ref = databaseConnection.child('employee/' + fixEmail(emailAddress));
 	ref.once('value', function(snapshot){
 		if(snapshot.exists()){
 			employee = snapshot.val();
@@ -207,7 +209,7 @@ function getEmployee(emailAddress){
 
 // Get vacation days for employee
 function getVacationDays(emailAddress){
-	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+	var ref = databaseConnection.child('employee/' + fixEmail(emailAddress));
 	ref.once('value', function(snapshot){
 		if(snapshot.exists()){
 			employee = snapshot.val();
@@ -240,7 +242,7 @@ function getVacationDays(emailAddress){
 // Gets the total number of employees in a database (included managers) [DONE]
  function getEmployeeCount() {
  	var count = 0;
- 	var ref = firebase.database().ref().child('employee');
+ 	var ref = databaseConnection.child('employee');
  	ref.on('value', function(snapshot) {
  		employeeCount = snapshot.numChildren();
  		getEmpCountTest.resolve();
@@ -251,7 +253,7 @@ function getVacationDays(emailAddress){
 function getEmployeesOnTeam(teamName){
 	// Get all the employees that are on a team
 
-	var ref = firebase.database().ref().child('employee');
+	var ref = databaseConnection.child('employee');
 	ref.orderByChild("team").equalTo(teamName.toLowerCase()).once('value', function(snapshot){
 		if(snapshot.exists()){
 			teamsEmployees = snapshot.val();
@@ -313,18 +315,18 @@ function getEmployeesOnTeam(teamName){
 
  function addEmpToManager(managerEmail, email){
 	var tempEmail = fixEmail(managerEmail);
-	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('employees').push(email);
+	databaseConnection.child('employee').child(tempEmail.toLowerCase()).child('employees').push(email);
  }
 
 
 function addEmpToTeam(email, teamName){
 	var tempEmail = fixEmail(email);
-	firebase.database().ref().child('team').child(teamName.toLowerCase()).child('employee').push(email);
+	databaseConnection.child('team').child(teamName.toLowerCase()).child('employee').push(email);
 }
 
 function addManagerToTeam(email, teamName){
 	var tempEmail = fixEmail(email);
-	firebase.database().ref().child('team').child(teamName.toLowerCase()).child('manager').push(email);
+	databaseConnection.child('team').child(teamName.toLowerCase()).child('manager').push(email);
 }
 
 
@@ -361,7 +363,7 @@ function addTeam(teamName){
 // Pushes all team names to a string array [DONE]
 function getAllTeams(){
 	// Get all the teams
-	var ref = firebase.database().ref().child('team');
+	var ref = databaseConnection.child('team');
  	ref.on('value', function(snapshot) {
  		snapshot.forEach(function(childSnapshot){
  			allTeams.push(childSnapshot.child("name").val());
@@ -372,7 +374,7 @@ function getAllTeams(){
 
 // Returns a team with a given name [DONE]
 function getTeam(teamName){
-	var ref = firebase.database().ref().child('team/' + teamName);
+	var ref = databaseConnection.child('team/' + teamName);
 	ref.once('value', function(snapshot){
 		if(snapshot.exists()){
 			team = snapshot.val();
@@ -386,7 +388,7 @@ function getTeam(teamName){
 
 // Gets the total number of teams in the database [DONE]
 function getTeamCount() {
- 	var ref = firebase.database().ref().child('team');
+ 	var ref = databaseConnection.child('team');
  	ref.on('value', function(snapshot) {
  		teamCount = snapshot.numChildren();
  		getTeamCountTest.resolve();
@@ -395,7 +397,7 @@ function getTeamCount() {
 
 // Removes employee from team [Andrew]
 	function removeEmpFromTeam(userID, teamName){
-	var refs = firebase.database().ref().child('team').child(teamName);
+	var refs = databaseConnection.child('team').child(teamName);
 	var employeeIndex;
 	refs.child('employee').once('value', function(snapshot) {
 		snapshot.forEach(function(childSnapshot){
@@ -408,7 +410,7 @@ function getTeamCount() {
 		refs.child('employee').child(employeeIndex).remove();
 	});
 	var userIDWithoutSpecial = userID.replace(/[^a-zA-Z ]/g, "");
-	var empRef = firebase.database().ref().child('employee').child(userIDWithoutSpecial).child('team');
+	var empRef = databaseConnection.child('employee').child(userIDWithoutSpecial).child('team');
 	empRef.remove();
 
 
@@ -416,7 +418,7 @@ function getTeamCount() {
 //
 // Removes employee from team [Andrew]
 	function removeManagerFromTeam(userID, teamName){
-	var refs = firebase.database().ref().child('team').child(teamName);
+	var refs = databaseConnection.child('team').child(teamName);
 	var managerIndex;
 	refs.child('manager').once('value', function(snapshot) {
 		snapshot.forEach(function(childSnapshot){
@@ -454,7 +456,7 @@ function switchTeams(emailAddress, fromTeamID, toTeamID){
 // Get the manager that oversees given employee email [TODO]
 function getEmpManager(emailAddress){
 
-	var ref = firebase.database().ref().child('employee');
+	var ref = databaseConnection.child('employee');
 
 	ref.once('value', function(snapshot){
 		if(snapshot.exists()){
@@ -649,10 +651,10 @@ function fixEmail(tempEmail){
 
  function addEventToEmp(email, eventID){
  	//var tempEmail = fixEmail(email);
-	firebase.database().ref().child('employee').child(email.toLowerCase()).child('events').push(eventID);
+	databaseConnection.child('employee').child(email.toLowerCase()).child('events').push(eventID);
  }
 
  function updateDaysLeft(email, daysLeft){
  	//var tempEmail = fixEmail(email);
-  	firebase.database().ref().child('employee').child(email.toLowerCase()).child('daysLeft').set(daysLeft);
+  	databaseConnection.child('employee').child(email.toLowerCase()).child('daysLeft').set(daysLeft);
  }
