@@ -21,6 +21,10 @@ function guid() {
     s4() + s4() + s4() + s4();
 }
 
+function getEmail() {
+  return emailAddress;
+}
+
 function fixEmail(tempEmail){
   var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
   return result;
