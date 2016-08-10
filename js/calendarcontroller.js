@@ -321,9 +321,11 @@ function addDay(eventDay) {
 
     $("#deleteBtn").click(function() {
       var ans = confirm("Are you sure you want to remove this event?");
-      if (ans == true)
+      if (ans == true) {
         $("#calendar").fullCalendar('removeEvents',clickedID);
+        deleteEvent(clickedID);
         popup4.close();
+      }
     });
 
     $("#viewEventCloseBtn").click(function () {
