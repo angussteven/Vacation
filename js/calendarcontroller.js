@@ -72,47 +72,6 @@ function removeTime(date) {
   return dateArray[0];
 }
 
-function subtractDay(day) {
-  day = day.split('-');
-  //endDay = day[0] + day[1] + day[2];
-
-  if (day[2] === 01){//if the day is 1 it is actually the last day of the previous month
-      switch (day[1]){//switching on month
-        case 01:
-            day = (day[0] - 1) + '-' + "12" + '-' + "31";
-          break;
-
-        case 03:
-          if ((day[0] % 4 == 0) && (day[0] % 100 != 0) || (day[0] % 400 == 0)){
-            day = day[0] + '-' + "02" + '-' + "29";
-          } else {
-            day = day[0] + '-' + "02" + '-' + "28";
-          }
-
-          break;
-
-        case 05: case 07: case 08: case 10:
-          day = day[0] + '-0' + (day[1] - 1) + '-' + "30";
-          break;
-
-        case 12:
-          day = day[0] + '-' + (day[1] - 1) + '-' + "30";
-          break;
-
-          case 02: case 04: case 06: case 09:
-        default:
-          day = day[0] + '-0' + (day[1] - 1) + '-' + "31";
-          break;
-      }
-    } else {
-      day[2]-='1';
-      if (day[2] <= 9){ day[2] = "0" + day[2];}
-      day = day[0] + '-' + day[1] + '-' + day[2];
-    }
-
-  return day;
-}
-
 function addDay(eventDay) {
   eventDay = eventDay.split('-');
   switch(eventDay[1]) {
