@@ -126,6 +126,7 @@ getEmpManagerCallback.done(function(data){
  // 	console.log(count)
  // });
 //deleteEvent(2);
+getEmployeesByManager("michael.eilers@gm.com");
  //saveEmployee("zach","dicino",15,15,"quantum",["michael.eilers@gm.com"],false,"zachary.dicino@gm.com","1234");
  //removeManagerFromTeam("michael.eilers@gm.com","quantum");
  //saveEmployee("manager","manager",15,15,1,["managersboss@gm.com"],[1],true,"manager2@gm.com","1234");
@@ -239,7 +240,22 @@ function getEmployeesOnTeam(teamName){
 
 
 
+//Get The employess under manager
+function getEmployeesByManager(userID)
+{
+	userID = fixEmail(userID);
+	var ref = firebase.database().ref().child('employee');
+	ref.child(userID).once('value', function(snapshot){
+		if(snapshot.exists()){
+			if(snapshot.child("isManager").val() == true && snapshot.child("employees").val() != null){
+				snapshot.child('employees').forEach(function(childSnapshot){
+					console.log("this is the employee requested: " + childSnapshot.val());
+				});
+			}	
+		}
+	});	
 
+}
 
 // Update the employee with the given userID [UNKNOWN]
 function updateEmployee(userID, firstName, lastName, emailAddress, totalVacation, usedVacation, manager, isManager, teamID){
