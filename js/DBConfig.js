@@ -16,6 +16,7 @@ var teamsEmployees;
 var keyToObject ;
 var profileEmail;
 var employeesManagers = [];
+var vacationLeft = 0;
 
 firebase.auth().onAuthStateChanged(function (user) {
 	profileEmail = user.email;
@@ -39,7 +40,7 @@ getAllTeamsCallback.done(function(data){
 	console.log("All da teams: ");
 	console.log(allTeams);
 });
-console.log(profileEmail);
+
 // Implementation of getEmployee
 var getEmployeeCallback = $.Deferred(getEmployee(profileEmail));
 
@@ -52,12 +53,18 @@ getEmployeeCallback.done(function(data){
 		console.log("Email: " + employee.email);
 		console.log("Total Vacation Days: " + employee.totalVacationDays);
 		console.log("Remaining Vacation Days: " + employee.daysLeft);
+		sessionStorage.setItem('user', JSON.stringify(employee));
+		//to extract info
+		/**
+		*	var data = sessionStorage.getItem('user');
+		*	var dataResult = JSON.parse(data);		
+		*/
 	}
 });
 // Employee //
 
 
-// Get employee with given email address [DONE]
+// Get employee with given email address [DONE] 
 function getEmployee(emailAddress) {
 	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
 	ref.once('value', function (snapshot) {
@@ -112,9 +119,6 @@ getEmpManagerCallback.done(function(data){
 		console.log(employeesManagers);
 	}
 })
-
-
-
  /*Get reference example=*/
  /*var value;
  var dbRef = firebase.database().ref().child('employee');
@@ -424,7 +428,59 @@ function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
 	console.log(email,password);
 }
 
-// Misc
+});
+
+/*
+ 	Save an event into the database
+ 	email: string (email)
+ 	eventID: int
+ 	startDate: string (ex. "08-29-2016")
+ 	endDate: string (ex. "08-31-2016")
+ 	vacationType: stirng (vaction or business)
+ 	eventTitle: string
+ 	title: string
+ 	description: string
+ */
+
+//saveEvent("zachary.dicino@gm.com",3,"08-29-2016","08-31-2016","business","vacation I need time","why");
+
+function saveEvent(email, eventID, startDate, endDate, vacationType,
+ 					  eventTitle, eventDescription) {
+ 	firebase.database().ref('event/' + eventID).set({
+ 		email: email,
+ 		eventID: eventID,
+ 		startDate: startDate,
+ 		endDate: endDate,
+ 		type: vacationType,
+ 		title: eventTitle,
+ 		description: eventDescription
+ 	});
+
+ 	//add the event id into the employee
+ 	addEventToEmp(email, eventID);
+ 	var data = sessionStorage.getItem('user');
+	var dataResult = JSON.parse(data);
+	updateDaysLeft(email, dataResult.daysLeft);
+	var vdays = document.getElementById("vacationdays");
+	//console.log("Total Days: " + dataResult.totalVacationDays + "<br>Remaining Days: " + dataResult.daysLeft);
+    //var info = "Total Days: " + dataResult.totalVacationDays + "<br>Remaining Days: " + dataResult.daysLeft;
+    //vdays.innerHTML = info;
+ }
+
+function addEventToEmp(email, eventID){
+	var tempEmail = fixEmail(email);
+  firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
+}
+
+
+
+
+ function updateDaysLeft(email, daysLeft){
+ 	var tempEmail = fixEmail(email);
+  	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('daysLeft').set(daysLeft);
+ }
+
+ // Misc
 // Function takes 2 dates and returns inclusive number of business days (no weekends/holidays)
 function calculateVacationDays(start_date, end_date){
   /*
@@ -525,55 +581,13 @@ function calculateVacationDays(start_date, end_date){
     return null;
   };
 
-
-// TRakes an email and returns the email with no special characters [DONE]
+  // TRakes an email and returns the email with no special characters [DONE]
 function fixEmail(tempEmail){
   var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
   return result;
 }
-});
-// TRakes an email and returns the email with no special characters [DONE]
-function fixEmail(tempEmail){
-  var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
-  return result;
-}
-/*
- 	Save an event into the database
- 	email: string (email)
- 	eventID: int
- 	startDate: string (ex. "08-29-2016")
- 	endDate: string (ex. "08-31-2016")
- 	vacationType: stirng (vaction or business)
- 	eventTitle: string
- 	title: string
- 	description: string
- */
 
-function saveEvent(email, eventID, startDate, endDate, vacationType,
- 					  eventTitle, eventDescription) {
- 	firebase.database().ref('event/' + eventID).set({
- 		email: email,
- 		eventID: eventID,
- 		startDate: startDate,
- 		endDate: endDate,
- 		type: vacationType,
- 		title: eventTitle,
- 		description: eventDescription
- 	});
 
- 	//add the event id into the employee
- 	addEventToEmp(email, eventID);
- 	//var vacation = calculateVacationDays(startDate, endDate);
- }
-
-function addEventToEmp(email, eventID){
-  firebase.database().ref().child('employee').child(email.toLowerCase()).child('events').push(eventID);
-}
-
-function updateDaysLeft(email, daysLeft){
-	//var tempEmail = fixEmail(email);
-	firebase.database().ref().child('employee').child(email.toLowerCase()).child('daysLeft').set(daysLeft);
-}
 
 // Deletes an event [UNKNOWN]
 function deleteEvent(eventID){

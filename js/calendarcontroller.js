@@ -7,7 +7,7 @@ var emailAddress;
 firebase.auth().onAuthStateChanged(function (user) {
   if(user) {
     emailAddress = user.email;
-    emailAddress = fixEmail(emailAddress);
+    //emailAddress = fixEmail(emailAddress);
   }
 });
 
