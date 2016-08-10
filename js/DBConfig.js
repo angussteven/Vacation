@@ -261,58 +261,9 @@ function getEmployeesOnTeam(teamName){
  	employees = array of strings (emails) default null for now
  	everything else string
  */
- function saveEmployee(firstname, lastname, totalVacation, daysleft,
- 						teamName, managers, isManager, email, password) {
- 	var tempEmail = fixEmail(email);
- 	firebase.database().ref('employee/' + tempEmail).set({
- 		firstName: firstname,
- 		lastName: lastname,
- 		totalVacationDays: totalVacation,
- 		daysLeft: daysleft,
- 		team: teamName,
- 		managers: managers,
- 		isManager: isManager,
- 		email: email,
- 		password: password,
- 		employees: null
- 	});
-
- 	/**
- 	 *	Now we must add this employee in their manager's employees list
- 	 *	Do a get Manager call based on each manager in the managers array
- 	 * 	insert this employee in the manager's employee list
- 	 */
-	for(var i = 0; i < managers.length; i++){
-		addEmpToManager(managers[i],email);
-	}
-
-	/**
-	*	Now we must add the employee to their team
-	*/
-	if(isManager){
-		addManagerToTeam(email, teamName);
-	}else{
-		addEmpToTeam(email, teamName);
-	}
 
 
- }
 
- function addEmpToManager(managerEmail, email){
-	var tempEmail = fixEmail(managerEmail);
-	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('employees').push(email);
- }
-
-
-function addEmpToTeam(email, teamName){
-	var tempEmail = fixEmail(email);
-	firebase.database().ref().child('team').child(teamName.toLowerCase()).child('employee').push(email);
-}
-
-function addManagerToTeam(email, teamName){
-	var tempEmail = fixEmail(email);
-	firebase.database().ref().child('team').child(teamName.toLowerCase()).child('manager').push(email);
-}
 
 
 // Update the employee with the given userID [UNKNOWN]
@@ -472,30 +423,6 @@ function getTeamManager(teamName){
 	// Get the manager for the team
 }
 
-// User
-//This method will add the user to the User table(firebase), and also store the rest of the information in the database [UNTESTED]
-function addUser(email, password,firstName,lastName,totalVacationDays
- 					,dayslefts,isManager,managers,team,employees,pathToPicture,
- 					title) {
- 	firebase.auth().createUserWithEmailAndPassword(email, password)
- 		.then(function(data) {
- 			saveEmployee(firstName, lastName, totalVacationDays, dayslefts, team, managers, "EVENTSSS", isManager, email, "WHY DO WE SAVE PASSWORD??");
- 		})
- 		.catch(function(error) {
- 			var errorCode = error.code;
- 			var errorMessage = error.message;
-
- 			if (errorCode == 'auth/weak-password') {
- 				console.log(errorCode);
- 			} else if (errorCode == 'auth/email-already-in-use') {
- 				console.log(errorCode);
- 			} else if (errorCode == 'auth/invalid-email') {
- 				console.log(errorCode);
- 			} else {
- 				console.log(errorMessage);
- 			}
- 		});
-}
 
 // Saves a user in the database [TODO]
 function saveUsertoDatabase(mail, password,firstName,lastName,totalVacationDays
@@ -613,7 +540,11 @@ function fixEmail(tempEmail){
   return result;
 }
 });
-
+// TRakes an email and returns the email with no special characters [DONE]
+function fixEmail(tempEmail){
+  var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
+  return result;
+}
 /*
  	Save an event into the database
  	email: string (email)
