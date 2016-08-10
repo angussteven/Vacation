@@ -336,11 +336,18 @@ function addDay(eventDay) {
 
     $("#changeEventBtn").click(function () {
       $('#calendar').fullCalendar('removeEvents', clickedID);
+      var news = $("#viewStartDate").val();
+      var newe = addDay($("#viewEndDate").val());
+      if(Date.parse(news) >= Date.parse(newe))
+      {
+        newe = addDay(news);
+      }
+      console.log(news + ", " + newe);
       changedEvent = {
         id: clickedID,
         title: $("#eventTitle").val(),
-        start: $("#viewStartDate").val(),
-        end: addDay($("#viewEndDate").val()),
+        start: news,
+        end: newe,
         description: $("#eventDescription").val(),
       };
       $('#calendar').fullCalendar('renderEvent', changedEvent, true);
