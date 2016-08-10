@@ -123,5 +123,30 @@ function fixsEmail(tempEmail){
   return result;
 }
 
+var allManagers = [];
+var managerObject = {};
+getAllManagers();
+
+var getAllManagersCallback = $.Deferred(getAllManagers);
+getAllManagersCallback.done(function(data){
+    for(var i = 0; i < allManagers.length; i++){
+        console.log(allManagers[i].email);
+        managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;
+    }
+    console.log(managerObject);
+});
+
+function getAllManagers(){
+    var ref = firebase.database().ref().child('employee');
+    ref.on('value', function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+            if(childSnapshot.child("isManager").val() == true){
+                allManagers.push(childSnapshot.val());
+            }
+        });
+        getAllManagersCallback.resolve();
+    });
+}
+
 
 
