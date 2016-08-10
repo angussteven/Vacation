@@ -30,7 +30,7 @@ function fixEmail(tempEmail){
   return result;
 }
 
-function createICSFile(managerName, managerEmail, userName, userEmail, startDate, endDate, isVacation, alert) {
+function createICSFile(managerEmail, userName, userEmail, startDate, endDate, isVacation, alert) {
   startDate = startDate.split('-');
   startDate = startDate[0] + startDate[1] + startDate[2];
   endDate = endDate.split('-');
@@ -50,13 +50,13 @@ function createICSFile(managerName, managerEmail, userName, userEmail, startDate
   }
   switch (isVacation) {
     case "vacation":
-      isVacation = "Vacation - ";
+      isVacation = "Vacation";
       break;
     case "travel":
-      isVacation = "Business Travel - ";
+      isVacation = "Business Travel";
       break;
   }
-  var icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Our Company//NONSGML v1.0//EN\nBEGIN:VEVENT\nDTSTAMP:20120315T170000Z\nATTENDEE;CN=" + userName + " ;RSVP=TRUE:MAILTO:" + userEmail + "\nATTENDEE;CN=" + managerName + " ;RSVP=TRUE:MAILTO:" + managerEmail + "\nORGANIZER;CN=Me:MAILTO:" + userEmail + "\nDTSTART:" + startDate +"\nDTEND:" + endDate +"\nLOCATION:OOO\nSUMMARY:"+ isVacation + userName + "\nX-MICROSOFT-CDO-BUSYSTATUS:OOF\nBEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:Vacation\nTRIGGER:" + alert + "\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR";
+  var icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Our Company//NONSGML v1.0//EN\nBEGIN:VEVENT\nDTSTAMP:20120315T170000Z\nATTENDEE;CN=" + userName + " ;RSVP=TRUE:MAILTO:" + userEmail + "\nATTENDEE;CN= ;RSVP=TRUE:MAILTO:" + managerEmail + "\nORGANIZER;CN=Me:MAILTO:" + userEmail + "\nDTSTART:" + startDate +"\nDTEND:" + endDate +"\nLOCATION:OOO\nSUMMARY:"+ isVacation + "\nX-MICROSOFT-CDO-BUSYSTATUS:OOF\nBEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:Vacation\nTRIGGER:" + alert + "\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR";
   return icsMSG;
 }
 
@@ -322,7 +322,10 @@ function addDay(eventDay) {
       saveEvent(emailAddress, id, $("#startDate").val(), addDay($("#endDate").val()), isVacation, $("#createEventTitle").val(), $("#createEventDescription").val());
       popup3.close();
       if ($("#downloadICSCheckbox").is(':checked') === true) {
-        var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
+        var data = sessionStorage.getItem('user');
+        var dataResult = JSON.parse(data);
+        var fullName = dataResult.firstName + " " + dataResult.lastName;
+        var icsFile = createICSFile(dataResult.managers, fullName, dataResult.email, $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
         window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
       }
     });
@@ -364,7 +367,10 @@ function addDay(eventDay) {
       alert = $('input:radio[name=alert_viewModal]:checked').val();
       isVacation = $('input:radio[name=isVacation_viewModal]:checked').val();
       if ($("#downloadICSCheckbox_viewModal").is(':checked') === true) {
-        var icsFile = createICSFile("Robert Kasper", "robert.kasperiv@gm.com", "Steven Angus", "steven.angus@gm.com", $("#viewStartDate").val(), addDay($("#viewEndDate").val()), isVacation, alert);
+        var data = sessionStorage.getItem('user');
+        var dataResult = JSON.parse(data);
+        var fullName = dataResult.firstName + " " + dataResult.lastName;
+        var icsFile = createICSFile(dataResult.managers, fullName, dataResult.email, $("#viewStartDate").val(), addDay($("#viewEndDate").val()), isVacation, alert);
         window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
       }
     })
