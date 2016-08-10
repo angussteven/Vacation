@@ -177,19 +177,6 @@ function updateEvent(){
 	// Update the information for an event
 }
 
-// Get employee with given email address [[DONE]]
-function getEmployee(emailAddress){
-	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
-	ref.once('value', function(snapshot){
-		if(snapshot.exists()){
-			employee = snapshot.val();
-		}
-		else{
-			employee = null;
-		}
-		getEmployeeCallback.resolve();
-	})
-}
 
 
 // Get vacation days for employee

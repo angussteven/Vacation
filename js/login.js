@@ -1,8 +1,9 @@
 function fireSignOut() {
 	firebase.auth().signOut().then(function () {
-  		alert("Success");
+  		Console.log("Successfully Logged Out");
   		$("#loginWrap").show();
 		$("#wrap").hide();
+		$("#signOutButton").show()
 	}, function (error) {
 		alert("Fail");
 	});
@@ -48,6 +49,7 @@ $(document).ready(function () {
 			$("#loginWrap").hide();
 			$("#wrap").show();
 			$('#calendar').fullCalendar('render');
+			$("#signOutButton").show();
 		} else {
 			console.log("Not logged in");
   		}
