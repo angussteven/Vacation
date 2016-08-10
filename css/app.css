@@ -136,3 +136,7 @@ label{
 #signOutButton{
 	display: none;
 }
+
+.holiday {
+	background: lightgreen;
+}

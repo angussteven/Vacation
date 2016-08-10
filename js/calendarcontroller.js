@@ -191,7 +191,7 @@ function addDay(eventDay) {
       dayClick: function(date) {
 
         $("#daysSelected").val(1);//Should be added to vacation balance calculator
-      }
+      },
 //			events: [
 //				{
 //					title: 'All Day Event',
@@ -248,6 +248,39 @@ function addDay(eventDay) {
 //					start: '2016-06-28'
 //				}
 //			]
+        eventAfterAllRender: function (view) {
+        //Use view.intervalStart and view.intervalEnd to find date range of holidays
+        //Make ajax call to find holidays in range.
+        var fourthOfJuly = moment('2016-07-04','YYYY-MM-DD');
+        var laborDay = moment("2016-09-05","YYYY-MM-DD");
+        var electionDay = moment("2016-11-08","YYYY-MM-DD");
+        var veteransDay = moment("2016-11-11","YYYY-MM-DD");
+        var thanksgiving;
+
+        var holidays = [fourthOfJuly, laborDay, electionDay, veteransDay];
+        var holidayMoment;
+        for(var i = 0; i < holidays.length; i++) {        
+          holidayMoment = holidays[i];
+          if (view.name == 'month') {
+            $("td[data-date=" + holidayMoment.format('YYYY-MM-DD') + "]").addClass('holiday');
+          } else if (view.name =='agendaWeek') {
+            var classNames = $("th:contains(' " + holidayMoment.format('M/D') + "')").attr("class");
+            if (classNames != null) {
+              var classNamesArray = classNames.split(" ");
+              for(var i = 0; i < classNamesArray.length; i++) {
+                if(classNamesArray[i].indexOf('fc-col') > -1) {
+                  $("td." + classNamesArray[i]).addClass('holiday');
+                  break;
+                }
+              }
+            }
+          } else if (view.name == 'agendaDay') {
+            if(holidayMoment.format('YYYY-MM-DD') == $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD')) {
+              $("td.fc-col0").addClass('holiday');
+            };
+          }
+        }
+      }
 		});
 
     $("#addCloseBtn").click(function () {
