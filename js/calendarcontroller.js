@@ -251,13 +251,24 @@ function addDay(eventDay) {
         eventAfterAllRender: function (view) {
         //Use view.intervalStart and view.intervalEnd to find date range of holidays
         //Make ajax call to find holidays in range.
+        var newYearsDay = moment("2016-01-01","YYYY-MM-DD");
+        var mlkDay = moment("2016-01-18","YYYY-MM-DD");
+        var goodFriday = moment("2016-03-25","YYYY-MM-DD");
+        var dayAfterEaster = moment("2016-03-28","YYYY-MM-DD");
         var fourthOfJuly = moment('2016-07-04','YYYY-MM-DD');
         var laborDay = moment("2016-09-05","YYYY-MM-DD");
         var electionDay = moment("2016-11-08","YYYY-MM-DD");
         var veteransDay = moment("2016-11-11","YYYY-MM-DD");
-        var thanksgiving;
+        var thanksgiving1 = moment("2016-11-24","YYYY-MM-DD");
+        var thanksgiving2 = moment("2016-11-25","YYYY-MM-DD");
+        var christmas1 = moment("2016-12-26","YYYY-MM-DD");
+        var christmas2 = moment("2016-12-27","YYYY-MM-DD");
+        var christmas3 = moment("2016-12-28","YYYY-MM-DD");
+        var christmas4 = moment("2016-12-29","YYYY-MM-DD");
+        var christmas5 = moment("2016-12-30","YYYY-MM-DD");
 
-        var holidays = [fourthOfJuly, laborDay, electionDay, veteransDay];
+
+        var holidays = [newYearsDay, mlkDay, goodFriday, dayAfterEaster, fourthOfJuly, laborDay, electionDay, veteransDay, thanksgiving1, thanksgiving2, christmas1, christmas2, christmas3, christmas4, christmas5];
         var holidayMoment;
         for(var i = 0; i < holidays.length; i++) {        
           holidayMoment = holidays[i];
