@@ -25,20 +25,20 @@ firebase.auth().onAuthStateChanged(function (user) {
 // Implementation of getEmployeeCount
 var getEmpCountTest = $.Deferred(getEmployeeCount);
 getEmpCountTest.done(function(data){
-  console.log("Employee Count: " + employeeCount);
+  //console.log("Employee Count: " + employeeCount);
 });
 
 // Implementation of getEmployeeCount
 var getTeamCountTest = $.Deferred(getTeamCount);
 getTeamCountTest.done(function(data){
-  console.log("Team Count: " + teamCount);
+  //console.log("Team Count: " + teamCount);
 });
 
 // Implementation of getAllTeams
 var getAllTeamsCallback = $.Deferred(getAllTeams);
 getAllTeamsCallback.done(function(data){
-	console.log("All da teams: ");
-	console.log(allTeams);
+	//console.log("All da teams: ");
+	//console.log(allTeams);
 });
 
 // Implementation of getEmployee
@@ -50,9 +50,9 @@ getEmployeeCallback.done(function(data){
 	}else{
 		document.getElementById("profileName").innerHTML = employee.firstName + " " + employee.lastName
 		$("#createEventTitle").val(employee.firstName + " " + employee.lastName);
-		console.log("Email: " + employee.email);
-		console.log("Total Vacation Days: " + employee.totalVacationDays);
-		console.log("Remaining Vacation Days: " + employee.daysLeft);
+		//console.log("Email: " + employee.email);
+		//console.log("Total Vacation Days: " + employee.totalVacationDays);
+		//console.log("Remaining Vacation Days: " + employee.daysLeft);
 		sessionStorage.setItem('user', JSON.stringify(employee));
 		//to extract info
 		/**
@@ -96,7 +96,8 @@ getEmployeesOnTeamCallback.done(function(data){
 	if(teamsEmployees == null){
 		console.log("Team has no employees");
 	}else{
-		console.log(teamsEmployees);
+		sessionStorage.setItem('teamEmployees', JSON.stringify(teamsEmployees));
+		//console.log("I am in the team " + teamsEmployees);
 	}
 });
 
@@ -106,7 +107,7 @@ getTeamCallback.done(function(data){
 	if(team == null){
 		console.log("No team found.");
 	}else{
-		console.log(team);
+		//console.log(team);
 	}
 });
 
@@ -115,8 +116,8 @@ getEmpManagerCallback.done(function(data){
 	if(employeesManagers == null){
 		console.log("Could not find employee's manager");
 	}else{
-		console.log("Employee manager:")
-		console.log(employeesManagers);
+		//console.log("Employee manager:")
+		//console.log(employeesManagers);
 	}
 })
  /*Get reference example=*/
@@ -254,7 +255,7 @@ function getEmployeesByManager(userID)
 		if(snapshot.exists()){
 			if(snapshot.child("isManager").val() == true && snapshot.child("employees").val() != null){
 				snapshot.child('employees').forEach(function(childSnapshot){
-					console.log("this is the employee requested: " + childSnapshot.val());
+					//console.log("this is the employee requested: " + childSnapshot.val());
 				});
 			}	
 		}
@@ -395,7 +396,7 @@ function getEmpManager(emailAddress){
 
 	ref.once('value', function(snapshot){
 		if(snapshot.exists()){
-			console.log(snapshot.val());
+			//console.log(snapshot.val());
 			snapshot.forEach(function(childSnapshot){
 				if(childSnapshot.child("isManager").val() == true && childSnapshot.child("employees").val() != null){
 					var employeeArray = childSnapshot.child("employees").val();
