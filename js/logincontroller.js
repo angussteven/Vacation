@@ -5,23 +5,11 @@ $(document).ready(function () {
             popup.close();
     });
 
-    // //prevent createProfileForm form from posting
-    // $("#createProfileForm").submit(function (event) {
-    //     event.preventDefault();
-    //     createProfile();
-    //     $('#createProfileModal').foundation('close');
-    // });
-
-    // $("#createProfileBtn").click(function(){
-    //     createProfile();
-    // })
     $(document).foundation();
-  $(document)
-  // to prevent form from submitting upon successful validation
-  .on("submit", function(ev) {
-    ev.preventDefault();
-    createProfile();
-    $('#createProfileModal').foundation('close');
+    $("#createProfileForm").on("submit", function(ev) {
+        ev.preventDefault();
+        createProfile();
+        $('#createProfileModal').foundation('close');
   });
 });
   
@@ -150,5 +138,25 @@ function getAllManagers(){
     });
 }
 
+var allTeams = [];
 
+var getAllTeamsCallback = $.Deferred(getAllTeams);
+getAllTeamsCallback.done(function(data){
+    var select = document.getElementById("selectedTeam");
+    
+    for(var i = 0; i < allTeams.length; i++){
+        select[select.length] = new Option(allTeams[i].name, allTeams[i].name);
+        console.log(allTeams[i]);
+    }
+});
+
+function getAllTeams(){
+    var ref = firebase.database().ref().child('team');
+    ref.on('value', function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+            allTeams.push(childSnapshot.val());
+        });
+        getAllTeamsCallback.resolve();
+    });
+}
 
