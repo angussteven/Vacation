@@ -130,18 +130,12 @@ var managerObject = {};
 var getAllManagersCallback = $.Deferred(getAllManagers);
 getAllManagersCallback.done(function(data){
     var select = document.getElementById("selectedManager");
+    
     for(var i = 0; i < allManagers.length; i++){
-        // var el = document.createElement("option");
-        // el.textContent = allmanagers[i].firstName + " " allmanagers[i].lastName;
-        // el.value = allmanagers[i].email;
-        // select.appendChild(el);
-        //var managerName = allManagers[i].firstName + " " + allManagers[i].lastName;
 
         select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
-
-        //console.log(allManagers[i].email);
-        //managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;
     }
+    console.log(managerObject);
 });
 
 function getAllManagers(){
