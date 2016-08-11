@@ -162,18 +162,26 @@ function addDay(eventDay) {
 			selectHelper: true,
       fixedWeekCount: false,
 			select: function(start, end) {
-				title = $("#firstName").val() + ' ' + $("#lastName").val();
-				if (title) {
-          popup3.open();
-          $("#startDate").val(start.toISOString());
-          $("#endDate").val(subtractDay(end.toISOString()));
-          $("#alertOne").prop("checked", true);
-          $("#vacationRadio").prop("checked", true);
-          $("#downloadICSCheckbox").prop("checked", false);
-          $("#createEventDescription").val("");
-          //$("#createEventTitle").val("Variable for your name");//update to include name dynamically
-				};
-				$('#calendar').fullCalendar('unselect');
+        var check = start._d.toJSON().slice(0,10); 
+        var today = new Date().toJSON().slice(0,10);
+        if(check < today) {
+          $('#calendar').fullCalendar('unselect');
+          alert("Cannot select past days")
+        }
+        else {
+          title = $("#firstName").val() + ' ' + $("#lastName").val();
+          if (title) {
+            popup3.open();
+            $("#startDate").val(start.toISOString());
+            $("#endDate").val(subtractDay(end.toISOString()));
+            $("#alertOne").prop("checked", true);
+            $("#vacationRadio").prop("checked", true);
+            $("#downloadICSCheckbox").prop("checked", false);
+            $("#createEventDescription").val("");
+            //$("#createEventTitle").val("Variable for your name");//update to include name dynamically
+          };
+          $('#calendar').fullCalendar('unselect');
+        }
 			},
       eventClick: function(event, element) {
         clickedID = event.id;
