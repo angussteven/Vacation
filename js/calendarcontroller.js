@@ -11,6 +11,14 @@ firebase.auth().onAuthStateChanged(function (user) {
   }
 });
 
+function checkDate(date) {
+  var today = new Date().toJSON().slice(0,10);
+  if(date < today) {
+    return false;
+  }
+  return true;
+}
+
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -165,6 +173,7 @@ function addDay(eventDay) {
         var check = start._d.toJSON().slice(0,10);
         var today = new Date().toJSON().slice(0,10);
         if(check < today) {
+          console.log(check);
           $('#calendar').fullCalendar('unselect');
           alertify.alert("Please select a start date on or after today's date.");
         }
@@ -312,75 +321,90 @@ function addDay(eventDay) {
       // checks for start date following end date; if event ends before start, it will be set to a one-day event on the start date
       var startd = $("#startDate").val();
       var endd = addDay($("#endDate").val());
-      if(Date.parse(startd) >= Date.parse(endd))
-      {
-        endd = addDay(startd);
+      if (!checkDate(startd)) {
+        alertify.alert("Please select a valid start date.");
       }
-      eventData = {
-        id: id,
-        title: $("#createEventTitle").val(),
-        start: startd,
-        end: endd,
-        description: $("#createEventDescription").val(),
-      };
-
-      $('#calendar').fullCalendar('renderEvent', eventData, true);
-      alert = $('input:radio[name=alert]:checked').val();
-      isVacation = $('input:radio[name=isVacation]:checked').val();
-      console.log(emailAddress);
-      saveEvent(emailAddress, id, $("#startDate").val(), addDay($("#endDate").val()), isVacation, $("#createEventTitle").val(), $("#createEventDescription").val());
-      popup3.close();
-      if ($("#downloadICSCheckbox").is(':checked') === true) {
-        var data = sessionStorage.getItem('user');
-        var dataResult = JSON.parse(data);
-        var fullName = dataResult.firstName + " " + dataResult.lastName;
-        var icsFile = createICSFile(dataResult.managers, fullName, dataResult.email, $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
-        window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
+      else if (!checkDate(endd)) {
+        alertify.alert("Please select a valid end date.")
+      }
+      else {
+        if(Date.parse(startd) >= Date.parse(endd)) {
+          endd = addDay(startd);
+        }
+        eventData = {
+          id: id,
+          title: $("#createEventTitle").val(),
+          start: startd,
+          end: endd,
+          description: $("#createEventDescription").val(),
+        };
+        $('#calendar').fullCalendar('renderEvent', eventData, true);
+        alert = $('input:radio[name=alert]:checked').val();
+        isVacation = $('input:radio[name=isVacation]:checked').val();
+        saveEvent(emailAddress, id, $("#startDate").val(), addDay($("#endDate").val()), isVacation, $("#createEventTitle").val(), $("#createEventDescription").val());
+        popup3.close();
+        if ($("#downloadICSCheckbox").is(':checked') === true) {
+          var data = sessionStorage.getItem('user');
+          var dataResult = JSON.parse(data);
+          var fullName = dataResult.firstName + " " + dataResult.lastName;
+          var icsFile = createICSFile(dataResult.managers, fullName, dataResult.email, $("#startDate").val(), addDay($("#endDate").val()), isVacation, alert);
+          window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
+        }
       }
     });
 
     $("#deleteBtn").click(function() {
-      var ans = confirm("Are you sure you want to remove this event?");
-      if (ans == true) {
+      alertify.confirm("Are you sure you want to remove this event?", function(){ 
         $("#calendar").fullCalendar('removeEvents',clickedID);
+        updateDeleteEvent(clickedID);
         deleteEvent(clickedID);
         popup4.close();
-      }
+      });
     });
 
     $("#viewEventCloseBtn").click(function () {
-      var ans = confirm("Are you sure you want to exit? All progress will be lost.");
-      if (ans == true)
+      alertify.confirm("Are you sure you want to exit? All progress will be lost.", function(){
         popup4.close();
+      });
     });
 
     $("#changeEventBtn").click(function () {
-      $('#calendar').fullCalendar('removeEvents', clickedID);
       // checks for start date following end date; if event ends before start, it will be set to a one-day event on the start date
       var news = $("#viewStartDate").val();
       var newe = addDay($("#viewEndDate").val());
-      if(Date.parse(news) >= Date.parse(newe))
-      {
-        newe = addDay(news);
+      if (!checkDate(news)) {
+        alertify.alert("Please select a valid start date.");
       }
-      console.log(news + ", " + newe);
-      changedEvent = {
-        id: clickedID,
-        title: $("#eventTitle").val(),
-        start: news,
-        end: newe,
-        description: $("#eventDescription").val(),
-      };
-      $('#calendar').fullCalendar('renderEvent', changedEvent, true);
-      popup4.close();
-      alert = $('input:radio[name=alert_viewModal]:checked').val();
-      isVacation = $('input:radio[name=isVacation_viewModal]:checked').val();
-      if ($("#downloadICSCheckbox_viewModal").is(':checked') === true) {
-        var data = sessionStorage.getItem('user');
-        var dataResult = JSON.parse(data);
-        var fullName = dataResult.firstName + " " + dataResult.lastName;
-        var icsFile = createICSFile(dataResult.managers, fullName, dataResult.email, $("#viewStartDate").val(), addDay($("#viewEndDate").val()), isVacation, alert);
-        window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
+      else if (!checkDate(newe)) {
+        alertify.alert("Please select a valid end date.")
+      }
+      else {
+        $('#calendar').fullCalendar('removeEvents', clickedID);
+        deleteEvent(clickedID);
+        if(Date.parse(news) >= Date.parse(newe))
+        {
+          newe = addDay(news);
+        }
+        console.log(news + ", " + newe);
+        changedEvent = {
+          id: guid(),
+          title: $("#eventTitle").val(),
+          start: news,
+          end: newe,
+          description: $("#eventDescription").val(),
+        };
+        alert = $('input:radio[name=alert_viewModal]:checked').val();
+        isVacation = $('input:radio[name=isVacation_viewModal]:checked').val();
+        $('#calendar').fullCalendar('renderEvent', changedEvent, true);
+        saveEvent(emailAddress, guid(), news, newe, isVacation, $("#eventTitle").val(), $("#createEventDescription").val());
+        popup4.close();
+        if ($("#downloadICSCheckbox_viewModal").is(':checked') === true) {
+          var data = sessionStorage.getItem('user');
+          var dataResult = JSON.parse(data);
+          var fullName = dataResult.firstName + " " + dataResult.lastName;
+          var icsFile = createICSFile(dataResult.managers, fullName, dataResult.email, $("#viewStartDate").val(), addDay($("#viewEndDate").val()), isVacation, alert);
+          window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
+        }
       }
     })
 	});

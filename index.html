@@ -36,6 +36,7 @@
   <script src="js/login.js"></script>
   <script src="js/logincontroller.js"></script>
   <script src="js/jstree/jstree.js"></script>
+  <script src="js/jstreecontroller.js"></script>
   <!--Sources are Foundation and for calendar: http://fullcalendar.io/-->
 </HEAD>
 
@@ -290,17 +291,17 @@
         </div>
         <div class="large-6 medium-6 columns">
           <label>Verify Email Address</label>
-          <input type="email" id="emailAddressVerify" required autocomplete="off" />
+          <input type="email" id="emailAddressVerify" data-equalto="emailAddress" required autocomplete="off" />
         </div>
       </div>
       <div class="row">
         <div class="large-6 medium-6 columns">
           <label>Password</label>
-          <input type="password" id="profilePassword" required/>
+          <input type="password" min="6" id="profilePassword" required/>
         </div>
         <div class="large-6 medium-6 columns">
           <label>Verify Password</label>
-          <input type="password" id="profilePasswordVerify" required autocomplete="off" />
+          <input type="password" min="6" id="profilePasswordVerify" data-equalto="profilePassword" required autocomplete="off" />
         </div>
       </div>
       <div class="row">
@@ -314,18 +315,18 @@
         <div class="large-12 columns">
           <label>Select Manager</label>
           <select id="selectedManager">
-                <option value="Manager1" required>Michael Eilers </option>
+                <option value="Mansager1" required>Michael Eilers </option>
           </select>
         </div>
       </div>
       <div class="row">
         <div class="large-6 medium-4 columns">
           <label>Number of Total Vacation Days</label>
-          <input type="number" id="vacationDaysTotal" />
+          <input type="number" id="vacationDaysTotal" required />
         </div>
         <div class="large-6 medium-4 columns">
           <label>Number of Remaining Vacation Days</label>
-          <input type="number" id="vacationDaysLeft" />
+          <input type="number" id="vacationDaysLeft" required />
         </div>
       </div>
       <div class="row">
@@ -334,7 +335,5 @@
       <button id="createCloseBtn" class="close-button" unselectable="on"><span aria-hidden="true">&times;</span></button>
   </form>
 </div>
-
-<script src="js/jstreecontroller.js"></script>
 </body>
 </html>

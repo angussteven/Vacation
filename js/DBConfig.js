@@ -95,7 +95,8 @@ getEmployeesOnTeamCallback.done(function(data){
 	if(teamsEmployees == null){
 		console.log("Team has no employees");
 	}else{
-		//console.log(teamsEmployees);
+		sessionStorage.setItem('teamEmployees', JSON.stringify(teamsEmployees));
+		//console.log("I am in the team " + teamsEmployees);
 	}
 });
 
@@ -114,6 +115,7 @@ getEmpManagerCallback.done(function(data){
 	if(employeesManagers == null){
 		console.log("Could not find employee's manager");
 	}else{
+		//console.log("Employee manager:")
 		//console.log(employeesManagers);
 	}
 });
@@ -579,8 +581,6 @@ function fixEmail(tempEmail){
   return result;
 }
 
-
-
 // Deletes an event [UNKNOWN]
 function deleteEvent(eventID){
 
@@ -593,6 +593,41 @@ function deleteEvent(eventID){
 
    //ref.remove();
   // Delete the event via the eventID
+}
+
+function updateDeleteEvent(eventID){
+	var startDate;
+	var endDate;
+	var vacation;
+	var ref = firebase.database().ref().child('event');
+	ref.child(eventID).once('value', function(snapshot){
+		//console.log("The email is: " + snapshot.child("email").val());
+		startDate = snapshot.child("startDate").val();
+		endDate = snapshot.child("endDate").val();
+		endDate = subtractDay(endDate);
+		vacation = calculateVacationDays(startDate, endDate);
+		//getting data from session storage
+ 		var data = sessionStorage.getItem('user');
+		var dataResult = JSON.parse(data);
+		//changing the session storage object
+		dataResult.daysLeft = dataResult.daysLeft+vacation;
+		sessionStorage.setItem('user',JSON.stringify(dataResult));
+		//repopulating the html fields
+		var vdays = document.getElementById("vacationdays");
+   		var info = "Total Days: " + dataResult.totalVacationDays + "<br>Remaining Days: " + dataResult.daysLeft;
+    	vdays.innerHTML = info;
+    	updateDeleteEventDatabase(dataResult.email);
+	});
+	
+	//firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
+}
+
+function updateDeleteEventDatabase(email){
+	//getting data from session storage
+ 	var data = sessionStorage.getItem('user');
+	var dataResult = JSON.parse(data);
+	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('daysLeft').set(dataResult.daysLeft);
 }
 
 function subtractDay(day) {
