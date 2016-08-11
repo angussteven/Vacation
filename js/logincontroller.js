@@ -5,23 +5,11 @@ $(document).ready(function () {
             popup.close();
     });
 
-    // //prevent createProfileForm form from posting
-    // $("#createProfileForm").submit(function (event) {
-    //     event.preventDefault();
-    //     createProfile();
-    //     $('#createProfileModal').foundation('close');
-    // });
-
-    // $("#createProfileBtn").click(function(){
-    //     createProfile();
-    // })
     $(document).foundation();
-  $(document)
-  // to prevent form from submitting upon successful validation
-  .on("submit", function(ev) {
-    ev.preventDefault();
-    createProfile();
-    $('#createProfileModal').foundation('close');
+    $("#createProfileForm").on("submit", function(ev) {
+        ev.preventDefault();
+        createProfile();
+        $('#createProfileModal').foundation('close');
   });
 });
   
