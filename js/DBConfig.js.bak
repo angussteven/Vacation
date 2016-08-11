@@ -169,6 +169,10 @@ function addEvent(userID, startDate, endDate, title, description, alert, isBusin
 	// Remove appropriate vacation days from employee
 }
 
+// Gets all the events for a given employee [TODO]
+function getEmployeeEvents(userID){
+	
+}
 
 // Get all the events for the employees of a given team [DONE]
 function getAllEvents(){
@@ -183,23 +187,7 @@ function getAllEvents(){
 		getAllEventsCallback.resolve();
 	});
 }
-// // Gets all the events for a given employee [TODO]
-function getEmployeeEvents(userID){
-	//var fixedUserID = fixEmail(userID);
-	// console.log("in the get employee Event");
-	var evRef = firebase.database().ref().child('event');
-	evRef.orderByChild("email").equalTo(userID).once('value', function(snapshot){
-		if(snapshot.exists()){
-			employeeEvents = snapshot.val();
-		}
-		else{
-			employeeEvents = null;
-		}
-		getEmployeeEventsCallback.resolve();
-		//'console.log(snapshot.val());
-	});
 
-}
 
  // Updates a given event [TODO]
 function updateEvent(eventID, email, startDate, endDate, title, type, description){
