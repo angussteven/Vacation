@@ -19,6 +19,16 @@ function checkDate(date) {
   return true;
 }
 
+// date1 is start date, date2 is end date
+function compareDates(date1, date2) {
+  date1 = parseInt(date1.replace(/-/g,''));
+  date2 = parseInt(date2.replace(/-/g,''));
+  if (date1 > date2) {
+    return false;
+  }
+  return true;
+}
+
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -330,7 +340,10 @@ function addDay(eventDay) {
         alertify.alert("Please select a valid start date.");
       }
       else if (!checkDate(endd)) {
-        alertify.alert("Please select a valid end date.")
+        alertify.alert("Please select a valid end date.");
+      }
+      else if (!compareDates(startd, endd)) {
+        alertify.alert("The end date cannot be before the start date.");
       }
       else {
         if(Date.parse(startd) >= Date.parse(endd)) {
@@ -381,7 +394,10 @@ function addDay(eventDay) {
         alertify.alert("Please select a valid start date.");
       }
       else if (!checkDate(newe)) {
-        alertify.alert("Please select a valid end date.")
+        alertify.alert("Please select a valid end date.");
+      }
+      else if (!compareDates(news, newe)) {
+        alertify.alert("The end date cannot be before the start date.");
       }
       else {
         $('#calendar').fullCalendar('removeEvents', clickedID);

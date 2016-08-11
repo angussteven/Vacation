@@ -507,7 +507,7 @@ function calculateVacationDays(start_date, end_date){
 
     // contants for weekends and holidays; holiday array should include all company holidays in string format "MM-DD-YYYY"
     weekend = [6,0]; // don't change this
-    holidays = ["09-05-2016","11-08-2015","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"];
+    holidays = ["09-05-2016","11-08-2016","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"];
 
     // for loop parses holiday array into Date objects
     for (var i = 0; i < holidays.length; i++) {
