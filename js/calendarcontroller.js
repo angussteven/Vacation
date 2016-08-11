@@ -162,11 +162,11 @@ function addDay(eventDay) {
 			selectHelper: true,
       fixedWeekCount: false,
 			select: function(start, end) {
-        var check = start._d.toJSON().slice(0,10); 
+        var check = start._d.toJSON().slice(0,10);
         var today = new Date().toJSON().slice(0,10);
         if(check < today) {
           $('#calendar').fullCalendar('unselect');
-          alert("Cannot select past days")
+          alertify.alert("Please select a start date on or after today's date.");
         }
         else {
           title = $("#firstName").val() + ' ' + $("#lastName").val();
@@ -278,7 +278,7 @@ function addDay(eventDay) {
 
         var holidays = [newYearsDay, mlkDay, goodFriday, dayAfterEaster, fourthOfJuly, laborDay, electionDay, veteransDay, thanksgiving1, thanksgiving2, christmas1, christmas2, christmas3, christmas4, christmas5];
         var holidayMoment;
-        for(var i = 0; i < holidays.length; i++) {        
+        for(var i = 0; i < holidays.length; i++) {
           holidayMoment = holidays[i];
           if (view.name == 'month') {
             $("td[data-date=" + holidayMoment.format('YYYY-MM-DD') + "]").addClass('holiday');
