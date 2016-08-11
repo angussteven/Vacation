@@ -57,7 +57,7 @@ getEmployeeCallback.done(function(data){
 		//to extract info
 		/**
 		*	var data = sessionStorage.getItem('user');
-		*	var dataResult = JSON.parse(data);		
+		*	var dataResult = JSON.parse(data);
 		*/
 	}
 });
@@ -76,7 +76,7 @@ getEmployeeEventsCallback.done(function(data){
 
 });
 
-// Get employee with given email address [DONE] 
+// Get employee with given email address [DONE]
 function getEmployee(emailAddress) {
 	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
 	ref.once('value', function (snapshot) {
@@ -151,7 +151,8 @@ getAllEventsCallback.done(function(data){
  // 	console.log(count)
  // });
 //deleteEvent(2);
-getEmployeesByManager("michael.eilers@gm.com");
+//getEmployeesByManager("michael.eilers@gm.com");
+updateManager('jimbo.fisher@gm.com', 'Nick Saban');
  //saveEmployee("zach","dicino",15,15,"quantum",["michael.eilers@gm.com"],false,"zachary.dicino@gm.com","1234");
  //removeManagerFromTeam("michael.eilers@gm.com","quantum");
  //saveEmployee("manager","manager",15,15,1,["managersboss@gm.com"],[1],true,"manager2@gm.com","1234");
@@ -268,32 +269,18 @@ function getEmployeesByManager(userID){
 				snapshot.child('employees').forEach(function(childSnapshot){
 					//console.log("this is the employee requested: " + childSnapshot.val());
 				});
-			}	
+			}
 		}
-	});	
+	});
 
 }
 
-// Update the employee with the given userID [UNKNOWN]
-function updateEmployee(userID, firstName, lastName, emailAddress, totalVacation, usedVacation, manager, isManager, teamID){
 
-  //managers[managers.length()] = manager;
-  var tempData = {
-    firstName: firstName,
-    lastName: lastName,
-    email: emailAddress,
-    totalVacationDays: totalVacation,
-    daysLeft: totalVacation - usedVacation,
-    //managers: managers,
-    isManager: isManager,
-    team: teamID
-  };
-  var updates = {};
-  updates[userID] = tempData;
-  return firebase.database().ref('employee').update(updates);
+// Update the employee's manager 
+function updateManager(email, manager){
+  var tempEmail = fixEmail(email);
+  firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('managers').set(manager);
 
-  // Test for updateEmployee (successful):
-  //	updateEmployee("andrewmoawadgmcom", "andrew", "moawad", "andrew.moawad@gm.com", 100, 50, "michael.eilers@gm.com", true, 1);
 }
 
 // Team //
@@ -643,7 +630,7 @@ function updateDeleteEvent(eventID){
     	vdays.innerHTML = info;
     	updateDeleteEventDatabase(dataResult.email);
 	});
-	
+
 	//firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
 }
 
