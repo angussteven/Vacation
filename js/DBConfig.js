@@ -27,20 +27,20 @@ firebase.auth().onAuthStateChanged(function (user) {
 // Implementation of getEmployeeCount
 var getEmpCountTest = $.Deferred(getEmployeeCount);
 getEmpCountTest.done(function(data){
-  console.log("Employee Count: " + employeeCount);
+  //console.log("Employee Count: " + employeeCount);
 });
 
 // Implementation of getEmployeeCount
 var getTeamCountTest = $.Deferred(getTeamCount);
 getTeamCountTest.done(function(data){
-  console.log("Team Count: " + teamCount);
+  //console.log("Team Count: " + teamCount);
 });
 
 // Implementation of getAllTeams
 var getAllTeamsCallback = $.Deferred(getAllTeams);
 getAllTeamsCallback.done(function(data){
-	console.log("All da teams: ");
-	console.log(allTeams);
+	//console.log("All da teams: ");
+	//console.log(allTeams);
 });
 
 // Implementation of getEmployee
@@ -52,9 +52,6 @@ getEmployeeCallback.done(function(data){
 	}else{
 		document.getElementById("profileName").innerHTML = employee.firstName + " " + employee.lastName
 		$("#createEventTitle").val(employee.firstName + " " + employee.lastName);
-		console.log("Email: " + employee.email);
-		console.log("Total Vacation Days: " + employee.totalVacationDays);
-		console.log("Remaining Vacation Days: " + employee.daysLeft);
 		sessionStorage.setItem('user', JSON.stringify(employee));
 		//to extract info
 		/**
@@ -98,7 +95,7 @@ getEmployeesOnTeamCallback.done(function(data){
 	if(teamsEmployees == null){
 		console.log("Team has no employees");
 	}else{
-		console.log(teamsEmployees);
+		//console.log(teamsEmployees);
 	}
 });
 
@@ -108,7 +105,7 @@ getTeamCallback.done(function(data){
 	if(team == null){
 		console.log("No team found.");
 	}else{
-		console.log(team);
+		//console.log(team);
 	}
 });
 
@@ -117,14 +114,14 @@ getEmpManagerCallback.done(function(data){
 	if(employeesManagers == null){
 		console.log("Could not find employee's manager");
 	}else{
-		console.log("Employee manager:")
-		console.log(employeesManagers);
+		//console.log(employeesManagers);
 	}
 });
 
 var getAllEventsCallback = $.Deferred(getAllEvents());
 getAllEventsCallback.done(function(data){
-
+	console.log("Events:");
+	console.log(allEvents);
 });
 
  /*Get reference example=*/
@@ -163,7 +160,7 @@ function getEmployeeEvents(userID){
 }
 
 // Get all the events for the employees of a given team [DONE]
-function getAllEvents(teamID){
+function getAllEvents(){
 	// Get all the vacation days for all employees in a given team
 	var ref = firebase.database().ref().child('event');
 	ref.on('value', function(snapshot){
@@ -172,16 +169,29 @@ function getAllEvents(teamID){
 		}else{
 			allEvents = null;
 		}
-		getAllEventsCallback.done();
+		getAllEventsCallback.resolve();
 	});
 }
 
 
  // Updates a given event [TODO]
-function updateEvent(){
-	// Update the information for an event
-}
+function updateEvent(eventID, email, startDate, endDate, title, type, description){
+// Update the information for an event
+	var tempData = {
+		description: description,
+		email: email,
+		endDate: endDate,
+		startDate: startDate,
+		title: title,
+		type: type
+	};
+	var updates = {};
+	updates[eventID] = tempData;
+	return firebase.database().ref('event').update(updates);
 
+}
+// Testing update event
+//updateEvent("0aef855c2a3c2c81d60d1668991f5637", "jimbo.fisher@gm.com", "2016-08-29", "2016-08-30", "Updated Event Title Here", "vacation", "This is an update...that is all");
 
 
 // Get vacation days for employee
@@ -198,24 +208,6 @@ function getVacationDays(emailAddress){
 	})
 }
 
-
-// Get the employee with matching email
- 	/*ref.orderByChild("email").equalTo(emailAddress).once('value', function(snapshot) {
-
-	// Get the employee with matching email
- 	ref.orderByChild("email").equalTo(emailAddress).once('value', function(snapshot) {
- 		if(snapshot.val() != null){
- 			console.log(snapshot.val());
- 			var id = Object.keys(snapshot.val()).toString();
- 			console.log(id);
- 			var empObject = snapshot.child(id).val();
- 			employee = empObject;
- 		}else{
- 			console.log("No Employee Returned");
- 		}
- 		getEmployeeCallback.resolve();
- 	})*/
-
 // Gets the total number of employees in a database (included managers) [DONE]
  function getEmployeeCount() {
  	var count = 0;
@@ -228,8 +220,6 @@ function getVacationDays(emailAddress){
 
 // Gets all the employees that are on a given team
 function getEmployeesOnTeam(teamName){
-	// Get all the employees that are on a team
-
 	var ref = firebase.database().ref().child('employee');
 	ref.orderByChild("team").equalTo(teamName.toLowerCase()).once('value', function(snapshot){
 		if(snapshot.exists()){
@@ -239,33 +229,17 @@ function getEmployeesOnTeam(teamName){
 		}
 		getEmployeesOnTeamCallback.resolve();
 	})
-
 }
 
-/*
- 	Save an employee into the database [DONE]
- 	totalVacation = int
- 	daysLeft = int
- 	teamName = string
- 	managers = array of strings
- 	events = array of ints (ids)
- 	isManager = bool
- 	employees = array of strings (emails) default null for now
- 	everything else string
- */
-
-
-
 //Get The employess under manager
-function getEmployeesByManager(userID)
-{
+function getEmployeesByManager(userID){
 	userID = fixEmail(userID);
 	var ref = firebase.database().ref().child('employee');
 	ref.child(userID).once('value', function(snapshot){
 		if(snapshot.exists()){
 			if(snapshot.child("isManager").val() == true && snapshot.child("employees").val() != null){
 				snapshot.child('employees').forEach(function(childSnapshot){
-					console.log("this is the employee requested: " + childSnapshot.val());
+					//console.log("this is the employee requested: " + childSnapshot.val());
 				});
 			}	
 		}
@@ -401,12 +375,9 @@ function switchTeams(emailAddress, fromTeamID, toTeamID){
 // Manager //
 // Get the manager that oversees given employee email [TODO]
 function getEmpManager(emailAddress){
-
 	var ref = firebase.database().ref().child('employee');
-
 	ref.once('value', function(snapshot){
 		if(snapshot.exists()){
-			console.log(snapshot.val());
 			snapshot.forEach(function(childSnapshot){
 				if(childSnapshot.child("isManager").val() == true && childSnapshot.child("employees").val() != null){
 					var employeeArray = childSnapshot.child("employees").val();
@@ -418,16 +389,8 @@ function getEmpManager(emailAddress){
 				}
 			});
 		}
-		else{
-		}
 		getEmpManagerCallback.resolve();
 	})
-	
-}
-
-// Get the managet that oversees a given team [TODO]
-function getTeamManager(teamName){
-	// Get the manager for the team
 }
 
 
@@ -481,7 +444,7 @@ function saveEvent(email, eventID, startDate, endDate, vacationType,
 
 	//calculate the vacation days
 	var vacation = calculateVacationDays(startDate, endDate);
-	console.log(vacation);
+	//console.log(vacation);
 
 	//changing the session storage object
 	dataResult.daysLeft = dataResult.daysLeft-vacation;
@@ -635,7 +598,7 @@ function deleteEvent(eventID){
 function subtractDay(day) {
   day = day.split('-');
   //endDay = day[0] + day[1] + day[2];
-  console.log(day);
+  //console.log(day);
 
   if (day[2] === '01'){//if the day is 1 it is actually the last day of the previous month
       switch (day[1]){//switching on month
@@ -670,6 +633,6 @@ function subtractDay(day) {
       if (day[2] <= 9){ day[2] = "0" + day[2];}
       day = day[0] + '-' + day[1] + '-' + day[2];
     }
-    console.log(day);
+    //console.log(day);
   return day;
 }
