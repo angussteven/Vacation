@@ -142,7 +142,6 @@ getAllManagersCallback.done(function(data){
         //console.log(allManagers[i].email);
         //managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;
     }
-    console.log(managerObject);
 });
 
 function getAllManagers(){
