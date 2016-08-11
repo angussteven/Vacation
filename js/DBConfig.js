@@ -499,11 +499,11 @@ function calculateVacationDays(start_date, end_date){
   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
-
-    // call parseData to take inputs and convert to Date object
+   	// call parseData to take inputs and convert to Date object
     start_date = parseDate(start_date);
     start_date = validStart(start_date);
     end_date = parseDate(end_date);
+
 
     // contants for weekends and holidays; holiday array should include all company holidays in string format "MM-DD-YYYY"
     weekend = [6,0]; // don't change this
@@ -641,7 +641,10 @@ function updateDeleteEvent(eventID){
 		//console.log("The email is: " + snapshot.child("email").val());
 		startDate = snapshot.child("startDate").val();
 		endDate = snapshot.child("endDate").val();
+		//switching the dates around
+		startDate = startDate.slice(-5) + "-" + startDate.slice(0,4);
 		endDate = subtractDay(endDate);
+		endDate = endDate.slice(-5) + "-" + endDate.slice(0,4);
 		vacation = calculateVacationDays(startDate, endDate);
 		//getting data from session storage
  		var data = sessionStorage.getItem('user');

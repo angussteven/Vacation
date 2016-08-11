@@ -200,7 +200,10 @@ function addDay(eventDay) {
             var data = sessionStorage.getItem('user');
             var dataResult = JSON.parse(data);  
             $("#createEventTitle").val(dataResult.firstName + " " + dataResult.lastName);
-            var vacation = calculateVacationDays($("#startDate").val(),$("#endDate").val());
+            var startDate = $("#startDate").val().slice(-5) + "-" + $("#startDate").val().slice(0,4);
+            endDate = subtractDay($("#endDate").val());
+            var endDate = $("#endDate").val().slice(-5) + "-" + $("#endDate").val().slice(0,4);
+            var vacation = calculateVacationDays(startDate,endDate);
             $("#daysSelected").val(vacation);
             $("#daysLeft").val(dataResult.daysLeft-vacation);
             //$("#createEventTitle").val("Variable for your name");//update to include name dynamically
