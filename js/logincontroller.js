@@ -5,17 +5,26 @@ $(document).ready(function () {
             popup.close();
     });
 
-    //prevent createProfileForm form from posting
-    $("#createProfileForm").submit(function (event) {
-        event.preventDefault();
-        createProfile();
-        $('#createProfileModal').foundation('close');
-    });
+    // //prevent createProfileForm form from posting
+    // $("#createProfileForm").submit(function (event) {
+    //     event.preventDefault();
+    //     createProfile();
+    //     $('#createProfileModal').foundation('close');
+    // });
 
     // $("#createProfileBtn").click(function(){
     //     createProfile();
     // })
+    $(document).foundation();
+  $(document)
+  // to prevent form from submitting upon successful validation
+  .on("submit", function(ev) {
+    ev.preventDefault();
+    createProfile();
+    $('#createProfileModal').foundation('close');
+  });
 });
+  
 var isNewAccount = false;
 function createProfile() {
     isNewAccount = true;
@@ -30,14 +39,6 @@ function createProfile() {
     var totalVacationDays = document.getElementById('vacationDaysTotal').value;
     var vacationDaysLeft = document.getElementById('vacationDaysLeft').value;
 
-    if(email !== emailVerify && email == "" && emailVerify == ""){
-        alert("Emails do not match.");
-        return
-    }
-    if(password !== passwordVerify && password == ""){
-        alert("Passwords do not match.")
-        return
-    }
     addUser(email, password, firstName, lastName, totalVacationDays, vacationDaysLeft, isManager, manager, "TEAAAM", "ALL EMPLOYEES", "URL", "Title")
 }
 
