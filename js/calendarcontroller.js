@@ -356,6 +356,7 @@ function addDay(eventDay) {
     $("#deleteBtn").click(function() {
       alertify.confirm("Are you sure you want to remove this event?", function(){ 
         $("#calendar").fullCalendar('removeEvents',clickedID);
+        updateDeleteEvent(clickedID);
         deleteEvent(clickedID);
         popup4.close();
       });
