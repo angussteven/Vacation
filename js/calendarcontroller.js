@@ -187,7 +187,12 @@ function addDay(eventDay) {
             $("#vacationRadio").prop("checked", true);
             $("#downloadICSCheckbox").prop("checked", false);
             $("#createEventDescription").val("");
-            $("#createEventTitle").val(employee.firstName + " " + employee.lastName);
+            var data = sessionStorage.getItem('user');
+            var dataResult = JSON.parse(data);  
+            $("#createEventTitle").val(dataResult.firstName + " " + dataResult.lastName);
+            var vacation = calculateVacationDays($("#startDate").val(),$("#endDate").val());
+            $("#daysSelected").val(vacation);
+            $("#daysLeft").val(dataResult.daysLeft-vacation);
             //$("#createEventTitle").val("Variable for your name");//update to include name dynamically
           };
           $('#calendar').fullCalendar('unselect');
