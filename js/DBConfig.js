@@ -17,6 +17,8 @@ var keyToObject ;
 var profileEmail;
 var employeesManagers = [];
 var vacationLeft = 0;
+var allEvents;
+
 
 firebase.auth().onAuthStateChanged(function (user) {
 	profileEmail = user.email;
@@ -118,7 +120,13 @@ getEmpManagerCallback.done(function(data){
 		console.log("Employee manager:")
 		console.log(employeesManagers);
 	}
-})
+});
+
+var getAllEventsCallback = $.Deferred(getAllEvents());
+getAllEventsCallback.done(function(data){
+
+});
+
  /*Get reference example=*/
  /*var value;
  var dbRef = firebase.database().ref().child('employee');
@@ -149,20 +157,23 @@ function addEvent(userID, startDate, endDate, title, description, alert, isBusin
 	// Remove appropriate vacation days from employee
 }
 
-
-
 // Gets all the events for a given employee [TODO]
 function getEmployeeEvents(userID){
-	// Get all the vacation days for a given employee
-	var ref = firebase.database().ref.child('event');
-	ref.on('value', function(snapshot){
-		console.log(snapshot.val());
-	});
+	
 }
 
-// Get all the events for the employees of a given team [TODO]
-function getTeamEvents(teamID){
+// Get all the events for the employees of a given team [DONE]
+function getAllEvents(teamID){
 	// Get all the vacation days for all employees in a given team
+	var ref = firebase.database().ref().child('event');
+	ref.on('value', function(snapshot){
+		if(snapshot.exists()){
+			allEvents = snapshot.val();
+		}else{
+			allEvents = null;
+		}
+		getAllEventsCallback.done();
+	});
 }
 
 
