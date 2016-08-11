@@ -5,7 +5,7 @@ function fireSignOut() {
 		$("#wrap").hide();
 		$("#signOutButton").show()
 	}, function (error) {
-		alert("Fail");
+		alertify.alert("Fail");
 	});
 }
 
@@ -15,7 +15,7 @@ function logIn() {
 	var password = document.getElementById('password').value;
 
 	if (password == "") {
-		alert("Enter a password");
+		alertify.alert("Enter a password");
 		return;
 	}
 
@@ -24,13 +24,13 @@ function logIn() {
 		var errorCode = error.code;
 		var errorMessage = error.message;
 		if (errorCode == 'auth/invalid-email') {
-			alert(errorMessage);
+			alertify.alert(errorMessage);
 		}
 		else if (errorCode == 'auth/user-not-found') {
-			alert(errorMessage);
+			alertify.alert(errorMessage);
 		}
 	   else if (errorCode == 'auth/wrong-password') {
-			alert(errorMessage);
+			alertify.alert(errorMessage);
 	   }
   		console.log(errorCode, errorMessage);
 	});
