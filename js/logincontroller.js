@@ -26,7 +26,7 @@ function createProfile() {
     var password = document.getElementById('profilePassword').value;
     var passwordVerify = document.getElementById('profilePasswordVerify').value;
     var isManager = $("#yesMan").is(":checked");
-    var manager = $("#selectedManager :selected").text();
+    var manager = $("#selectedManager :selected").val();
     var totalVacationDays = document.getElementById('vacationDaysTotal').value;
     var vacationDaysLeft = document.getElementById('vacationDaysLeft').value;
 
@@ -125,13 +125,21 @@ function fixsEmail(tempEmail){
 
 var allManagers = [];
 var managerObject = {};
-getAllManagers();
 
 var getAllManagersCallback = $.Deferred(getAllManagers);
 getAllManagersCallback.done(function(data){
+    var select = document.getElementById("selectedManager");
     for(var i = 0; i < allManagers.length; i++){
-        console.log(allManagers[i].email);
-        managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;
+        // var el = document.createElement("option");
+        // el.textContent = allmanagers[i].firstName + " " allmanagers[i].lastName;
+        // el.value = allmanagers[i].email;
+        // select.appendChild(el);
+        //var managerName = allManagers[i].firstName + " " + allManagers[i].lastName;
+
+        select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
+
+        //console.log(allManagers[i].email);
+        //managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;
     }
     console.log(managerObject);
 });

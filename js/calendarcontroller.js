@@ -162,6 +162,7 @@ function addDay(eventDay) {
 			selectHelper: true,
       fixedWeekCount: false,
 			select: function(start, end) {
+<<<<<<< Updated upstream
         var check = start._d.toJSON().slice(0,10);
         var today = new Date().toJSON().slice(0,10);
         if(check < today) {
@@ -182,6 +183,20 @@ function addDay(eventDay) {
           };
           $('#calendar').fullCalendar('unselect');
         }
+=======
+				title = $("#firstName").val() + ' ' + $("#lastName").val();
+				if (title) {
+          popup3.open();
+          $("#startDate").val(start.toISOString());
+          $("#endDate").val(subtractDay(end.toISOString()));
+          $("#alertOne").prop("checked", true);
+          $("#vacationRadio").prop("checked", true);
+          $("#downloadICSCheckbox").prop("checked", false);
+          $("#createEventDescription").val("");
+          $("#createEventTitle").val(employee.firstName + " " + employee.lastName);
+				};
+				$('#calendar').fullCalendar('unselect');
+>>>>>>> Stashed changes
 			},
       eventClick: function(event, element) {
         clickedID = event.id;
