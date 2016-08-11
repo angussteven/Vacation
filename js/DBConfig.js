@@ -595,13 +595,38 @@ function fixEmail(tempEmail){
 
 // Deletes an event [UNKNOWN]
 function deleteEvent(eventID){
-
+  
+  var Key ;
   var ref = firebase.database().ref().child('event');
   ref.orderByChild("eventID").equalTo(eventID).once('value', function(snapshot) {
   keyToObject = Object.keys(snapshot.val()).toString();
-  ref.child(keyToObject).remove();
+  if (keyToObject != null)
+  {
+  	ref.child(keyToObject).remove();
+  }
+  
   //snapshot.ref().remove();
  });
+ var fixedEmail = fixEmail(profileEmail); 
+ var empRef = firebase.database().ref().child('employee').child(fixedEmail).child('events');
+ empRef.once('value', function(snapshot){
+		if(snapshot.exists()){
+			console.log("I am in the Delete Event Function");
+			snapshot.forEach(function(childSnapshot){
+					if(childSnapshot.val().toString() === eventID){
+						console.log("I am in the Delete Event Function");
+						key = childSnapshot.getKey();
+					}
+					//console.log("this is the employee requested: " + childSnapshot.val());
+			});
+				
+			if (key != null){
+				empRef.child(key).remove()
+			}
+		}
+	});
+
+
 
    //ref.remove();
   // Delete the event via the eventID
