@@ -28,7 +28,22 @@ function createProfile() {
     var totalVacationDays = document.getElementById('vacationDaysTotal').value;
     var vacationDaysLeft = document.getElementById('vacationDaysLeft').value;
 
-    addUser(email, password, firstName, lastName, totalVacationDays, vacationDaysLeft, isManager, manager, team, "ALL EMPLOYEES", "URL", "Title")
+    /*match passwords and emails*/
+    if (password == "") {
+        alertify.alert("Enter a password");
+        return;
+    }
+    else if (password != passwordVerify) {
+        alertify.alert("password does not match");
+        return;
+    }   
+
+    else if(email != emailVerify){
+        alertify.alert("email does not match");
+        return; 
+    }else{
+        addUser(email, password, firstName, lastName, totalVacationDays, vacationDaysLeft, isManager, manager, team, "ALL EMPLOYEES", "URL", "Title")
+    }
 }
 
 // User

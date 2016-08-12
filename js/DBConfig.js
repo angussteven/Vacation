@@ -7,6 +7,7 @@
  };
  firebase.initializeApp(config);
 
+
 var employeeCount = 0;
 var teamCount = 0;
 var allTeams = [];
