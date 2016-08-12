@@ -9,7 +9,7 @@ $(document).ready(function() {
     $("#createProfileForm").on("submit", function(ev) {
         ev.preventDefault();
         createProfile();
-        if (invalidInput) {
+        if (validInput) {
             $('#createProfileModal').foundation('close');
         }
     });
@@ -17,7 +17,7 @@ $(document).ready(function() {
 });
 
 var isNewAccount = false;
-var invalidInput = false;
+var validInput = false;
 
 function createProfile() {
     isNewAccount = true;
@@ -38,13 +38,13 @@ function createProfile() {
         alertify.alert("Enter a password");
         return;
     } else if (password != passwordVerify) {
-        alertify.alert("password does not match");
+        alertify.alert("Password does not match");
         return;
     } else if (email != emailVerify) {
-        alertify.alert("email does not match");
+        alertify.alert("Email does not match");
         return;
     } else {
-        invalidInput = true;
+        validInput = true;
         addUser(email, password, firstName, lastName, totalVacationDays, vacationDaysLeft, isManager, manager, team, "ALL EMPLOYEES", "URL", "Title")
     }
 }
