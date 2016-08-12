@@ -711,3 +711,15 @@ function subtractDay(day) {
     //console.log(day);
   return day;
 }
+
+function dynamicUpdate(){
+	var startDate = document.getElementById('startDate').value;
+	var endDate = document.getElementById('endDate').value;
+	startDate = startDate.slice(-5) + "-" + startDate.slice(0,4);
+	endDate = endDate.slice(-5) + "-" + endDate.slice(0,4);
+	vacation = calculateVacationDays(startDate, endDate);
+	var data = sessionStorage.getItem('user');
+    var dataResult = JSON.parse(data);
+	$("#daysSelected").val(vacation);
+    $("#daysLeft").val(dataResult.daysLeft-vacation);
+}
