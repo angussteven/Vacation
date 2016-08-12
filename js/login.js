@@ -9,29 +9,13 @@ function fireSignOut() {
 	});
 }
 
-
 function logIn() {
 	var email = document.getElementById('email').value;
 	var password = document.getElementById('password').value;
 
-	let verifyEmail = document.getElementById('emailAddressVerify').value;
-	let verifyPassword = document.getElementById('profilePasswordVerify').value;
-
 	if (password == "") {
 		alertify.alert("Enter a password");
 		return;
-	}
-	console.log("Password 1: ",password,", Pasword 2:", verifyPassword);
-	if (password == profilePasswordVerify) {
-		alertify.alert("password does not match");
-		return;
-	}	
-
-	console.log("email 1: ",email,", email 2:", verifyEmail);
-	/*check email match*/
-	if(email != verifyEmail){
-		alertify.alert("email does not match");
-		return;	
 	}
 
 	firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
