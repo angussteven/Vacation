@@ -1,8 +1,8 @@
 $(document).ready(function() {
     var popup = new Foundation.Reveal($('#createProfileModal'));
-    $("#createCloseBtn").click(function () {
+    $("#createCloseBtn").click(function() {
         toggleRequired();
-            popup.close();
+        popup.close();
     });
 
     $(document).foundation();
@@ -14,11 +14,11 @@ $(document).ready(function() {
             toggleRequired();
             $('#createProfileModal').foundation('close');
         }
-  });
+    });
 });
 
-function toggleRequired(){
-    if(document.getElementById('profileFirstName').required == true){
+function toggleRequired() {
+    if (document.getElementById('profileFirstName').required == true) {
         document.getElementById('profileFirstName').required = false;
         document.getElementById('profileLastName').required = false;
         document.getElementById('emailAddress').required = false;
@@ -30,8 +30,8 @@ function toggleRequired(){
         document.getElementById('selectedTeam').required = false;
         document.getElementById('vacationDaysTotal').required = false;
         document.getElementById('vacationDaysLeft').required = false;
-    }else{
-       document.getElementById('profileFirstName').required = true;
+    } else {
+        document.getElementById('profileFirstName').required = true;
         document.getElementById('profileLastName').required = true;
         document.getElementById('emailAddress').required = true;
         document.getElementById('emailAddressVerify').required = true;
@@ -41,9 +41,9 @@ function toggleRequired(){
         document.getElementById('selectedManager').required = true;
         document.getElementById('selectedTeam').required = true;
         document.getElementById('vacationDaysTotal').required = true;
-        document.getElementById('vacationDaysLeft').required = true; 
+        document.getElementById('vacationDaysLeft').required = true;
     }
-    
+
 }
 
 var isNewAccount = false;
@@ -164,27 +164,19 @@ var managerObject = {};
 var getAllManagersCallback = $.Deferred(getAllManagers);
 getAllManagersCallback.done(function(data) {
     var select = document.getElementById("selectedManager");
-<<<<<<< HEAD
-
     for (var i = 0; i < allManagers.length; i++) {
-=======
-    for(var i = 0; i < allManagers.length; i++){
         // var el = document.createElement("option");
         // el.textContent = allmanagers[i].firstName + " " allmanagers[i].lastName;
         // el.value = allmanagers[i].email;
         // select.appendChild(el);
         //var managerName = allManagers[i].firstName + " " + allManagers[i].lastName;
->>>>>>> parent of 5d33584... removed commentzz
+
 
         select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
 
         //console.log(allManagers[i].email);
         //managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;
     }
-<<<<<<< HEAD
-    //console.log(managerObject);
-=======
->>>>>>> parent of 5d33584... removed commentzz
 });
 
 function getAllManagers() {
