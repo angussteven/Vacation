@@ -67,7 +67,7 @@ getEmployeeCallback.done(function(data){
 var getEmployeeEventsCallback = $.Deferred(getEmployeeEvents(profileEmail));
 getEmployeeEventsCallback.done(function(data){
 	if(employeeEvents == null){
-		console.log("No Events Found for that employee");
+		//console.log("No Events Found for that employee");
 		sessionStorage.setItem('myEvents', null);
 	}else{
 		console.log("in the getEmployeeEventsCallback");
@@ -136,8 +136,8 @@ getEmpManagerCallback.done(function(data){
 
 var getAllEventsCallback = $.Deferred(getAllEvents());
 getAllEventsCallback.done(function(data){
-	console.log("Events:");
-	console.log(allEvents);
+	//console.log("Events:");
+	//console.log(allEvents);
 });
 
  /*Get reference example=*/
@@ -724,3 +724,22 @@ function dynamicUpdate(){
 	$("#daysSelected").val(vacation);
     $("#daysLeft").val(dataResult.daysLeft-vacation);
 }
+/*
+* This was moved outside of the listener so that it can be called outside of this file.
+*/
+function getEmployeeEvents(userID){
+	var deferred = new $.Deferred();
+	var evRef = firebase.database().ref().child('event');
+	evRef.orderByChild("email").equalTo(userID).once('value', function(snapshot){
+		if(snapshot.exists()){
+			employeeEvents = snapshot.val();
+			deferred.resolve(employeeEvents);
+		}
+		else{
+			employeeEvents = null;
+			deferred.reject("Cannot be reached.");
+		}
+	});
+	return deferred.promise();
+}
+

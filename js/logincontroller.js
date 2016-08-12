@@ -169,7 +169,7 @@ getAllManagersCallback.done(function(data) {
 
         select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
     }
-    console.log(managerObject);
+    //console.log(managerObject);
 });
 
 function getAllManagers() {
@@ -192,7 +192,7 @@ getAllTeamsCallback.done(function(data) {
 
     for (var i = 0; i < allTeams.length; i++) {
         select[select.length] = new Option(allTeams[i].name, allTeams[i].name);
-        console.log(allTeams[i]);
+        //console.log(allTeams[i]);
     }
 });
 
