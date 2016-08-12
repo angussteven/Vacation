@@ -50,7 +50,6 @@
       <div class="panel text-center">
         <img class="circle" src="img/82.jpg">
         <h4 id="profileName">&nbsp;</h4>
-        <p>Director of Resources</p>
         <hr>
       </div>
     </div>
@@ -277,31 +276,31 @@
       <div class="row">
         <div class="large-6 medium-6 columns">
           <label>First Name</label>
-          <input type="text" id="profileFirstName" required/>
+          <input type="text" id="profileFirstName" name="profileFirstName" required/>
         </div>
         <div class="large-6 medium-6 columns">
           <label>Last Name</label>
-          <input type="text" id="profileLastName" required/>
+          <input type="text" id="profileLastName" name="profileLastName" required/>
         </div>
       </div>
       <div class="row">
         <div class="large-6 medium-6 columns">
           <label>Email Address</label>
-          <input type="email" id="emailAddress" required/>
+          <input type="email" id="emailAddress" name="emailAddress" required/>
         </div>
         <div class="large-6 medium-6 columns">
           <label>Verify Email Address</label>
-          <input type="email" id="emailAddressVerify" data-equalto="emailAddress" required autocomplete="off" />
+          <input type="email" id="emailAddressVerify" name="emailAddressVerify" data-equalto="emailAddress" required autocomplete="off" />
         </div>
       </div>
       <div class="row">
         <div class="large-6 medium-6 columns">
           <label>Password</label>
-          <input type="password" min="6" id="profilePassword" required/>
+          <input type="password" min="6" id="profilePassword" name="profilePassword" required/>
         </div>
         <div class="large-6 medium-6 columns">
           <label>Verify Password</label>
-          <input type="password" min="6" id="profilePasswordVerify" data-equalto="profilePassword" required autocomplete="off" />
+          <input type="password" min="6" id="profilePasswordVerify" name="profilePasswordVerify" data-equalto="profilePassword" required autocomplete="off" />
         </div>
       </div>
       <div class="row">
@@ -315,7 +314,7 @@
         <div class="large-12 columns">
           <label>Select Manager</label>
           <select id="selectedManager" required>
-               <option value=""></option> 
+               <option value=""></option>
           </select>
         </div>
       </div>
@@ -323,7 +322,7 @@
         <div class="large-12 columns">
           <label>Select Team</label>
           <select id="selectedTeam" required>
-               <option value=""></option> 
+               <option value=""></option>
           </select>
         </div>
       </div>

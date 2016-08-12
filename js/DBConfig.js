@@ -499,15 +499,15 @@ function calculateVacationDays(start_date, end_date){
   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
-
-    // call parseData to take inputs and convert to Date object
+   	// call parseData to take inputs and convert to Date object
     start_date = parseDate(start_date);
     start_date = validStart(start_date);
     end_date = parseDate(end_date);
 
+
     // contants for weekends and holidays; holiday array should include all company holidays in string format "MM-DD-YYYY"
     weekend = [6,0]; // don't change this
-    holidays = ["09-05-2016","11-08-2015","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"];
+    holidays = ["09-05-2016","11-08-2016","11-11-2016","11-24-2016","11-25-2016","12-26-2016","12-27-2016","12-28-2016","12-29-2016","12-30-2016"];
 
     // for loop parses holiday array into Date objects
     for (var i = 0; i < holidays.length; i++) {
@@ -595,13 +595,38 @@ function fixEmail(tempEmail){
 
 // Deletes an event [UNKNOWN]
 function deleteEvent(eventID){
-
+  
+  var Key ;
   var ref = firebase.database().ref().child('event');
   ref.orderByChild("eventID").equalTo(eventID).once('value', function(snapshot) {
   keyToObject = Object.keys(snapshot.val()).toString();
-  ref.child(keyToObject).remove();
+  if (keyToObject != null)
+  {
+  	ref.child(keyToObject).remove();
+  }
+  
   //snapshot.ref().remove();
  });
+ var fixedEmail = fixEmail(profileEmail); 
+ var empRef = firebase.database().ref().child('employee').child(fixedEmail).child('events');
+ empRef.once('value', function(snapshot){
+		if(snapshot.exists()){
+			console.log("I am in the Delete Event Function");
+			snapshot.forEach(function(childSnapshot){
+					if(childSnapshot.val().toString() === eventID){
+						console.log("I am in the Delete Event Function");
+						key = childSnapshot.getKey();
+					}
+					//console.log("this is the employee requested: " + childSnapshot.val());
+			});
+				
+			if (key != null){
+				empRef.child(key).remove()
+			}
+		}
+	});
+
+
 
    //ref.remove();
   // Delete the event via the eventID
@@ -616,7 +641,10 @@ function updateDeleteEvent(eventID){
 		//console.log("The email is: " + snapshot.child("email").val());
 		startDate = snapshot.child("startDate").val();
 		endDate = snapshot.child("endDate").val();
+		//switching the dates around
+		startDate = startDate.slice(-5) + "-" + startDate.slice(0,4);
 		endDate = subtractDay(endDate);
+		endDate = endDate.slice(-5) + "-" + endDate.slice(0,4);
 		vacation = calculateVacationDays(startDate, endDate);
 		//getting data from session storage
  		var data = sessionStorage.getItem('user');

@@ -24,10 +24,11 @@ function createProfile() {
     var passwordVerify = document.getElementById('profilePasswordVerify').value;
     var isManager = $("#yesMan").is(":checked");
     var manager = $("#selectedManager :selected").val();
+    var team = $("#selectedTeam :selected").val();
     var totalVacationDays = document.getElementById('vacationDaysTotal').value;
     var vacationDaysLeft = document.getElementById('vacationDaysLeft').value;
 
-    addUser(email, password, firstName, lastName, totalVacationDays, vacationDaysLeft, isManager, manager, "TEAAAM", "ALL EMPLOYEES", "URL", "Title")
+    addUser(email, password, firstName, lastName, totalVacationDays, vacationDaysLeft, isManager, manager, team, "ALL EMPLOYEES", "URL", "Title")
 }
 
 // User
@@ -73,9 +74,7 @@ function addUser(email, password,firstName,lastName,totalVacationDays,dayslefts,
  	 *	Do a get Manager call based on each manager in the managers array
  	 * 	insert this employee in the manager's employee list
  	 */
-	for(var i = 0; i < managers.length; i++){
-		addEmpToManager(managers[i],email);
-	}
+    addEmpToManager(managers,email);
 
 	/**
 	*	Now we must add the employee to their team
