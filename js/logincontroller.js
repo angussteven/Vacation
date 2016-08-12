@@ -164,12 +164,27 @@ var managerObject = {};
 var getAllManagersCallback = $.Deferred(getAllManagers);
 getAllManagersCallback.done(function(data) {
     var select = document.getElementById("selectedManager");
+<<<<<<< HEAD
 
     for (var i = 0; i < allManagers.length; i++) {
+=======
+    for(var i = 0; i < allManagers.length; i++){
+        // var el = document.createElement("option");
+        // el.textContent = allmanagers[i].firstName + " " allmanagers[i].lastName;
+        // el.value = allmanagers[i].email;
+        // select.appendChild(el);
+        //var managerName = allManagers[i].firstName + " " + allManagers[i].lastName;
+>>>>>>> parent of 5d33584... removed commentzz
 
         select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
+
+        //console.log(allManagers[i].email);
+        //managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;
     }
+<<<<<<< HEAD
     //console.log(managerObject);
+=======
+>>>>>>> parent of 5d33584... removed commentzz
 });
 
 function getAllManagers() {
