@@ -174,11 +174,13 @@ function addDay(eventDay) {
 				center: 'title',
 				right: 'prev,next today'
 			},
+      height: "parent",
       theme: false,
       weekends: false,
 			selectable: true,
 			selectHelper: true,
       fixedWeekCount: false,
+
 			select: function(start, end) {
         var check = start._d.toJSON().slice(0,10);
         var today = new Date().toJSON().slice(0,10);
@@ -198,7 +200,7 @@ function addDay(eventDay) {
             $("#downloadICSCheckbox").prop("checked", false);
             $("#createEventDescription").val("");
             var data = sessionStorage.getItem('user');
-            var dataResult = JSON.parse(data);  
+            var dataResult = JSON.parse(data);
             $("#createEventTitle").val(dataResult.firstName + " " + dataResult.lastName);
             var startDate = $("#startDate").val().slice(-5) + "-" + $("#startDate").val().slice(0,4);
             endDate = subtractDay($("#endDate").val());
@@ -375,7 +377,7 @@ function addDay(eventDay) {
     });
 
     $("#deleteBtn").click(function() {
-      alertify.confirm("Are you sure you want to remove this event?", function(){ 
+      alertify.confirm("Are you sure you want to remove this event?", function(){
         $("#calendar").fullCalendar('removeEvents',clickedID);
         updateDeleteEvent(clickedID);
         deleteEvent(clickedID);
