@@ -30,8 +30,9 @@ $(document).ready(function() {
 	*/
 	$('ul').on('click', 'li', function(e){
 		e.stopPropagation();
-		var id = $(this).css("background-color");
-		if (id == 'rgba(194, 218, 218, 0.458824)') {
+		var bgID = $(this).css("background-color");
+
+		if (bgID == 'rgba(194, 218, 218, 0.458824)') {
 			$(this).css('background-color', 'rgba(0, 0, 0, 0)');
 			removeEmployeeEvents(teamData[this.id].email);
 		}
@@ -98,6 +99,7 @@ function renderEmployeeEvents(employeeID) {
 				* The event is saved as a key-pair value array.
 				*/
 				event = {
+					owner: employeeID,
 					id:  data[currentEvent].eventID,
 					title: data[currentEvent].title,
 					start: data[currentEvent].startDate,
@@ -141,7 +143,6 @@ function populateList() {
 	manager = document.createElement('li');
 	for (var key in teamData) {
 		if(teamData[key].isManager) {
-			console.log("Key: " + key);
 			manager.appendChild(document.createTextNode(capitalize(teamData[key].firstName) + " " + capitalize(teamData[key].lastName)));
 			manager.setAttribute('id', key.toString());
 		}

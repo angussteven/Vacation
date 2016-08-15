@@ -224,7 +224,12 @@ function addDay(eventDay) {
         $("#viewStartDate").val(removeTime(event.start.toISOString()));
         var tempEnd = removeTime(event.end.toISOString());
         $("#viewEndDate").val(subtractDay(tempEnd));
-        popup4.open();
+        /*
+        * If the user is not the owner of the event they will not be able to modify it.
+        */
+        if (event.owner == emailAddress) {
+          popup4.open();
+        }
         return false;
       },
 			editable: false,
