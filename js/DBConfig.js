@@ -277,7 +277,7 @@ function getEmployeesByManager(userID){
 }
 
 
-// Update the employee's manager 
+// Update the employee's manager
 function updateManager(email, manager){
   var tempEmail = fixEmail(email);
   firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('managers').set(manager);
@@ -596,7 +596,7 @@ function fixEmail(tempEmail){
 
 // Deletes an event [UNKNOWN]
 function deleteEvent(eventID){
-  
+
   var Key ;
   var ref = firebase.database().ref().child('event');
   ref.orderByChild("eventID").equalTo(eventID).once('value', function(snapshot) {
@@ -605,10 +605,10 @@ function deleteEvent(eventID){
   {
   	ref.child(keyToObject).remove();
   }
-  
+
   //snapshot.ref().remove();
  });
- var fixedEmail = fixEmail(profileEmail); 
+ var fixedEmail = fixEmail(profileEmail);
  var empRef = firebase.database().ref().child('employee').child(fixedEmail).child('events');
  empRef.once('value', function(snapshot){
 		if(snapshot.exists()){
@@ -620,7 +620,7 @@ function deleteEvent(eventID){
 					}
 					//console.log("this is the employee requested: " + childSnapshot.val());
 			});
-				
+
 			if (key != null){
 				empRef.child(key).remove()
 			}
@@ -711,4 +711,15 @@ function subtractDay(day) {
     }
     //console.log(day);
   return day;
+}
+function dynamicUpdate(){
+	var startDate = document.getElementById('startDate').value;
+	var endDate = document.getElementById('endDate').value;
+	startDate = startDate.slice(-5) + "-" + startDate.slice(0,4);
+	endDate = endDate.slice(-5) + "-" + endDate.slice(0,4);
+	vacation = calculateVacationDays(startDate, endDate);
+	var data = sessionStorage.getItem('user');
+    var dataResult = JSON.parse(data);
+	$("#daysSelected").val(vacation);
+    $("#daysLeft").val(dataResult.daysLeft-vacation);
 }
