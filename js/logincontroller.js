@@ -1,53 +1,58 @@
 $(document).ready(function() {
+
     var popup = new Foundation.Reveal($('#createProfileModal'));
-    $("#createCloseBtn").click(function () {
-        toggleRequired();
-            popup.close();
+
+    $("#createCloseBtn").on("click", function (ev) {
+        ev.preventDefault();
+        toggleRequiredOff();
+        popup.close();
     });
 
     $(document).foundation();
+
+    $('#newUserBtn').on("click", function(ev){
+        toggleRequiredOn();
+    });
 
     $("#createProfileForm").on("submit", function(ev) {
         ev.preventDefault();
         createProfile();
         if (invalidInput) {
-            toggleRequired();
             $('#createProfileModal').foundation('close');
         }
-  });
+    });
 });
-
-function toggleRequired(){
-    if(document.getElementById('profileFirstName').required == true){
-        document.getElementById('profileFirstName').required = false;
-        document.getElementById('profileLastName').required = false;
-        document.getElementById('emailAddress').required = false;
-        document.getElementById('emailAddressVerify').required = false;
-        document.getElementById('profilePassword').required = false;
-        document.getElementById('profilePasswordVerify').required = false;
-        document.getElementById('noMan').required = false;
-        document.getElementById('selectedManager').required = false;
-        document.getElementById('selectedTeam').required = false;
-        document.getElementById('vacationDaysTotal').required = false;
-        document.getElementById('vacationDaysLeft').required = false;
-    }else{
-       document.getElementById('profileFirstName').required = true;
-        document.getElementById('profileLastName').required = true;
-        document.getElementById('emailAddress').required = true;
-        document.getElementById('emailAddressVerify').required = true;
-        document.getElementById('profilePassword').required = true;
-        document.getElementById('profilePasswordVerify').required = true;
-        document.getElementById('noMan').required = true;
-        document.getElementById('selectedManager').required = true;
-        document.getElementById('selectedTeam').required = true;
-        document.getElementById('vacationDaysTotal').required = true;
-        document.getElementById('vacationDaysLeft').required = true; 
-    }
-    
-}
 
 var isNewAccount = false;
 var invalidInput = false;
+
+function toggleRequiredOff(){
+    document.getElementById('profileFirstName').required = false;
+    document.getElementById('profileLastName').required = false;
+    document.getElementById('emailAddress').required = false;
+    document.getElementById('emailAddressVerify').required = false;
+    document.getElementById('profilePassword').required = false;
+    document.getElementById('profilePasswordVerify').required = false;
+    document.getElementById('noMan').required = false;
+    document.getElementById('selectedManager').required = false;
+    document.getElementById('selectedTeam').required = false;
+    document.getElementById('vacationDaysTotal').required = false;
+    document.getElementById('vacationDaysLeft').required = false;
+}
+
+function toggleRequiredOn(){
+    document.getElementById('profileFirstName').required = true;
+    document.getElementById('profileLastName').required = true;
+    document.getElementById('emailAddress').required = true;
+    document.getElementById('emailAddressVerify').required = true;
+    document.getElementById('profilePassword').required = true;
+    document.getElementById('profilePasswordVerify').required = true;
+    document.getElementById('noMan').required = true;
+    document.getElementById('selectedManager').required = true;
+    document.getElementById('selectedTeam').required = true;
+    document.getElementById('vacationDaysTotal').required = true;
+    document.getElementById('vacationDaysLeft').required = true; 
+}
 
 function createProfile() {
     isNewAccount = true;
