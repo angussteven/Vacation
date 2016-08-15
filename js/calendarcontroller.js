@@ -98,6 +98,9 @@ function addDay(eventDay) {
         eventDay[2] = '0';
         var tempMonth = parseInt(eventDay[1]);
         eventDay[1] = (tempMonth + 1).toString();
+        if (eventDay[1] <= 9){
+          eventDay[1] = '0' + eventDay[1];
+        }
       }
       break;
 
