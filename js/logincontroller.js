@@ -24,7 +24,7 @@ $(document).ready(function() {
 });
 
 var isNewAccount = false;
-var invalidInput = false;
+var validInput = false;
 
 function toggleRequiredOff(){
     document.getElementById('profileFirstName').required = false;
@@ -73,13 +73,13 @@ function createProfile() {
         alertify.alert("Enter a password");
         return;
     } else if (password != passwordVerify) {
-        alertify.alert("password does not match");
+        alertify.alert("Password does not match");
         return;
     } else if (email != emailVerify) {
-        alertify.alert("email does not match");
+        alertify.alert("Email does not match");
         return;
     } else {
-        invalidInput = true;
+        validInput = true;
         addUser(email, password, firstName, lastName, totalVacationDays, vacationDaysLeft, isManager, manager, team, "ALL EMPLOYEES", "URL", "Title")
     }
 }
@@ -169,12 +169,19 @@ var managerObject = {};
 var getAllManagersCallback = $.Deferred(getAllManagers);
 getAllManagersCallback.done(function(data) {
     var select = document.getElementById("selectedManager");
-
     for (var i = 0; i < allManagers.length; i++) {
+        // var el = document.createElement("option");
+        // el.textContent = allmanagers[i].firstName + " " allmanagers[i].lastName;
+        // el.value = allmanagers[i].email;
+        // select.appendChild(el);
+        //var managerName = allManagers[i].firstName + " " + allManagers[i].lastName;
+
 
         select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
+
+        //console.log(allManagers[i].email);
+        //managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;
     }
-    console.log(managerObject);
 });
 
 function getAllManagers() {
@@ -197,7 +204,7 @@ getAllTeamsCallback.done(function(data) {
 
     for (var i = 0; i < allTeams.length; i++) {
         select[select.length] = new Option(allTeams[i].name, allTeams[i].name);
-        console.log(allTeams[i]);
+        //console.log(allTeams[i]);
     }
 });
 
