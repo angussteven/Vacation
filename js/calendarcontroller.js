@@ -362,6 +362,9 @@ function addDay(eventDay) {
           description: $("#createEventDescription").val(),
         };
         $('#calendar').fullCalendar('renderEvent', eventData, true);
+
+        activeEvents.push(eventData.id.toString());
+
         alert = $('input:radio[name=alert]:checked').val();
         isVacation = $('input:radio[name=isVacation]:checked').val();
         saveEvent(emailAddress, id, $("#startDate").val(), addDay($("#endDate").val()), isVacation, $("#createEventTitle").val(), $("#createEventDescription").val());
@@ -379,6 +382,7 @@ function addDay(eventDay) {
     $("#deleteBtn").click(function() {
       alertify.confirm("Are you sure you want to remove this event?", function(){
         $("#calendar").fullCalendar('removeEvents',clickedID);
+        activeEvents.splice(activeEvents.indexOf(clickedID), 1);
         updateDeleteEvent(clickedID);
         deleteEvent(clickedID);
         popup4.close();
