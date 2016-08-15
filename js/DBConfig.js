@@ -712,6 +712,7 @@ function subtractDay(day) {
     //console.log(day);
   return day;
 }
+
 function dynamicUpdate(){
 	var startDate = document.getElementById('startDate').value;
 	var endDate = document.getElementById('endDate').value;
@@ -722,4 +723,22 @@ function dynamicUpdate(){
     var dataResult = JSON.parse(data);
 	$("#daysSelected").val(vacation);
     $("#daysLeft").val(dataResult.daysLeft-vacation);
+}
+// // Gets all the events for a given employee [TODO]
+function getEmployeeEvents(userID){
+	var deferred = new $.Deferred();
+	var evRef = firebase.database().ref().child('event');
+	evRef.orderByChild("email").equalTo(userID).once('value', function(snapshot){
+		if(snapshot.exists()){
+			employeeEvents = snapshot.val();
+			deferred.resolve(employeeEvents);
+		}
+		else{
+			employeeEvents = null;
+			deferred.reject("No events for employee " + userID + " found. :(");
+		}
+	});
+	return deferred.promise();
+
+
 }
