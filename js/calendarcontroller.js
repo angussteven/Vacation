@@ -198,6 +198,7 @@ function addDay(eventDay) {
             popup3.open();
             $("#startDate").val(start.toISOString());
             $("#endDate").val(subtractDay(end.toISOString()));
+            console.log($("#endDate").val());
             $("#alertOne").prop("checked", true);
             $("#vacationRadio").prop("checked", true);
             $("#downloadICSCheckbox").prop("checked", false);

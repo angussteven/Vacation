@@ -673,6 +673,7 @@ function updateDeleteEventDatabase(email){
 
 function subtractDay(day) {
   day = day.split('-');
+  console.log(day[1]);
   //endDay = day[0] + day[1] + day[2];
   //console.log(day);
 
@@ -691,7 +692,7 @@ function subtractDay(day) {
 
           break;
 
-        case '05': case '07': case '08': case '10':
+        case '05': case '07': case '10':
           day = day[0] + '-0' + (day[1] - 1) + '-' + "30";
           break;
 
@@ -699,7 +700,11 @@ function subtractDay(day) {
           day = day[0] + '-' + (day[1] - 1) + '-' + "30";
           break;
 
-          case '02': case '04': case '06': case '09':
+        case '11':
+          day = day[0] + '-' + (day[1] - 1) + '-' + "31";
+          break;
+
+          case '02': case '04': case '06': case '08': case '09':
         default:
           day = day[0] + '-0' + (day[1] - 1) + '-' + "31";
           break;
