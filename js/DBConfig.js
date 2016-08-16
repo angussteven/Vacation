@@ -712,18 +712,18 @@ function dynamicUpdate(){
     $("#daysLeft").val(dataResult.daysLeft-vacation);
 }
 
-	function getEmployeeEvents(emailAddress) {
-		return new Promise(function (resolve, reject) {
-			var fixedEmail = fixEmail(emailAddress);
-			var evRef = firebase.database().ref().child('event');
-			evRef.orderByChild("email").equalTo(emailAddress).once('value', function (snapshot) {
-				if (snapshot.exists()) {
-					resolve(snapshot)
-					// employeeEvents = snapshot.val();
-				}
-				else {
-					reject(reject);
-				}
-			})
-		})
-	}
+function getEmployeeEvents(emailAddress) {
+	return new Promise(function (resolve, reject) {
+		var fixedEmail = fixEmail(emailAddress);
+		var evRef = firebase.database().ref().child('event');
+		evRef.orderByChild("email").equalTo(emailAddress).once('value', function (snapshot) {
+			if (snapshot.exists()) {
+				resolve(snapshot.val());
+				// employeeEvents = snapshot.val();
+			}
+			else {
+				//reject(reject);
+			}
+		});
+	});
+}

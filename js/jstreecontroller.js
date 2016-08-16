@@ -66,8 +66,7 @@ function removeEmployeeEvents(employeeID) {
 	* The promise is used to make sure that we have data back from the database before we continue
 	* with the function.
 	*/
-	promise = getEmployeeEvents(employeeID.toString());
-	promise.done(function (data) {
+	promise = getEmployeeEvents(employeeID.toString()).then(function (data) {
 		/*
 		* We iterate over the events belonging to an employee.
 		*/
@@ -91,36 +90,38 @@ function renderEmployeeEvents(employeeID) {
 	// Local variables.
 	var promise;
 	var event;
+	var dataResult;
 	/*
 	* The promise is used to make sure that we have data back from the database before we continue
 	* with the function.
 	*/
-	promise = getEmployeeEvents(employeeID.toString());
-	promise.done(function (data) {
+	getEmployeeEvents(employeeID.toString()).then(function (data) {
+		dataResult = JSON.stringify(data);
+		realData = JSON.parse(dataResult);
 		/*
 		* Every event returned from the database is added into our local array.
 		*/
-		for (var currentEvent in data) {
+		for (var currentEvent in realData) {
 			/*
 			* If the event is already in the array we don't save it again.
 			*/
-			if ($.inArray(data[currentEvent].eventID.toString(), activeEvents) == -1) {
+			if ($.inArray(realData[currentEvent].eventID.toString(), activeEvents) == -1) {
 				/*
 				* The event is saved as a key-pair value array.
 				*/
 				event = {
 					owner: employeeID,
-					id:  data[currentEvent].eventID,
-					title: data[currentEvent].title,
-					start: data[currentEvent].startDate,
-					end: data[currentEvent].endDate,
-					description: data[currentEvent].description
+					id:  realData[currentEvent].eventID,
+					title: realData[currentEvent].title,
+					start: realData[currentEvent].startDate,
+					end: realData[currentEvent].endDate,
+					description: realData[currentEvent].description
 				};
 				/*
 				* We use the eventID to keep track of currently rendered events so that is 
 				* saved into the array.
 				*/
-				activeEvents.push(data[currentEvent].eventID.toString());
+				activeEvents.push(realData[currentEvent].eventID.toString());
 				/*
 				* The current event is then rendered using the information in the event 
 				* variable.
@@ -129,9 +130,8 @@ function renderEmployeeEvents(employeeID) {
 			}
 			
 		}
-	});
-	promise.fail(function (data) {
-		console.log("Error: " + data);
+	}).catch(function (data) {
+		console.log("No events found for: " + employeeID);
 	});
 };
 
