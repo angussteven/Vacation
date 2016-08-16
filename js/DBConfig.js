@@ -187,7 +187,46 @@ function updateEvent(eventID, email, startDate, endDate, title, type, descriptio
 	return firebase.database().ref('event').update(updates);
 
 }
+getImage();
+function getImage()
+{
+//console.log("I am in the image thing");
+var storage = firebase.storage();
+// Create a storage reference from our storage service
+var storageRef = storage.ref();
+var imagesRef = storageRef.child('dog.gif');
+//console.log(imagesRef);
+var path = imagesRef.fullPath;
+//return path;
 
+// Get the download URL
+imagesRef.getDownloadURL().then(function(url) {
+  // Insert url into an <img> tag to "download"
+var Image = document.getElementById("picture");
+Image.src = url;
+  console.log(url);
+});
+
+
+//console.log(path);
+}
+
+//uploadImage();
+function uploadImage()
+{
+
+var file = document.createElement("INPUT");
+file.setAttribute("type", "file");
+console.log("I am in the image thing");
+var storageRef = firebase.storage().ref();
+console.log("I am in the image thing");
+//var file = 'img/temp.jpg';
+console.log("I am in the image thing");
+//file.setAttribute("type", "file");
+console.log(file.name);
+//var uploadTask = storageRef.child('images/' + file.name).put(file);
+ 
+}
 // // Get vacation days for employee
 // function getVacationDays(emailAddress){
 // 	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
