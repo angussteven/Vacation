@@ -187,10 +187,25 @@ function addDay(eventDay) {
 			select: function(start, end) {
         var check = start._d.toJSON().slice(0,10);
         var today = new Date().toJSON().slice(0,10);
+
+        var start1 = start.toISOString();
+        var end1 = subtractDay(end.toISOString());
+
+        var data = sessionStorage.getItem('user');
+        var dataResult = JSON.parse(data);
+        var startDate = start1.slice(-5) + "-" + start1.slice(0,4);
+        endDate = subtractDay(end1);
+        var endDate = end1.slice(-5) + "-" + end1.slice(0,4);
+        var vacation = calculateVacationDays(startDate,endDate);
+        var vacationRemaining = dataResult.daysLeft-vacation;
+
         if(check < today) {
           console.log(check);
           $('#calendar').fullCalendar('unselect');
           alertify.alert("Please select a start date on or after today's date.");
+        }
+        else if(vacationRemaining < 0){
+          alertify.alert("Not enough remaining vacation days.");
         }
         else {
           title = $("#firstName").val() + ' ' + $("#lastName").val();
@@ -198,20 +213,13 @@ function addDay(eventDay) {
             popup3.open();
             $("#startDate").val(start.toISOString());
             $("#endDate").val(subtractDay(end.toISOString()));
-            console.log($("#endDate").val());
             $("#alertOne").prop("checked", true);
             $("#vacationRadio").prop("checked", true);
             $("#downloadICSCheckbox").prop("checked", false);
             $("#createEventDescription").val("");
-            var data = sessionStorage.getItem('user');
-            var dataResult = JSON.parse(data);
             $("#createEventTitle").val(dataResult.firstName + " " + dataResult.lastName);
-            var startDate = $("#startDate").val().slice(-5) + "-" + $("#startDate").val().slice(0,4);
-            endDate = subtractDay($("#endDate").val());
-            var endDate = $("#endDate").val().slice(-5) + "-" + $("#endDate").val().slice(0,4);
-            var vacation = calculateVacationDays(startDate,endDate);
             $("#daysSelected").val(vacation);
-            $("#daysLeft").val(dataResult.daysLeft-vacation);
+            $("#daysLeft").val(vacationRemaining);
             //$("#createEventTitle").val("Variable for your name");//update to include name dynamically
           };
           $('#calendar').fullCalendar('unselect');
