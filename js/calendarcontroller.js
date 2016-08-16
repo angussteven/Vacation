@@ -3,6 +3,7 @@ $(document).foundation();
 $(document).ready(function() {
 
 var emailAddress;
+var eventOwner;
 
 firebase.auth().onAuthStateChanged(function (user) {
   if(user) {
@@ -235,7 +236,18 @@ function addDay(eventDay) {
         /*
         * If the user is not the owner of the event they will not be able to modify it.
         */
+        eventOwner = event.owner;
         if (event.owner == emailAddress) {
+          $("#eventTitle, #eventDescription, #viewStartDate, #viewEndDate, #downloadICSCheckbox_viewModal").prop("disabled", false);
+          $("#changeEventBtn, #deleteBtn").prop("disabled", false);
+          $('input[name=alert_viewModal]').attr('disabled', false);
+          $('input[name=isVacation_viewModal]').attr('disabled', false);
+          popup4.open();
+        } else {
+          $("#eventTitle, #eventDescription, #viewStartDate, #viewEndDate, #downloadICSCheckbox_viewModal").prop("disabled", true);
+          $("#changeEventBtn, #deleteBtn").prop("disabled", true);
+          $('input[name=alert_viewModal]').attr('disabled', true);
+          $('input[name=isVacation_viewModal]').attr('disabled', true);
           popup4.open();
         }
         return false;
@@ -408,9 +420,15 @@ function addDay(eventDay) {
     });
 
     $("#viewEventCloseBtn").click(function () {
-      alertify.confirm("Are you sure you want to exit? All progress will be lost.", function(){
+      console.log(eventOwner == emailAddress);
+      if (eventOwner == emailAddress) {
+        alertify.confirm("Are you sure you want to exit? All progress will be lost.", function(){
+          popup4.close();
+        });
+      } else {
         popup4.close();
-      });
+      }
+      
     });
 
     $("#changeEventBtn").click(function () {
