@@ -163,7 +163,8 @@ getEmployeeEvents(profileEmail).then(function(snap){
 		})
 	}
 
-	getEmployeesOnTeam("quantum").then(function (snap){
+	var dataResult = JSON.parse(data);
+	getEmployeesOnTeam(dataResult.team).then(function (snap){
 		sessionStorage.setItem('teamEmployees', JSON.stringify(snap.val()));
 		console.log(snap.val())
 	}).catch(function(error){
