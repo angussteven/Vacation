@@ -17,9 +17,7 @@ $(document).ready(function() {
     $("#createProfileForm").on("submit", function(ev) {
         ev.preventDefault();
         createProfile();
-        if (invalidInput) {
-            $('#createProfileModal').foundation('close');
-        }
+        $('#createProfileModal').foundation('close');
     });
 });
 
