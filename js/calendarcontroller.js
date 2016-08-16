@@ -426,6 +426,7 @@ function addDay(eventDay) {
         }
         console.log(news + ", " + newe);
         changedEvent = {
+          owner: emailAddress,
           id: guid(),
           title: $("#eventTitle").val(),
           start: news,

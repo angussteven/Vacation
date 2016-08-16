@@ -31,12 +31,22 @@ $(document).ready(function() {
 	$('ul').on('click', 'li', function(e){
 		e.stopPropagation();
 		var bgID = $(this).css("background-color");
+		var manager;
+		var employees;
 
 		if (bgID == 'rgba(194, 218, 218, 0.458824)') {
 			$(this).css('background-color', 'rgba(0, 0, 0, 0)');
 			removeEmployeeEvents(teamData[this.id].email);
 		}
 		else {
+			if ($(this).class == 'manager') {
+				manager = document.getElementById(this.id);
+				console.log("In if")
+				employees = manager.getElementsByTagName("li");
+				for (var i =0; i < employees.length; i++) {
+					employees[i].css('background-color', 'rgba(194, 218, 218, 0.46)');
+				}
+			}
 			$(this).css('background-color', 'rgba(194, 218, 218, 0.46)');
 			renderEmployeeEvents(teamData[this.id].email);
 
@@ -145,6 +155,7 @@ function populateList() {
 		if(teamData[key].isManager) {
 			manager.appendChild(document.createTextNode(capitalize(teamData[key].firstName) + " " + capitalize(teamData[key].lastName)));
 			manager.setAttribute('id', key.toString());
+			manager.setAttribute('class', 'manager');
 		}
 	}
 
