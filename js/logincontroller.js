@@ -1,59 +1,26 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     var popup = new Foundation.Reveal($('#createProfileModal'));
 
     $("#createCloseBtn").on("click", function (ev) {
         ev.preventDefault();
-        toggleRequiredOff();
         popup.close();
     });
 
     $(document).foundation();
-
-    $('#newUserBtn').on("click", function(ev){
-        toggleRequiredOn();
-    });
-
-    $("#createProfileForm").on("submit", function(ev) {
+    $("#createProfileForm").on("submit", function (ev) {
         ev.preventDefault();
         createProfile();
-        $('#createProfileModal').foundation('close');
+        if(validInput){
+            $('#createProfileModal').foundation('close');
+        }
     });
 });
 
 var isNewAccount = false;
 var validInput = false;
 
-function toggleRequiredOff(){
-    document.getElementById('profileFirstName').required = false;
-    document.getElementById('profileLastName').required = false;
-    document.getElementById('emailAddress').required = false;
-    document.getElementById('emailAddressVerify').required = false;
-    document.getElementById('profilePassword').required = false;
-    document.getElementById('profilePasswordVerify').required = false;
-    document.getElementById('noMan').required = false;
-    document.getElementById('selectedManager').required = false;
-    document.getElementById('selectedTeam').required = false;
-    document.getElementById('vacationDaysTotal').required = false;
-    document.getElementById('vacationDaysLeft').required = false;
-}
-
-function toggleRequiredOn(){
-    document.getElementById('profileFirstName').required = true;
-    document.getElementById('profileLastName').required = true;
-    document.getElementById('emailAddress').required = true;
-    document.getElementById('emailAddressVerify').required = true;
-    document.getElementById('profilePassword').required = true;
-    document.getElementById('profilePasswordVerify').required = true;
-    document.getElementById('noMan').required = true;
-    document.getElementById('selectedManager').required = true;
-    document.getElementById('selectedTeam').required = true;
-    document.getElementById('vacationDaysTotal').required = true;
-    document.getElementById('vacationDaysLeft').required = true; 
-}
-
 function createProfile() {
-    isNewAccount = true;
     var email = document.getElementById('emailAddress').value;
     var emailVerify = document.getElementById('emailAddressVerify').value;
     var firstName = document.getElementById('profileFirstName').value;
