@@ -62,7 +62,8 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 	getEmployee(profileEmail).then(function (snap){
 		sessionStorage.setItem('user', JSON.stringify(snap));
-		document.getElementById("profileName").innerHTML = snap.firstName + " " + snap.lastName
+		document.getElementById("profileName").innerHTML = snap.firstName + " " + snap.lastName;
+		document.getElementById("profileTeam").innerHTML = 'Team : ' +  snap.team;
 		var vdays = document.getElementById("vacationdays");
   		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
    		vdays.innerHTML = info;
