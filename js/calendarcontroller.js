@@ -240,6 +240,7 @@ function addDay(eventDay) {
           $("#changeEventBtn, #deleteBtn").prop("disabled", true);
           $('input[name=alert_viewModal]').attr('disabled', true);
           $('input[name=isVacation_viewModal]').attr('disabled', true);
+          popup4.open();
         }
         return false;
       },
