@@ -364,6 +364,7 @@ function addDay(eventDay) {
           endd = addDay(startd);
         }
         eventData = {
+          owner: emailAddress,
           id: id,
           title: $("#createEventTitle").val(),
           start: startd,
@@ -426,6 +427,7 @@ function addDay(eventDay) {
         }
         console.log(news + ", " + newe);
         changedEvent = {
+          owner: emailAddress,
           id: guid(),
           title: $("#eventTitle").val(),
           start: news,
