@@ -68,6 +68,7 @@ function createProfile() {
     var totalVacationDays = document.getElementById('vacationDaysTotal').value;
     var vacationDaysLeft = document.getElementById('vacationDaysLeft').value;
 
+    
     /*match passwords and emails*/
     if (password == "") {
         alertify.alert("Enter a password");
@@ -78,7 +79,15 @@ function createProfile() {
     } else if (email != emailVerify) {
         alertify.alert("Email does not match");
         return;
-    } else {
+    } else if(totalVacationDays < 0 || vacationDaysLeft < 0){
+        alertify.alert("Vacation Days cannot be negative");
+        return;
+    }
+    else if(totalVacationDays < vacationDaysLeft){
+        alertify.alert("Remaining vacation days cannot be greater than total vacation days");
+        return;
+    }
+    else {
         validInput = true;
         addUser(email, password, firstName, lastName, totalVacationDays, vacationDaysLeft, isManager, manager, team, "ALL EMPLOYEES", "URL", "Title")
     }
