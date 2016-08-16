@@ -68,16 +68,7 @@ firebase.auth().onAuthStateChanged(function (user) {
    		vdays.innerHTML = info;
 	});
 
-// // Implementation of getEmployeesOnTeam
-// var getEmployeesOnTeamCallback = $.Deferred(getEmployeesOnTeam("quantum"));
-// getEmployeesOnTeamCallback.done(function(data){
-// 	if(teamsEmployees == null){
-// 		console.log("Team has no employees");
-// 	}else{
-// 		sessionStorage.setItem('teamEmployees', JSON.stringify(teamsEmployees));
-// 		//console.log("I am in the team " + teamsEmployees);
-// 	}
-// });
+
 
 // // Implementation of getTeam
 // var getTeamCallback = $.Deferred(getTeam("quantum"));
@@ -158,6 +149,27 @@ getEmployeeEvents(profileEmail).then(function(snap){
 	console.log(stuff);
 });
 
+	function getEmployeesOnTeam(teamName) {
+		return new Promise(function (resolve, reject) {
+			var ref = firebase.database().ref().child('employee');
+			ref.orderByChild("team").equalTo(teamName.toLowerCase()).once('value', function (snapshot) {
+				if (snapshot.exists()) {
+					resolve(snapshot);
+				} else {
+					reject();
+				}
+			})
+		})
+	}
+
+	getEmployeesOnTeam("quantum").then(function (snap){
+		sessionStorage.setItem('teamEmployees', JSON.stringify(snap.val()));
+		console.log(snap.val())
+	}).catch(function(error){
+		console.log("Team not found.");
+	})
+
+
  // Updates a given event [TODO]
 function updateEvent(eventID, email, startDate, endDate, title, type, description){
 // Update the information for an event
@@ -199,18 +211,7 @@ function updateEvent(eventID, email, startDate, endDate, title, type, descriptio
 //  	});
 //  }
 
-// // Gets all the employees that are on a given team
-// function getEmployeesOnTeam(teamName){
-// 	var ref = firebase.database().ref().child('employee');
-// 	ref.orderByChild("team").equalTo(teamName.toLowerCase()).once('value', function(snapshot){
-// 		if(snapshot.exists()){
-// 			teamsEmployees = snapshot.val();
-// 		} else{
-// 			teamEmployees = null;
-// 		}
-// 		getEmployeesOnTeamCallback.resolve();
-// 	})
-// }
+
 
 // //Get The employess under manager
 // function getEmployeesByManager(userID){
