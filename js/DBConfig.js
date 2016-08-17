@@ -149,9 +149,8 @@ firebase.auth().onAuthStateChanged(function (user) {
 getEmployeeEvents(profileEmail).then(function(snap){
 	employeeEvents = snap.val();
 	sessionStorage.setItem('myEvents', JSON.stringify(employeeEvents));
-	console.log(snap.val());
-}).catch(function(stuff){
-	console.log(stuff);
+}).catch(function(error){
+	console.log(error);
 });
 
 	function getEmployeesOnTeam(teamName) {
