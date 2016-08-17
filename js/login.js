@@ -17,6 +17,7 @@ function logIn() {
 		return;
 	}
 
+	renderEmployeeEvents(email);
 	firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
 		// Handle Errors here.
 		var errorCode = error.code;
@@ -45,6 +46,7 @@ $(document).ready(function () {
 			$("#wrap").show();
 			$('#calendar').fullCalendar('render');
 			$("#signOutButton").show();
+			$("#uploadBtn").removeClass("no-click");
 		} else {
 			console.log("Not logged in");
   		}

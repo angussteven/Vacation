@@ -174,3 +174,7 @@ label{
 .holiday {
 	background: lightgreen;
 }
+
+.no-click{
+	pointer-events: none;
+}

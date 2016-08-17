@@ -839,4 +839,3 @@ function addDay(eventDay) {
   eventDay = eventDay[0] + '-' + eventDay[1] + '-' + eventDay[2];
   return eventDay;
 }
-
