@@ -49,6 +49,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 	function getEmployee(emailAddress) {
 		return new Promise(function (resolve, reject) {
 			var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+      
 			ref.once('value', function (snapshot) {
 				if (snapshot.exists()) {
 					resolve(snapshot.val());
@@ -67,6 +68,9 @@ firebase.auth().onAuthStateChanged(function (user) {
 		var vdays = document.getElementById("vacationdays");
   		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
    		vdays.innerHTML = info;
+      //getImage(sessionStorage.getItem("image"));
+      console.log(sessionStorage.getItem("image"));
+      getImage(sessionStorage.getItem("image"));
 	});
 
 
@@ -188,46 +192,11 @@ function updateEvent(eventID, email, startDate, endDate, title, type, descriptio
 	return firebase.database().ref('event').update(updates);
 
 }
-getImage();
-function getImage()
-{
-//console.log("I am in the image thing");
-var storage = firebase.storage();
-// Create a storage reference from our storage service
-var storageRef = storage.ref();
-var imagesRef = storageRef.child('dog.gif');
-//console.log(imagesRef);
-var path = imagesRef.fullPath;
-//return path;
+//getImage();
 
-// Get the download URL
-imagesRef.getDownloadURL().then(function(url) {
-  // Insert url into an <img> tag to "download"
-var Image = document.getElementById("picture");
-Image.src = url;
-  console.log(url);
-});
-
-
-//console.log(path);
-}
 
 //uploadImage();
-function uploadImage()
-{
 
-var file = document.createElement("INPUT");
-file.setAttribute("type", "file");
-console.log("I am in the image thing");
-var storageRef = firebase.storage().ref();
-console.log("I am in the image thing");
-//var file = 'img/temp.jpg';
-console.log("I am in the image thing");
-//file.setAttribute("type", "file");
-console.log(file.name);
-//var uploadTask = storageRef.child('images/' + file.name).put(file);
- 
-}
 // // Get vacation days for employee
 // function getVacationDays(emailAddress){
 // 	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
@@ -462,7 +431,28 @@ function addEventToEmp(email, eventID){
   firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
 }
 
+function getImage(fileName)
+{
+//console.log("I am in the image thing");
+var storage = firebase.storage();
+// Create a storage reference from our storage service
+var storageRef = storage.ref();
+var imagesRef = storageRef.child("images/" + fileName);
+//console.log(imagesRef);
+var path = imagesRef.fullPath;
+//return path;
 
+// Get the download URL
+imagesRef.getDownloadURL().then(function(url) {
+  // Insert url into an <img> tag to "download"
+var Image = document.getElementById("picture");
+Image.src = url;
+  console.log(url);
+});
+
+
+//console.log(path);
+}
 
 
  function updateDaysLeft(email, daysLeft){
@@ -727,4 +717,41 @@ function getEmployeeEvents(emailAddress) {
 			}
 		});
 	});
+}
+
+function uploadImage(file)
+{
+
+console.log("I am in the image thing");
+var storageRef = firebase.storage().ref();
+console.log("I am in the image thing");
+//var file = 'img/temp.jpg';
+console.log("I am in the image thing");
+//file.setAttribute("type", "file");
+console.log(file.name);
+var uploadTask = storageRef.child('images/' + file.name).put(file);
+ 
+}
+
+function getImage(fileName)
+{
+//console.log("I am in the image thing");
+var storage = firebase.storage();
+// Create a storage reference from our storage service
+var storageRef = storage.ref();
+var imagesRef = storageRef.child("images/" + fileName);
+//console.log(imagesRef);
+var path = imagesRef.fullPath;
+//return path;
+
+// Get the download URL
+imagesRef.getDownloadURL().then(function(url) {
+  // Insert url into an <img> tag to "download"
+var Image = document.getElementById("picture");
+Image.src = url;
+  console.log(url);
+});
+
+
+//console.log(path);
 }

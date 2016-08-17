@@ -473,5 +473,16 @@ function addDay(eventDay) {
           window.open( "data:text/calendar;charset=utf8," + escape(icsFile));
         }
       }
-    })
+    });
+
+    document.getElementById('exampleFileUpload').addEventListener('change', function(){
+      var file = this.files[0];
+      if(file) {
+        uploadImage(file);
+        console.log(file);
+        getImage(file.name);
+        sessionStorage.setItem('image',file.name);
+      }
+    }, false)
+
 	});
