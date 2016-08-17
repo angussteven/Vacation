@@ -1,6 +1,5 @@
 function fireSignOut() {
 	firebase.auth().signOut().then(function () {
-  		Console.log("Successfully Logged Out");
   		$("#loginWrap").show();
 		$("#wrap").hide();
 		$("#signOutButton").show()
