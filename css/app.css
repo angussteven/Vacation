@@ -10,6 +10,33 @@
 
 	margin-bottom: 1em;
 }
+#container::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+	border-radius: 10px;
+}
+
+#container::-webkit-scrollbar
+{
+	width: 10px;
+	background: transparent;
+}
+
+#container::-webkit-scrollbar-thumb
+{
+	background-color: #AAA;
+	border-radius: 10px;
+	background-color: #2199e8;
+	/*background-image: -webkit-linear-gradient(90deg,
+	                                          rgba(0, 0, 0, .2) 25%,
+											  transparent 25%,
+											  transparent 50%,
+											  rgba(0, 0, 0, .2) 50%,
+											  rgba(0, 0, 0, .2) 75%,
+											  transparent 75%,
+											  transparent)*/
+}
 
 #cHeight{
 	width: 100%;
