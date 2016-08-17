@@ -23,9 +23,9 @@ $(document).ready(function() {
 	/*
 	* Populate calendar with the current users events.
 	*/
-	var data = sessionStorage.getItem('user');
-    var dataResult = JSON.parse(data);
-	renderEmployeeEvents(dataResult.email);
+	//var data = sessionStorage.getItem('user');
+    //var dataResult = JSON.parse(data);
+	//renderEmployeeEvents(dataResult.email);
 	/*
 	* Get the HTML object were we want to create the tree.
 	*/

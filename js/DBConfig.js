@@ -24,7 +24,7 @@ var employeeEvents;
 
 firebase.auth().onAuthStateChanged(function (user) {
 	profileEmail = user.email;
-
+	renderEmployeeEvents(profileEmail);
 
 	// // Implementation of getEmployeeCount
 	// var getEmpCountTest = $.Deferred(getEmployeeCount);
