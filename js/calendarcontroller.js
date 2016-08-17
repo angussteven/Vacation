@@ -91,61 +91,6 @@ function removeTime(date) {
   return dateArray[0];
 }
 
-function addDay(eventDay) {
-  eventDay = eventDay.split('-');
-  switch(eventDay[1]) {
-    case '01': case '03': case '05': case '07': case '08': case '10':
-      if (eventDay[2] === '31') {
-        eventDay[2] = '0';
-        var tempMonth = parseInt(eventDay[1]);
-        eventDay[1] = (tempMonth + 1).toString();
-        if (eventDay[1] <= 9){
-          eventDay[1] = '0' + eventDay[1];
-        }
-      }
-      break;
-
-    case '04': case '06': case '09': case '11':
-      if (eventDay[2] === '30') {
-        eventDay[2] = '0';
-        tempMonth = parseInt(eventDay[1]);
-        eventDay[1] = (tempMonth + 1).toString();
-        if (eventDay[1] <= 9)
-          eventDay[1] = "0" + eventDay[1];
-      }
-      break;
-
-    case '12':
-      if (eventDay[2] === '31') {
-        eventDay[2] = '0';
-        eventDay[1] = '01';
-        var tempYear = parseInt(eventDay[0]);
-        eventDay[0] = (tempYear + 1).toString();
-      }
-      break;
-
-    case '02':
-      var testYear = parseInt(eventDay[0]);
-      if ((testYear % 4 == 0) && (testYear % 100 != 0) || (testYear % 400 == 0)) {
-        if (eventDay[2] === '29')
-          eventDay[2] = '0';
-          eventDay[1] = '03';
-      }
-      else if (eventDay[2] === '28') {
-        eventDay[2] = '0';
-        eventDay[1] = '03';
-      }
-      break;
-  }
-  num = parseInt(eventDay[2]);
-  num+=1;
-  eventDay[2] = num.toString();
-  if (eventDay[2] <= 9)
-    eventDay[2] = "0" + eventDay[2];
-  eventDay = eventDay[0] + '-' + eventDay[1] + '-' + eventDay[2];
-  return eventDay;
-}
-
   function Account(GMIN, First, Last, Email, Manager, TotalVacation, UsedVacation) {
     this.GMIN = GMIN;
     this.First = First;
@@ -188,10 +133,8 @@ function addDay(eventDay) {
 			select: function(start, end) {
         var check = start._d.toJSON().slice(0,10);
         var today = new Date().toJSON().slice(0,10);
-
         var start1 = start.toISOString();
         var end1 = subtractDay(end.toISOString());
-
         var data = sessionStorage.getItem('user');
         var dataResult = JSON.parse(data);
         var startDate = start1.slice(-5) + "-" + start1.slice(0,4);
@@ -199,14 +142,17 @@ function addDay(eventDay) {
         var endDate = end1.slice(-5) + "-" + end1.slice(0,4);
         var vacation = calculateVacationDays(startDate,endDate);
         var vacationRemaining = dataResult.daysLeft-vacation;
-
+        var newEnd = end._d.toJSON().slice(0,10);
         if(check < today) {
-          console.log(check);
           $('#calendar').fullCalendar('unselect');
           alertify.alert("Please select a start date on or after today's date.");
         }
         else if(vacationRemaining < 0){
           alertify.alert("Not enough remaining vacation days.");
+        }
+        else if (isDateHasEvent(start,end)) {
+            $('#calendar').fullCalendar('unselect');
+            alertify.alert("You already have vacation on this day!");
         }
         else {
           title = $("#firstName").val() + ' ' + $("#lastName").val();
@@ -370,6 +316,10 @@ function addDay(eventDay) {
       // checks for start date following end date; if event ends before start, it will be set to a one-day event on the start date
       var startd = $("#startDate").val();
       var endd = addDay($("#endDate").val());
+      var newStart = new Date(startd);
+      var newEnd = new Date(endd);
+      var newMomentStart = moment(newStart);
+      var newMomentEnd = moment(newEnd);
       if (!checkDate(startd)) {
         alertify.alert("Please select a valid start date.");
       }
@@ -378,6 +328,8 @@ function addDay(eventDay) {
       }
       else if (!compareDates(startd, endd)) {
         alertify.alert("The end date cannot be before the start date.");
+      }else if (isDateHasEvent(newMomentStart,newMomentEnd)){
+         alertify.alert("You already have vacation on this day!");
       }
       else {
         if(Date.parse(startd) >= Date.parse(endd)) {

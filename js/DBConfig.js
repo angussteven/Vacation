@@ -640,6 +640,7 @@ function updateDeleteEventDatabase(email) {
 }
 
 function subtractDay(day) {
+
 	day = day.split('-');
 	console.log(day[1]);
 	//endDay = day[0] + day[1] + day[2];
@@ -698,6 +699,7 @@ function dynamicUpdate() {
     $("#daysLeft").val(dataResult.daysLeft - vacation);
 }
 
+
 function getEmployeeEvents(emailAddress) {
 	return new Promise(function (resolve, reject) {
 		var fixedEmail = fixEmail(emailAddress);
@@ -748,3 +750,93 @@ function getImage(fileName) {
 
 	//console.log(path);
 }
+
+
+
+function isDateHasEvent(start_d,end_d){
+	var allEvents = [];
+	var count = 0;
+	allEvents =  $('#calendar').fullCalendar('clientEvents');
+	var data = sessionStorage.getItem('user');
+    var dataResult = JSON.parse(data);
+	var event = $.grep(allEvents, function (v) {
+	var startDate = v.start._d;
+	var endDate = v.end._i;
+	var endDate1 = end_d._d.toJSON().slice(0,10);
+	var startDate1 = start_d._d.toJSON().slice(0,10);
+	startDate1 = addDay(startDate1);
+	var newStartDate1 = new Date(startDate1);
+	endDate1 = subtractDay(endDate1);
+	var newEndDate1 = new Date(endDate1);
+	endDate = subtractDay(endDate);
+	var newEndDate = new Date(endDate);
+	var range = moment().range(startDate, newEndDate);
+	var range1 = moment().range(newStartDate1, newEndDate1);
+	var result = range.contains(start_d._d);
+	var result1 = range.contains(newEndDate1);
+	var result2 = range.contains(range1);
+	var result3 = range1.contains(range);
+	if(dataResult.email == v.owner){
+		if(result || result1 || result3){
+			count++;
+		}
+	}
+    });
+    return count > 0;
+}
+
+function addDay(eventDay) {
+  eventDay = eventDay.split('-');
+  switch(eventDay[1]) {
+    case '01': case '03': case '05': case '07': case '08': case '10':
+      if (eventDay[2] === '31') {
+        eventDay[2] = '0';
+        var tempMonth = parseInt(eventDay[1]);
+        eventDay[1] = (tempMonth + 1).toString();
+        if (eventDay[1] <= 9){
+          eventDay[1] = '0' + eventDay[1];
+        }
+      }
+      break;
+
+    case '04': case '06': case '09': case '11':
+      if (eventDay[2] === '30') {
+        eventDay[2] = '0';
+        tempMonth = parseInt(eventDay[1]);
+        eventDay[1] = (tempMonth + 1).toString();
+        if (eventDay[1] <= 9)
+          eventDay[1] = "0" + eventDay[1];
+      }
+      break;
+
+    case '12':
+      if (eventDay[2] === '31') {
+        eventDay[2] = '0';
+        eventDay[1] = '01';
+        var tempYear = parseInt(eventDay[0]);
+        eventDay[0] = (tempYear + 1).toString();
+      }
+      break;
+
+    case '02':
+      var testYear = parseInt(eventDay[0]);
+      if ((testYear % 4 == 0) && (testYear % 100 != 0) || (testYear % 400 == 0)) {
+        if (eventDay[2] === '29')
+          eventDay[2] = '0';
+          eventDay[1] = '03';
+      }
+      else if (eventDay[2] === '28') {
+        eventDay[2] = '0';
+        eventDay[1] = '03';
+      }
+      break;
+  }
+  num = parseInt(eventDay[2]);
+  num+=1;
+  eventDay[2] = num.toString();
+  if (eventDay[2] <= 9)
+    eventDay[2] = "0" + eventDay[2];
+  eventDay = eventDay[0] + '-' + eventDay[1] + '-' + eventDay[2];
+  return eventDay;
+}
+
