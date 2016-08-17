@@ -6,8 +6,7 @@
 	text-align: left;
 	overflow: auto;
 	overflow-x: hidden; 
-	height: 20em;
-
+	max-height: 20em;
 	margin-bottom: 1em;
 }
 #container::-webkit-scrollbar-track
