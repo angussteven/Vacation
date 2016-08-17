@@ -35,16 +35,30 @@ $(document).ready(function() {
 		var employees;
 
 		if (bgID == 'rgba(194, 218, 218, 0.458824)') {
+			/*
+			* If the manager is selected then remove all events from the calendar.
+			*/
+			if ($(this).attr('class').indexOf('manager') > -1) {
+				manager = document.getElementById(this.id);
+				employees = manager.getElementsByTagName("li");
+				for (var i =0; i < employees.length; i++) {
+					employees[i].style.backgroundColor ='rgba(0, 0, 0, 0)';
+					removeEmployeeEvents(teamData[employees[i].id].email);
+				}
+			}
 			$(this).css('background-color', 'rgba(0, 0, 0, 0)');
 			removeEmployeeEvents(teamData[this.id].email);
 		}
 		else {
-			if ($(this).class == 'manager') {
+			/*
+			* If the manager is selected populate the calendar with everyones events.
+			*/
+			if ($(this).attr('class').indexOf('manager') > -1) {
 				manager = document.getElementById(this.id);
-				console.log("In if")
 				employees = manager.getElementsByTagName("li");
 				for (var i =0; i < employees.length; i++) {
-					employees[i].css('background-color', 'rgba(194, 218, 218, 0.46)');
+					employees[i].style.backgroundColor = 'rgba(194, 218, 218, 0.46)';
+					renderEmployeeEvents(teamData[employees[i].id].email);
 				}
 			}
 			$(this).css('background-color', 'rgba(194, 218, 218, 0.46)');
