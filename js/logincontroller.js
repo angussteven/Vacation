@@ -33,7 +33,7 @@ function createProfile() {
     var totalVacationDays = document.getElementById('vacationDaysTotal').value;
     var vacationDaysLeft = document.getElementById('vacationDaysLeft').value;
 
-    
+
     /*match passwords and emails*/
     if (password == "") {
         alertify.alert("Enter a password");
@@ -143,6 +143,7 @@ var managerObject = {};
 var getAllManagersCallback = $.Deferred(getAllManagers);
 getAllManagersCallback.done(function(data) {
     var select = document.getElementById("selectedManager");
+    var select2 = document.getElementById("newManager");
     for (var i = 0; i < allManagers.length; i++) {
         // var el = document.createElement("option");
         // el.textContent = allmanagers[i].firstName + " " allmanagers[i].lastName;
@@ -152,6 +153,7 @@ getAllManagersCallback.done(function(data) {
 
 
         select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
+        select2[select2.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
 
         //console.log(allManagers[i].email);
         //managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;

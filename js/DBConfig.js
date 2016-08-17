@@ -367,7 +367,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 // Update the employee's manager
 function updateManager() {
-	var manager = document.getElementById("selectedManager").value;
+	var manager = document.getElementById("newManager").value;
 	var tempUser = sessionStorage.getItem('user');
 	var tempData = JSON.parse(tempUser);
 	var tempEmail = fixEmail(tempData.email);
