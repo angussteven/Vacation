@@ -122,12 +122,14 @@ body {
 }
 #fc-right {
 }
-#wrapper {
+.wrapper {
 	position: absolute;
 	height: 90%;
 	width: 80%;
 	bottom: 0;
 	right: 0;
+}
+.wrapper-pad{
 	padding-top: 2%;
 }
 #sidebar {

@@ -4,6 +4,7 @@ function fireSignOut() {
 		$("#wrap").hide();
 		$("#sidebar").hide();
 		$("#signOutButton").show()
+		$("#wrapper").removeClass("wrapper");
 	}, function (error) {
 		alertify.alert("Fail");
 	});
@@ -44,10 +45,11 @@ $(document).ready(function () {
 		if (user) {
 			$("#loginWrap").hide();
 			$("#wrap").show();
-			$('#calendar').fullCalendar('render');
 			$("#signOutButton").show();
 			$("#uploadBtn").removeClass("no-click");
 			$("#sidebar").show();
+			$("#wrapper").addClass("wrapper");
+			$('#calendar').fullCalendar('render');
 		} else {
 			console.log("Not logged in");
   		}
