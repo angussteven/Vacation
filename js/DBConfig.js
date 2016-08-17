@@ -73,8 +73,8 @@ firebase.auth().onAuthStateChanged(function (user) {
 		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
 		vdays.innerHTML = info;
 		//getImage(sessionStorage.getItem("image"));
-		console.log(sessionStorage.getItem("image"));
-		getImage(sessionStorage.getItem("image"));
+		//console.log(sessionStorage.getItem("image"));
+		getProfileImage();
 	});
 
 
@@ -730,6 +730,9 @@ function uploadImage(file) {
 	//file.setAttribute("type", "file");
 	console.log(file.name);
 	var uploadTask = storageRef.child('images/' + file.name).put(file);
+	var data = sessionStorage.getItem('user');
+    var dataResult = JSON.parse(data);
+    firebase.database().ref().child('employee/' + fixEmail(dataResult.email.toLowerCase())).child('image').set(file.name);
 
 }
 
@@ -755,7 +758,44 @@ function getImage(fileName) {
 	//console.log(path);
 }
 
+function getProfileImage(){
+	//console.log("I am in the image thing");
 
+	var data = sessionStorage.getItem('user');
+    var dataResult = JSON.parse(data);
+    var ref = firebase.database().ref().child('employee/' + fixEmail(dataResult.email.toLowerCase())).child('image');
+    var fileName;
+    ref.on('value', function(snapshot) {
+	 	fileName = snapshot.val();
+	 	console.log(snapshot.val());
+	 });
+    if (fileName === null)
+    {
+
+    }else{
+
+    console.log(fileName);
+    var storage = firebase.storage();
+	// Create a storage reference from our storage service
+	var storageRef = storage.ref();
+	var imagesRef = storageRef.child("images/" + fileName);
+	//console.log(imagesRef);
+	console.log(fileName);
+	sessionStorage.setItem('image',fileName);
+
+	var path = imagesRef.fullPath;
+	imagesRef.getDownloadURL().then(function (url) {
+		// Insert url into an <img> tag to "download"
+		var Image = document.getElementById("picture");
+		Image.src = url;
+	});
+
+    }
+
+
+
+	//console.log(path);
+}
 
 function isDateHasEvent(start_d,end_d){
 	var allEvents = [];
