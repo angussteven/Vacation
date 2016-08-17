@@ -380,7 +380,7 @@ function removeTime(date) {
       } else {
         popup4.close();
       }
-      
+
     });
 
     $("#changeEventBtn").click(function () {
