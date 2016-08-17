@@ -333,6 +333,9 @@ function removeTime(date) {
       }else if (isDateHasEvent(newMomentStart,newMomentEnd)){
          alertify.alert("You already have vacation on this day!");
       }
+      else if ($("#daysLeft").val() < 0){
+      	alertify.alert("You do not have enough vacation days left for this request.")
+      }
       else {
         if(Date.parse(startd) >= Date.parse(endd)) {
           endd = addDay(startd);

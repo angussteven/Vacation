@@ -61,9 +61,13 @@ firebase.auth().onAuthStateChanged(function (user) {
 		})
 	}
 
+  function capitalizeName(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  }
+
 	getEmployee(profileEmail).then(function (snap) {
 		sessionStorage.setItem('user', JSON.stringify(snap));
-		document.getElementById("profileName").innerHTML = snap.firstName + " " + snap.lastName;
+		document.getElementById("profileName").innerHTML = capitalizeName(snap.firstName) + " " + capitalizeName(snap.lastName);
 		document.getElementById("profileTeam").innerHTML = 'Team: ' + snap.team;
 		var vdays = document.getElementById("vacationdays");
 		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
