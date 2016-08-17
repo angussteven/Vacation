@@ -240,7 +240,8 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 
 	// Update the employee's manager
-	function updateManager(email, manager) {
+	function updateManager(email) {
+		var manager = document.getElementById("newManager").value;
 		var tempEmail = fixEmail(email);
 		firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('managers').set(manager);
 
