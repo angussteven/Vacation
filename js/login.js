@@ -2,6 +2,7 @@ function fireSignOut() {
 	firebase.auth().signOut().then(function () {
   		$("#loginWrap").show();
 		$("#wrap").hide();
+		$("#sidebar").hide();
 		$("#signOutButton").show()
 	}, function (error) {
 		alertify.alert("Fail");
@@ -46,6 +47,7 @@ $(document).ready(function () {
 			$('#calendar').fullCalendar('render');
 			$("#signOutButton").show();
 			$("#uploadBtn").removeClass("no-click");
+			$("#sidebar").show();
 		} else {
 			console.log("Not logged in");
   		}
