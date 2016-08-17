@@ -10,6 +10,7 @@ var teamData = JSON.parse(team);
 * Keeps track the events that are currently visible on the calendar.
 */
 var activeEvents = [];
+var activeEmployees = [];
 
 /*
 * Generate the HTML elements needed to create the tree and populate them with the json data.
@@ -19,11 +20,19 @@ $(document).ready(function() {
 	* Call the function that creates the HTML objects and adds the json data to them.
 	*/
 	populateList();
-
+	/*
+	* Populate calendar with the current users events.
+	*/
+	renderEmployeeEvents(emailAddress);
 	/*
 	* Get the HTML object were we want to create the tree.
 	*/
 	$('#container').jstree();
+
+    $("#container").bind("select_node.jstree", function (e, data) {
+ 		$("#container").jstree("toggle_node", data.rslt.obj);
+ 		$("#container").jstree("deselect_node", data.rslt.obj);
+	})
 
 	/*
 	* This changed the background color of the items in the tree to make them appear selected
@@ -34,10 +43,40 @@ $(document).ready(function() {
 		var manager;
 		var employees;
 
+		if ($.inArray(this.id.toString(), activeEmployees) != -1) {
+			/*
+			* If the manager is selected then remove all events from the calendar.
+			*/
+			if ($(this).attr('class').indexOf('manager') > -1) {
+				manager = document.getElementById(this.id);
+				employees = manager.getElementsByTagName("li");
+				for (var i =0; i < employees.length; i++) {
+					removeEmployeeEvents(teamData[employees[i].id].email);
+				}
+			}
+			activeEmployees.splice(activeEmployees.indexOf(this.id.toString(), 1));
+			removeEmployeeEvents(teamData[this.id].email);
+		}
+		else {
+			/*
+			* If the manager is selected populate the calendar with everyones events.
+			*/
+			if ($(this).attr('class').indexOf('manager') > -1) {
+				manager = document.getElementById(this.id);
+				employees = manager.getElementsByTagName("li");
+				for (var i =0; i < employees.length; i++) {
+					renderEmployeeEvents(teamData[employees[i].id].email);
+				}
+			}
+			activeEmployees.push(this.id.toString());
+			renderEmployeeEvents(teamData[this.id].email);
+		}
+		/*
 		if (bgID == 'rgba(194, 218, 218, 0.458824)') {
 			/*
 			* If the manager is selected then remove all events from the calendar.
 			*/
+			/*
 			if ($(this).attr('class').indexOf('manager') > -1) {
 				manager = document.getElementById(this.id);
 				employees = manager.getElementsByTagName("li");
@@ -49,15 +88,18 @@ $(document).ready(function() {
 			$(this).css('background-color', 'rgba(0, 0, 0, 0)');
 			removeEmployeeEvents(teamData[this.id].email);
 		}
+		*/
+		/*
 		else {
 			/*
 			* If the manager is selected populate the calendar with everyones events.
 			*/
+			/*
 			if ($(this).attr('class').indexOf('manager') > -1) {
 				manager = document.getElementById(this.id);
 				employees = manager.getElementsByTagName("li");
 				for (var i =0; i < employees.length; i++) {
-					employees[i].style.backgroundColor = 'rgba(194, 218, 218, 0.46)';
+					employees[i].style.backgroundColor = 'rgba(194, 218, 218, 0.89)';
 					renderEmployeeEvents(teamData[employees[i].id].email);
 				}
 			}
@@ -65,6 +107,7 @@ $(document).ready(function() {
 			renderEmployeeEvents(teamData[this.id].email);
 
 		}
+		*/
 	});
 });
 
