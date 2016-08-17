@@ -12,6 +12,7 @@ firebase.auth().onAuthStateChanged(function (user) {
   }
 });
 
+
 function checkDate(date) {
   var today = new Date().toJSON().slice(0,10);
   if(date < today) {
@@ -43,6 +44,7 @@ function guid() {
 function getEmail() {
   return emailAddress;
 }
+
 
 function fixEmail(tempEmail){
   var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
