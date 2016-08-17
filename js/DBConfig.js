@@ -243,14 +243,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 	// }
 
 
-	// Update the employee's manager
-	function updateManager(email) {
-		var manager = document.getElementById("newManager").value;
-		var tempEmail = fixEmail(email);
-		firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('managers').set(manager);
-
-	}
-
 	// Team //
 	// Add a new team to the database [TODO]
 	function addTeam(teamName) {
@@ -372,6 +364,25 @@ firebase.auth().onAuthStateChanged(function (user) {
 	// 	})
 	// }
 });
+
+// Update the employee's manager
+function updateManager() {
+	var manager = document.getElementById("selectedManager").value;
+	var tempUser = sessionStorage.getItem('user');
+	var tempData = JSON.parse(tempUser);
+	var tempEmail = fixEmail(tempData.email);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('managers').set(manager);
+	document.getElementById("changeManager").style.display = 'none';
+}
+
+function showChangeManager(){
+  if(document.getElementById("changeManager").style.display == 'none'){
+    document.getElementById("changeManager").style.display = 'inline-block';
+  }
+  else{
+    document.getElementById("changeManager").style.display = 'none';
+  }
+}
 
 /*
  	Save an event into the database
