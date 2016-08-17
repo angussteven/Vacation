@@ -45,6 +45,7 @@ $(document).ready(function () {
 			$("#wrap").show();
 			$('#calendar').fullCalendar('render');
 			$("#signOutButton").show();
+			$("#uploadBtn").removeClass("no-click");
 		} else {
 			console.log("Not logged in");
   		}
