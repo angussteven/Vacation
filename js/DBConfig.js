@@ -76,7 +76,10 @@ firebase.auth().onAuthStateChanged(function (user) {
 		//console.log(sessionStorage.getItem("image"));
 		getProfileImage();
 	});
-
+	getHolidays().then(function (snap) {
+		//console.log(snap.val());
+		sessionStorage.setItem('holidays', JSON.stringify(snap.val()));
+	});
 
 
 	// // Implementation of getTeam
@@ -465,7 +468,21 @@ function getImage(fileName) {
 
 	//console.log(path);
 }
+//getHolidays();
+function getHolidays(){
+			return new Promise(function (resolve, reject) {
+			var ref = firebase.database().ref().child('holiday').child('day');
+			ref.once('value', function (snapshot) {
+				if (snapshot.exists()) {
+					resolve(snapshot)
+				}
+				else {
+					reject(reject);
+				}
+			})
+		})
 
+}
 
 function updateDaysLeft(email, daysLeft) {
 	var tempEmail = fixEmail(email);
