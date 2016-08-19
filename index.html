@@ -6,6 +6,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vacation</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
 
   <!--Linked CSS files-->
   <link rel="stylesheet" href="css/alertify.min.css" />
@@ -73,23 +74,42 @@
       <div class="row">
         <a href="" onclick="fireSignOut()" id="signOutButton" class="button">Sign Out</a>
       </div>
-      <div class="row" style="display:none">
-        <audio controls autoplay>
-          <source src="audio/SleepAway.mp3" type="audio/mpeg" >
-        </audio>
-      </div>
     </form>
+    <div class="row" style="display:none">
+      <audio controls autoplay>
+        <source src="audio/SleepAway.mp3" type="audio/mpeg" >
+      </audio>
+    </div>
     <div class="row">
       <br>
-      <button type="submit" id="showMgrButton" onclick="showChangeManager()" class="button" unselectable="on">Change Manager</button>
+      <button type="submit" id="showMgrButton" onclick="showChangeManager()" class="button" unselectable="on">Edit Profile</button>
     </div>
     <div id="changeManager" style="display: none">
       <form data-abide id="changeManagerForm" name="changeManager">
-        <label>Select Manager</label>
-        <select id="newManager" required>
-             <option value=""></option>
-        </select>
-        <button id="changeManagerButton" class="success button" type="submit" onclick="updateManager()" unselectable="on">Save</button>
+        <div class="row">
+          <label>Select Manager</label>
+          <div class="small-10 columns">
+            <select id="newManager" required>
+                 <option value=""></option>
+            </select>
+          </div>
+          <div class="small-2 columns">
+            <button id="changeManagerButton" class="success button" type="submit" onclick="updateManager()" unselectable="on">Save</button>
+          </div>
+        </div>
+      </form>
+      <form data-abide id="changeTeamForm" name="changeTeam">
+        <div class="row">
+          <label>Select Team</label>
+          <div class="small-10 columns">
+            <select id="newTeam" required>
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="small-2 columns">
+            <button id="changeTeamButton" class="success button" type="submit" onclick="updateTeam()" unselectable="on">Save</button>
+          </div>
+        </div>
       </form>
     </div>
   </div><div style='clear:both'></div>
