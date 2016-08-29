@@ -36,11 +36,19 @@ function logIn() {
 	});
 }
 $(document).ready(function () {
+
+	if (JSON.parse(localStorage.getItem(localStorage.key(0))).email != undefined){
+		var emailStorage = JSON.parse(localStorage.getItem(localStorage.key(0))).email;
+		console.log(emailTest);
+	}
+	
+
+	
 	//prevent form from posting
 	$("#loginForm").submit(function (event) {
 		event.preventDefault();
 	});
-	//event thatchecks if user is logged in or just signed on
+	//event that checks if user is logged in or just signed on
 	firebase.auth().onAuthStateChanged(function (user) {
 		if (user) {
 			$("#loginWrap").hide();
