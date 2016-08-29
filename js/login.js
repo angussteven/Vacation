@@ -5,6 +5,12 @@ function fireSignOut() {
 		$("#sidebar").hide();
 		$("#signOutButton").show()
 		$("#wrapper").removeClass("wrapper");
+
+		localStorage.removeItem('firstName');
+		localStorage.removeItem('lastName');
+		localStorage.removeItem('team');
+		localStorage.removeItem('vacationdays');
+		localStorage.removeItem('daysLeft');
 	}, function (error) {
 		alertify.alert("Fail");
 	});
@@ -37,11 +43,18 @@ function logIn() {
 }
 $(document).ready(function () {
 
-	if (JSON.parse(localStorage.getItem(localStorage.key(0))).email != undefined){
-		var emailStorage = JSON.parse(localStorage.getItem(localStorage.key(0))).email;
-		console.log(emailTest);
+
+	//load the cache
+	if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined){
+		var emailStorage = JSON.parse(localStorage.getItem(localStorage.key(1))).email;
+		document.getElementById("profileName").innerHTML = capitalizeName(localStorage.getItem("firstName")) + " " + capitalizeName(localStorage.getItem("lastName"));
+		document.getElementById("profileTeam").innerHTML = 'Team: ' + localStorage.getItem("team");
+		var vdays = document.getElementById("vacationdays");
+		var info = "Total Days: " + localStorage.getItem("vacationDays") + "<br>Remaining Days: " + localStorage.getItem("daysLeft");
+		vdays.innerHTML = info;
 	}
 	
+
 
 	
 	//prevent form from posting
@@ -63,3 +76,7 @@ $(document).ready(function () {
   		}
 	});
 });
+
+ function capitalizeName(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  }

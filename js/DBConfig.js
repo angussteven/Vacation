@@ -71,8 +71,14 @@ firebase.auth().onAuthStateChanged(function (user) {
 		var vdays = document.getElementById("vacationdays");
 		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
 		vdays.innerHTML = info;
-		//getImage(sessionStorage.getItem("image"));
-		//console.log(sessionStorage.getItem("image"));
+
+		//Update the cache
+		localStorage.setItem("firstName", snap.firstName);
+		localStorage.setItem("lastName", snap.lastName);
+		localStorage.setItem("team", snap.team);
+		localStorage.setItem("vacationDays", snap.totalVacationDays);
+		localStorage.setItem("daysLeft", snap.daysLeft);
+
 		getProfileImage();
 	});
 
