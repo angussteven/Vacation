@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
     var popup = new Foundation.Reveal($('#createProfileModal'));
-    $("#sidebar").hide();
     $("#createCloseBtn").on("click", function (ev) {
         ev.preventDefault();
         popup.close();

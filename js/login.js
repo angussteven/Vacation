@@ -1,6 +1,6 @@
 function fireSignOut() {
 	firebase.auth().signOut().then(function () {
-  		$("#loginWrap").show();
+		$("#loginWrap").show();
 		$("#wrap").hide();
 		$("#sidebar").hide();
 		$("#signOutButton").show();
@@ -35,24 +35,22 @@ function logIn() {
 		else if (errorCode == 'auth/user-not-found') {
 			alertify.alert(errorMessage);
 		}
-	   else if (errorCode == 'auth/wrong-password') {
+		else if (errorCode == 'auth/wrong-password') {
 			alertify.alert(errorMessage);
-	   }
-  		console.log(errorCode, errorMessage);
+		}
+		console.log(errorCode, errorMessage);
 	});
 }
 $(document).ready(function () {
-
-
 	//load the cache
-	if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined){
+	if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined) {
 		var emailStorage = JSON.parse(localStorage.getItem(localStorage.key(1))).email;
 		document.getElementById("profileName").innerHTML = capitalizeName(localStorage.getItem("firstName")) + " " + capitalizeName(localStorage.getItem("lastName"));
 		document.getElementById("profileTeam").innerHTML = 'Team: ' + localStorage.getItem("team");
 		var vdays = document.getElementById("vacationdays");
 		var info = "Total Days: " + localStorage.getItem("vacationDays") + "<br>Remaining Days: " + localStorage.getItem("daysLeft");
 		vdays.innerHTML = info;
-		
+
 		//Render the pages NOW if in cache
 		$("#loginWrap").hide();
 		$("#wrap").show();
@@ -62,10 +60,7 @@ $(document).ready(function () {
 		$("#wrapper").addClass("wrapper");
 		$('#calendar').fullCalendar('render');
 	}
-	
 
-
-	
 	//prevent form from posting
 	$("#loginForm").submit(function (event) {
 		event.preventDefault();
@@ -73,19 +68,22 @@ $(document).ready(function () {
 	//event that checks if user is logged in or just signed on
 	firebase.auth().onAuthStateChanged(function (user) {
 		if (user) {
-			$("#loginWrap").hide();
-			$("#wrap").show();
-			$("#signOutButton").show();
-			$("#uploadBtn").removeClass("no-click");
-			$("#sidebar").show();
-			$("#wrapper").addClass("wrapper");
-			$('#calendar').fullCalendar('render');
+			if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined) {
+				$("#loginWrap").hide();
+				$("#wrap").show();
+				$("#signOutButton").show();
+				$("#uploadBtn").removeClass("no-click");
+				$("#sidebar").show();
+				$("#wrapper").addClass("wrapper");
+				$('#calendar').fullCalendar('render');
+			}
+
 		} else {
 			console.log("Not logged in");
-  		}
+		}
 	});
 });
 
- function capitalizeName(name) {
+function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-  }
+}
