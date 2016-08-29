@@ -3,7 +3,7 @@ function fireSignOut() {
   		$("#loginWrap").show();
 		$("#wrap").hide();
 		$("#sidebar").hide();
-		$("#signOutButton").show()
+		$("#signOutButton").show();
 		$("#wrapper").removeClass("wrapper");
 
 		localStorage.removeItem('firstName');
@@ -52,6 +52,15 @@ $(document).ready(function () {
 		var vdays = document.getElementById("vacationdays");
 		var info = "Total Days: " + localStorage.getItem("vacationDays") + "<br>Remaining Days: " + localStorage.getItem("daysLeft");
 		vdays.innerHTML = info;
+		
+		//Render the pages NOW if in cache
+		$("#loginWrap").hide();
+		$("#wrap").show();
+		$("#signOutButton").show();
+		$("#uploadBtn").removeClass("no-click");
+		$("#sidebar").show();
+		$("#wrapper").addClass("wrapper");
+		$('#calendar').fullCalendar('render');
 	}
 	
 
