@@ -111,8 +111,6 @@ function saveEmployee(firstname, lastname, totalVacation, daysleft, teamName, ma
         addEmpToTeam(email, teamName);
     }
 
-
-
 }
 
 function addEmpToManager(managerEmail, email) {

@@ -52,13 +52,7 @@ $(document).ready(function () {
 		vdays.innerHTML = info;
 
 		//Render the pages NOW if in cache
-		$("#loginWrap").hide();
-		$("#wrap").show();
-		$("#signOutButton").show();
-		$("#uploadBtn").removeClass("no-click");
-		$("#sidebar").show();
-		$("#wrapper").addClass("wrapper");
-		$('#calendar').fullCalendar('render');
+		RenderCalendar();
 	}
 
 	//prevent form from posting
@@ -69,13 +63,7 @@ $(document).ready(function () {
 	firebase.auth().onAuthStateChanged(function (user) {
 		if (user) {
 			if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined) {
-				$("#loginWrap").hide();
-				$("#wrap").show();
-				$("#signOutButton").show();
-				$("#uploadBtn").removeClass("no-click");
-				$("#sidebar").show();
-				$("#wrapper").addClass("wrapper");
-				$('#calendar').fullCalendar('render');
+				RenderCalendar();
 			}
 
 		} else {
@@ -83,6 +71,16 @@ $(document).ready(function () {
 		}
 	});
 });
+
+function RenderCalendar() {
+	$("#loginWrap").hide();
+	$("#wrap").show();
+	$("#signOutButton").show();
+	$("#uploadBtn").removeClass("no-click");
+	$("#sidebar").show();
+	$("#wrapper").addClass("wrapper");
+	$('#calendar').fullCalendar('render');
+}
 
 function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
