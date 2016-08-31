@@ -15,116 +15,11 @@ var team;
 var employee;
 var teamsEmployees;
 var keyToObject;
+var profileEmail;
 var employeesManagers = [];
 var vacationLeft = 0;
 var allEvents;
 var employeeEvents;
-
-
-// $(document).ready(function () {
-// 	if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined) {
-// 		var profileEmail = JSON.parse(localStorage.getItem(localStorage.key(1))).email;
-// 		initialize(profileEmail);
-// 	}
-// });
-
-function initialize(profileEmail){
-		getEmployee(profileEmail).then(function (snap) {
-			sessionStorage.setItem('user', JSON.stringify(snap));
-			document.getElementById("profileName").innerHTML = capitalizeName(snap.firstName) + " " + capitalizeName(snap.lastName);
-			document.getElementById("profileTeam").innerHTML = 'Team: ' + snap.team;
-			var vdays = document.getElementById("vacationdays");
-			var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
-			vdays.innerHTML = info;
-
-			//Update the cache
-			localStorage.setItem("firstName", snap.firstName);
-			localStorage.setItem("lastName", snap.lastName);
-			localStorage.setItem("team", snap.team);
-			localStorage.setItem("vacationDays", snap.totalVacationDays);
-			localStorage.setItem("daysLeft", snap.daysLeft);
-
-			getProfileImage();
-		});
-
-		getEmployeeEvents(profileEmail).then(function (snap) {
-			employeeEvents = snap;
-			sessionStorage.setItem('myEvents', JSON.stringify(employeeEvents));
-		}).catch(function (error) {
-			console.log(error);
-		});
-
-		var dataResult = JSON.parse(data);
-		getEmployeesOnTeam(dataResult.team).then(function (snap) {
-			sessionStorage.setItem('teamEmployees', JSON.stringify(snap.val()));
-		}).catch(function (error) {
-			console.log("Team not found.");
-		})
-}
-
-function capitalizeName(name) {
-	return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-}
-
-function getEmployee(emailAddress) {
-	return new Promise(function (resolve, reject) {
-		var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
-
-		ref.once('value', function (snapshot) {
-			if (snapshot.exists()) {
-				resolve(snapshot.val());
-			}
-			else {
-				reject();
-			}
-		})
-	})
-}
-
-function getEmployeeEvents(emailAddress) {
-	return new Promise(function (resolve, reject) {
-		var fixedEmail = fixEmail(emailAddress);
-		var evRef = firebase.database().ref().child('event');
-		evRef.orderByChild("email").equalTo(emailAddress).once('value', function (snapshot) {
-			if (snapshot.exists()) {
-				resolve(snapshot.val());
-			}
-			else {
-				console.log("Something went wrong");
-			}
-		});
-	});
-}
-
-function getEmployeesOnTeam(teamName) {
-	return new Promise(function (resolve, reject) {
-		var ref = firebase.database().ref().child('employee');
-		ref.orderByChild("team").equalTo(teamName.toLowerCase()).once('value', function (snapshot) {
-			if (snapshot.exists()) {
-				resolve(snapshot);
-			} else {
-				reject();
-			}
-		})
-	})
-}
-
-// Updates a given event [TODO]
-function updateEvent(eventID, email, startDate, endDate, title, type, description) {
-	// Update the information for an event
-	var tempData = {
-		description: description,
-		email: email,
-		endDate: endDate,
-		startDate: startDate,
-		title: title,
-		type: type
-	};
-	var updates = {};
-	updates[eventID] = tempData;
-	return firebase.database().ref('event').update(updates);
-
-}
 
 
 firebase.auth().onAuthStateChanged(function (user) {
@@ -144,6 +39,46 @@ firebase.auth().onAuthStateChanged(function (user) {
 	// var getAllTeamsCallback = $.Deferred(getAllTeams);
 	// getAllTeamsCallback.done(function(data){
 	// });
+
+
+	function getEmployee(emailAddress) {
+		return new Promise(function (resolve, reject) {
+			var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
+
+			ref.once('value', function (snapshot) {
+				if (snapshot.exists()) {
+					resolve(snapshot.val());
+				}
+				else {
+					reject();
+				}
+			})
+		})
+	}
+
+	function capitalizeName(name) {
+		return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+	}
+
+	getEmployee(profileEmail).then(function (snap) {
+		sessionStorage.setItem('user', JSON.stringify(snap));
+		document.getElementById("profileName").innerHTML = capitalizeName(snap.firstName) + " " + capitalizeName(snap.lastName);
+		document.getElementById("profileTeam").innerHTML = 'Team: ' + snap.team;
+		var vdays = document.getElementById("vacationdays");
+		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
+		vdays.innerHTML = info;
+
+		//Update the cache
+		localStorage.setItem("firstName", snap.firstName);
+		localStorage.setItem("lastName", snap.lastName);
+		localStorage.setItem("team", snap.team);
+		localStorage.setItem("vacationDays", snap.totalVacationDays);
+		localStorage.setItem("daysLeft", snap.daysLeft);
+
+		getProfileImage();
+	});
+
+
 
 	// // Implementation of getTeam
 	// var getTeamCallback = $.Deferred(getTeam("quantum"));
@@ -201,13 +136,69 @@ firebase.auth().onAuthStateChanged(function (user) {
 	// 	});
 	// }
 
-	
+	function getEmployeeEvents(emailAddress) {
+		return new Promise(function (resolve, reject) {
+			var fixedEmail = fixEmail(emailAddress);
+			var evRef = firebase.database().ref().child('event');
+			evRef.orderByChild("email").equalTo(emailAddress).once('value', function (snapshot) {
+				if (snapshot.exists()) {
+					resolve(snapshot)
+				}
+				else {
+					reject(reject);
+				}
+			})
+		})
+	}
 
-	
+	getEmployeeEvents(profileEmail).then(function (snap) {
+		employeeEvents = snap.val();
+		sessionStorage.setItem('myEvents', JSON.stringify(employeeEvents));
+	}).catch(function (error) {
+		console.log(error);
+	});
 
-	
+	function getEmployeesOnTeam(teamName) {
+		return new Promise(function (resolve, reject) {
+			var ref = firebase.database().ref().child('employee');
+			ref.orderByChild("team").equalTo(teamName.toLowerCase()).once('value', function (snapshot) {
+				if (snapshot.exists()) {
+					resolve(snapshot);
+				} else {
+					reject();
+				}
+			})
+		})
+	}
+
+	var dataResult = JSON.parse(data);
+	getEmployeesOnTeam(dataResult.team).then(function (snap) {
+		sessionStorage.setItem('teamEmployees', JSON.stringify(snap.val()));
+	}).catch(function (error) {
+		console.log("Team not found.");
+	})
 
 
+	// Updates a given event [TODO]
+	function updateEvent(eventID, email, startDate, endDate, title, type, description) {
+		// Update the information for an event
+		var tempData = {
+			description: description,
+			email: email,
+			endDate: endDate,
+			startDate: startDate,
+			title: title,
+			type: type
+		};
+		var updates = {};
+		updates[eventID] = tempData;
+		return firebase.database().ref('event').update(updates);
+
+	}
+	//getImage();
+
+
+	//uploadImage();
 
 	// // Get vacation days for employee
 	// function getVacationDays(emailAddress){
@@ -257,6 +248,9 @@ firebase.auth().onAuthStateChanged(function (user) {
 	function addTeam(teamName) {
 
 	}
+
+
+
 	// // Pushes all team names to a string array [DONE]
 	// function getAllTeams(){
 	// 	// Get all the teams
@@ -308,6 +302,8 @@ firebase.auth().onAuthStateChanged(function (user) {
 		var userIDWithoutSpecial = userID.replace(/[^a-zA-Z ]/g, "");
 		var empRef = firebase.database().ref().child('employee').child(userIDWithoutSpecial).child('team');
 		empRef.remove();
+
+
 	}
 	//
 	// Removes employee from team [Andrew]
@@ -384,7 +380,14 @@ function showChangeManager() {
 		document.getElementById("changeManager").style.display = 'none';
 	}
 }
-
+function updateTeam() {
+	var team = document.getElementById("newTeam").value;
+	var tempUser = sessionStorage.getItem('user');
+	var tempData = JSON.parse(tempUser);
+	var tempEmail = fixEmail(tempData.email);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('team').set(team);
+	document.getElementById("changeManager").style.display = 'none';
+}
 /*
  	Save an event into the database
  	email: string (email)
@@ -706,7 +709,21 @@ function dynamicUpdate() {
 }
 
 
-
+function getEmployeeEvents(emailAddress) {
+	return new Promise(function (resolve, reject) {
+		var fixedEmail = fixEmail(emailAddress);
+		var evRef = firebase.database().ref().child('event');
+		evRef.orderByChild("email").equalTo(emailAddress).once('value', function (snapshot) {
+			if (snapshot.exists()) {
+				resolve(snapshot.val());
+				// employeeEvents = snapshot.val();
+			}
+			else {
+				//reject(reject);
+			}
+		});
+	});
+}
 
 function uploadImage(file) {
 	var storageRef = firebase.storage().ref();
