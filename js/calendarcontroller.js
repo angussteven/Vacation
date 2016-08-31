@@ -116,6 +116,7 @@ function removeTime(date) {
     var popup2 = new Foundation.Reveal($('#viewProfileModal'));
     var popup3 = new Foundation.Reveal($('#addEventModal'));
     var popup4 = new Foundation.Reveal($("#viewEventModal"));
+    var createTeamModal = new Foundation.Reveal($("#createTeamModal"));
     var eventData;
     var title;
     var clickedID;
@@ -311,6 +312,10 @@ function removeTime(date) {
 
     $("#addCloseBtn").click(function () {
       popup3.close();
+    });
+
+    $("#addTeamCloseBtn, #cancelTeamBtn").click(function () {
+      createTeamModal.close();
     });
 
     $("#notifyBtn").click(function() {
