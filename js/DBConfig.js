@@ -20,14 +20,6 @@ var vacationLeft = 0;
 var allEvents;
 var employeeEvents;
 
-
-// $(document).ready(function () {
-// 	if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined) {
-// 		var profileEmail = JSON.parse(localStorage.getItem(localStorage.key(1))).email;
-// 		initialize(profileEmail);
-// 	}
-// });
-
 function initialize(profileEmail){
 		getEmployee(profileEmail).then(function (snap) {
 			sessionStorage.setItem('user', JSON.stringify(snap));
