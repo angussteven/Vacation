@@ -28,20 +28,16 @@ firebase.auth().onAuthStateChanged(function (user) {
 	// // Implementation of getEmployeeCount
 	// var getEmpCountTest = $.Deferred(getEmployeeCount);
 	// getEmpCountTest.done(function(data){
-	//   //console.log("Employee Count: " + employeeCount);
 	// });
 
 	// // Implementation of getEmployeeCount
 	// var getTeamCountTest = $.Deferred(getTeamCount);
 	// getTeamCountTest.done(function(data){
-	//   //console.log("Team Count: " + teamCount);
 	// });
 
 	// // Implementation of getAllTeams
 	// var getAllTeamsCallback = $.Deferred(getAllTeams);
 	// getAllTeamsCallback.done(function(data){
-	// 	//console.log("All da teams: ");
-	// 	//console.log(allTeams);
 	// });
 
 
@@ -60,9 +56,9 @@ firebase.auth().onAuthStateChanged(function (user) {
 		})
 	}
 
-  function capitalizeName(name) {
-    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-  }
+	function capitalizeName(name) {
+		return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+	}
 
 	getEmployee(profileEmail).then(function (snap) {
 		sessionStorage.setItem('user', JSON.stringify(snap));
@@ -178,7 +174,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 	var dataResult = JSON.parse(data);
 	getEmployeesOnTeam(dataResult.team).then(function (snap) {
 		sessionStorage.setItem('teamEmployees', JSON.stringify(snap.val()));
-		console.log(snap.val())
 	}).catch(function (error) {
 		console.log("Team not found.");
 	})
@@ -315,13 +310,10 @@ firebase.auth().onAuthStateChanged(function (user) {
 	function removeManagerFromTeam(userID, teamName) {
 		var refs = firebase.database().ref().child('team').child(teamName);
 		var managerIndex;
-		console.log("I am inside 1");
 		refs.child('manager').once('value', function (snapshot) {
 			snapshot.forEach(function (childSnapshot) {
-				console.log("I am inside 1");
 				if (childSnapshot.val().toString() === userID) {
 					managerIndex = childSnapshot.getKey();
-					console.log("I am inside 1" + managerIndex);
 				}
 			});
 			refs.child('manager').child(managerIndex).remove();
@@ -380,13 +372,13 @@ function updateManager() {
 	document.getElementById("changeManager").style.display = 'none';
 }
 
-function showChangeManager(){
-  if(document.getElementById("changeManager").style.display == 'none'){
-    document.getElementById("changeManager").style.display = 'inline-block';
-  }
-  else{
-    document.getElementById("changeManager").style.display = 'none';
-  }
+function showChangeManager() {
+	if (document.getElementById("changeManager").style.display == 'none') {
+		document.getElementById("changeManager").style.display = 'inline-block';
+	}
+	else {
+		document.getElementById("changeManager").style.display = 'none';
+	}
 }
 
 /*
@@ -429,7 +421,7 @@ function saveEvent(email, eventID, startDate, endDate, vacationType,
 
 	//calculate the vacation days
 	var vacation = calculateVacationDays(startDate, endDate);
-	//console.log(vacation);
+
 
 	//changing the session storage object
 	dataResult.daysLeft = dataResult.daysLeft - vacation;
@@ -450,12 +442,10 @@ function addEventToEmp(email, eventID) {
 }
 
 function getImage(fileName) {
-	//console.log("I am in the image thing");
 	var storage = firebase.storage();
 	// Create a storage reference from our storage service
 	var storageRef = storage.ref();
 	var imagesRef = storageRef.child("images/" + fileName);
-	//console.log(imagesRef);
 	var path = imagesRef.fullPath;
 	//return path;
 
@@ -464,11 +454,7 @@ function getImage(fileName) {
 		// Insert url into an <img> tag to "download"
 		var Image = document.getElementById("picture");
 		Image.src = url;
-		console.log(url);
 	});
-
-
-	//console.log(path);
 }
 
 
@@ -601,10 +587,8 @@ function deleteEvent(eventID) {
 	var empRef = firebase.database().ref().child('employee').child(fixedEmail).child('events');
 	empRef.once('value', function (snapshot) {
 		if (snapshot.exists()) {
-			console.log("I am in the Delete Event Function");
 			snapshot.forEach(function (childSnapshot) {
 				if (childSnapshot.val().toString() === eventID) {
-					console.log("I am in the Delete Event Function");
 					key = childSnapshot.getKey();
 				}
 				//console.log("this is the employee requested: " + childSnapshot.val());
@@ -628,7 +612,6 @@ function updateDeleteEvent(eventID) {
 	var vacation;
 	var ref = firebase.database().ref().child('event');
 	ref.child(eventID).once('value', function (snapshot) {
-		//console.log("The email is: " + snapshot.child("email").val());
 		startDate = snapshot.child("startDate").val();
 		endDate = snapshot.child("endDate").val();
 		//switching the dates around
@@ -665,7 +648,6 @@ function subtractDay(day) {
 	day = day.split('-');
 	console.log(day[1]);
 	//endDay = day[0] + day[1] + day[2];
-	//console.log(day);
 
 	if (day[2] === '01') {//if the day is 1 it is actually the last day of the previous month
 		switch (day[1]) {//switching on month
@@ -704,7 +686,6 @@ function subtractDay(day) {
 		if (day[2] <= 9) { day[2] = "0" + day[2]; }
 		day = day[0] + '-' + day[1] + '-' + day[2];
     }
-    //console.log(day);
 	return day;
 }
 
@@ -738,14 +719,9 @@ function getEmployeeEvents(emailAddress) {
 }
 
 function uploadImage(file) {
-
-	console.log("I am in the image thing");
 	var storageRef = firebase.storage().ref();
-	console.log("I am in the image thing");
 	//var file = 'img/temp.jpg';
-	console.log("I am in the image thing");
 	//file.setAttribute("type", "file");
-	console.log(file.name);
 	var uploadTask = storageRef.child('images/' + file.name).put(file);
 	var data = sessionStorage.getItem('user');
     var dataResult = JSON.parse(data);
@@ -754,12 +730,10 @@ function uploadImage(file) {
 }
 
 function getImage(fileName) {
-	//console.log("I am in the image thing");
 	var storage = firebase.storage();
 	// Create a storage reference from our storage service
 	var storageRef = storage.ref();
 	var imagesRef = storageRef.child("images/" + fileName);
-	//console.log(imagesRef);
 	var path = imagesRef.fullPath;
 	//return path;
 
@@ -770,133 +744,120 @@ function getImage(fileName) {
 		Image.src = url;
 		console.log(url);
 	});
-
-
-	//console.log(path);
 }
 
-function getProfileImage(){
-	//console.log("I am in the image thing");
-
+function getProfileImage() {
 	var data = sessionStorage.getItem('user');
     var dataResult = JSON.parse(data);
     var ref = firebase.database().ref().child('employee/' + fixEmail(dataResult.email.toLowerCase())).child('image');
     var fileName;
-    ref.on('value', function(snapshot) {
-	 	fileName = snapshot.val();
-	 	console.log(snapshot.val());
-	 });
-    if (fileName === null)
-    {
-
-    }else{
-
-    console.log(fileName);
-    var storage = firebase.storage();
-	// Create a storage reference from our storage service
-	var storageRef = storage.ref();
-	var imagesRef = storageRef.child("images/" + fileName);
-	//console.log(imagesRef);
-	console.log(fileName);
-	sessionStorage.setItem('image',fileName);
-
-	var path = imagesRef.fullPath;
-	imagesRef.getDownloadURL().then(function (url) {
-		// Insert url into an <img> tag to "download"
-		var Image = document.getElementById("picture");
-		Image.src = url;
+    ref.on('value', function (snapshot) {
+		fileName = snapshot.val();
+		console.log(snapshot.val());
 	});
+    if (fileName === null) {
+
+    } else {
+
+		var storage = firebase.storage();
+		// Create a storage reference from our storage service
+		var storageRef = storage.ref();
+		var imagesRef = storageRef.child("images/" + fileName);
+		sessionStorage.setItem('image', fileName);
+
+		var path = imagesRef.fullPath;
+		imagesRef.getDownloadURL().then(function (url) {
+			// Insert url into an <img> tag to "download"
+			var Image = document.getElementById("picture");
+			Image.src = url;
+		});
 
     }
-
-
-
-	//console.log(path);
 }
 
-function isDateHasEvent(start_d,end_d){
+function isDateHasEvent(start_d, end_d) {
 	var allEvents = [];
 	var count = 0;
-	allEvents =  $('#calendar').fullCalendar('clientEvents');
+	allEvents = $('#calendar').fullCalendar('clientEvents');
 	var data = sessionStorage.getItem('user');
     var dataResult = JSON.parse(data);
 	var event = $.grep(allEvents, function (v) {
-	var startDate = v.start._d;
-	var endDate = v.end._i;
-	var endDate1 = end_d._d.toJSON().slice(0,10);
-	var startDate1 = start_d._d.toJSON().slice(0,10);
-	startDate1 = addDay(startDate1);
-	var newStartDate1 = new Date(startDate1);
-	endDate1 = subtractDay(endDate1);
-	var newEndDate1 = new Date(endDate1);
-	endDate = subtractDay(endDate);
-	var newEndDate = new Date(endDate);
-	var range = moment().range(startDate, newEndDate);
-	var range1 = moment().range(newStartDate1, newEndDate1);
-	var result = range.contains(start_d._d);
-	var result1 = range.contains(newEndDate1);
-	var result2 = range.contains(range1);
-	var result3 = range1.contains(range);
-	if(dataResult.email == v.owner){
-		if(result || result1 || result3){
-			count++;
+		var startDate = v.start._d;
+		var endDate = v.end._i;
+		var endDate1 = end_d._d.toJSON().slice(0, 10);
+		var startDate1 = start_d._d.toJSON().slice(0, 10);
+		startDate1 = addDay(startDate1);
+		var newStartDate1 = new Date(startDate1);
+		endDate1 = subtractDay(endDate1);
+		var newEndDate1 = new Date(endDate1);
+		endDate = subtractDay(endDate);
+		var newEndDate = new Date(endDate);
+		var range = moment().range(startDate, newEndDate);
+		var range1 = moment().range(newStartDate1, newEndDate1);
+		var result = range.contains(start_d._d);
+		var result1 = range.contains(newEndDate1);
+		var result2 = range.contains(range1);
+		var result3 = range1.contains(range);
+		if (dataResult.email == v.owner) {
+			if (result || result1 || result3) {
+				count++;
+			}
 		}
-	}
     });
     return count > 0;
 }
 
 function addDay(eventDay) {
-  eventDay = eventDay.split('-');
-  switch(eventDay[1]) {
-    case '01': case '03': case '05': case '07': case '08': case '10':
-      if (eventDay[2] === '31') {
-        eventDay[2] = '0';
-        var tempMonth = parseInt(eventDay[1]);
-        eventDay[1] = (tempMonth + 1).toString();
-        if (eventDay[1] <= 9){
-          eventDay[1] = '0' + eventDay[1];
-        }
-      }
-      break;
+	eventDay = eventDay.split('-');
+	switch (eventDay[1]) {
+		case '01': case '03': case '05': case '07': case '08': case '10':
+			if (eventDay[2] === '31') {
+				eventDay[2] = '0';
+				var tempMonth = parseInt(eventDay[1]);
+				eventDay[1] = (tempMonth + 1).toString();
+				if (eventDay[1] <= 9) {
+					eventDay[1] = '0' + eventDay[1];
+				}
+			}
+			break;
 
-    case '04': case '06': case '09': case '11':
-      if (eventDay[2] === '30') {
-        eventDay[2] = '0';
-        tempMonth = parseInt(eventDay[1]);
-        eventDay[1] = (tempMonth + 1).toString();
-        if (eventDay[1] <= 9)
-          eventDay[1] = "0" + eventDay[1];
-      }
-      break;
+		case '04': case '06': case '09': case '11':
+			if (eventDay[2] === '30') {
+				eventDay[2] = '0';
+				tempMonth = parseInt(eventDay[1]);
+				eventDay[1] = (tempMonth + 1).toString();
+				if (eventDay[1] <= 9)
+					eventDay[1] = "0" + eventDay[1];
+			}
+			break;
 
-    case '12':
-      if (eventDay[2] === '31') {
-        eventDay[2] = '0';
-        eventDay[1] = '01';
-        var tempYear = parseInt(eventDay[0]);
-        eventDay[0] = (tempYear + 1).toString();
-      }
-      break;
+		case '12':
+			if (eventDay[2] === '31') {
+				eventDay[2] = '0';
+				eventDay[1] = '01';
+				var tempYear = parseInt(eventDay[0]);
+				eventDay[0] = (tempYear + 1).toString();
+			}
+			break;
 
-    case '02':
-      var testYear = parseInt(eventDay[0]);
-      if ((testYear % 4 == 0) && (testYear % 100 != 0) || (testYear % 400 == 0)) {
-        if (eventDay[2] === '29')
-          eventDay[2] = '0';
-          eventDay[1] = '03';
-      }
-      else if (eventDay[2] === '28') {
-        eventDay[2] = '0';
-        eventDay[1] = '03';
-      }
-      break;
-  }
-  num = parseInt(eventDay[2]);
-  num+=1;
-  eventDay[2] = num.toString();
-  if (eventDay[2] <= 9)
-    eventDay[2] = "0" + eventDay[2];
-  eventDay = eventDay[0] + '-' + eventDay[1] + '-' + eventDay[2];
-  return eventDay;
+		case '02':
+			var testYear = parseInt(eventDay[0]);
+			if ((testYear % 4 == 0) && (testYear % 100 != 0) || (testYear % 400 == 0)) {
+				if (eventDay[2] === '29')
+					eventDay[2] = '0';
+				eventDay[1] = '03';
+			}
+			else if (eventDay[2] === '28') {
+				eventDay[2] = '0';
+				eventDay[1] = '03';
+			}
+			break;
+	}
+	num = parseInt(eventDay[2]);
+	num += 1;
+	eventDay[2] = num.toString();
+	if (eventDay[2] <= 9)
+		eventDay[2] = "0" + eventDay[2];
+	eventDay = eventDay[0] + '-' + eventDay[1] + '-' + eventDay[2];
+	return eventDay;
 }
