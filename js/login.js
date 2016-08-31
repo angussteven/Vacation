@@ -1,3 +1,40 @@
+$(document).ready(function () {
+	//prevent form from posting
+	$("#loginForm").submit(function (event) {
+		event.preventDefault();
+	});
+
+	//load the cache else wait for DB to load(first sign on or profile create)
+	if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined) {
+		var emailStorage = JSON.parse(localStorage.getItem(localStorage.key(1))).email;
+		document.getElementById("profileName").innerHTML = capitalizeName(localStorage.getItem("firstName")) + " " + capitalizeName(localStorage.getItem("lastName"));
+		document.getElementById("profileTeam").innerHTML = 'Team: ' + localStorage.getItem("team");
+		var vdays = document.getElementById("vacationdays");
+		var info = "Total Days: " + localStorage.getItem("vacationDays") + "<br>Remaining Days: " + localStorage.getItem("daysLeft");
+		vdays.innerHTML = info;
+
+		//Render the pages NOW if in cache
+		RenderCalendar();
+		//update the cache
+		initialize(emailStorage);
+	}
+	else {
+		//event that checks if user is logged in or just signed on
+		firebase.auth().onAuthStateChanged(function (user) {
+			if (user) {
+				//get profile information first
+				initialize(user.email);
+				//then render
+				RenderCalendar();
+
+			} else {
+				console.log("Not logged in");
+			}
+		});
+	}
+});
+
+//remove session and localstorage cache when signout
 function fireSignOut() {
 	firebase.auth().signOut().then(function () {
 		$("#loginWrap").show();
@@ -41,36 +78,6 @@ function logIn() {
 		console.log(errorCode, errorMessage);
 	});
 }
-$(document).ready(function () {
-	//load the cache
-	if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined) {
-		var emailStorage = JSON.parse(localStorage.getItem(localStorage.key(1))).email;
-		document.getElementById("profileName").innerHTML = capitalizeName(localStorage.getItem("firstName")) + " " + capitalizeName(localStorage.getItem("lastName"));
-		document.getElementById("profileTeam").innerHTML = 'Team: ' + localStorage.getItem("team");
-		var vdays = document.getElementById("vacationdays");
-		var info = "Total Days: " + localStorage.getItem("vacationDays") + "<br>Remaining Days: " + localStorage.getItem("daysLeft");
-		vdays.innerHTML = info;
-
-		//Render the pages NOW if in cache
-		RenderCalendar();
-	}
-
-	//prevent form from posting
-	$("#loginForm").submit(function (event) {
-		event.preventDefault();
-	});
-	//event that checks if user is logged in or just signed on
-	firebase.auth().onAuthStateChanged(function (user) {
-		if (user) {
-				initialize(user.email);
-				RenderCalendar();
-
-		} else {
-			console.log("Not logged in");
-		}
-	});
-});
-
 function RenderCalendar() {
 	$("#loginWrap").hide();
 	$("#wrap").show();
@@ -79,8 +86,4 @@ function RenderCalendar() {
 	$("#sidebar").show();
 	$("#wrapper").addClass("wrapper");
 	$('#calendar').fullCalendar('render');
-}
-
-function capitalizeName(name) {
-    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }

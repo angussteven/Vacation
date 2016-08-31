@@ -193,14 +193,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 	// 	});
 	// }
 
-	
-
-	
-
-	
-
-
-
 	// // Get vacation days for employee
 	// function getVacationDays(emailAddress){
 	// 	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
@@ -226,7 +218,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 	//  }
 
 
-
 	// //Get The employess under manager
 	// function getEmployeesByManager(userID){
 	// 	userID = fixEmail(userID);
@@ -242,7 +233,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 	// 	});
 
 	// }
-
 
 	// Team //
 	// Add a new team to the database [TODO]
