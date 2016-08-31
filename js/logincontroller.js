@@ -174,9 +174,11 @@ var allTeams = [];
 var getAllTeamsCallback = $.Deferred(getAllTeams);
 getAllTeamsCallback.done(function(data) {
     var select = document.getElementById("selectedTeam");
+    var select2 = document.getElementById("newTeam");
 
     for (var i = 0; i < allTeams.length; i++) {
         select[select.length] = new Option(allTeams[i].name, allTeams[i].name);
+        select2[select2.length] = new Option(allTeams[i].name, allTeams[i].name);
         //console.log(allTeams[i]);
     }
 });
