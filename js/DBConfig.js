@@ -373,6 +373,7 @@ function updateTeam() {
     var tempData = JSON.parse(tempUser);
     var tempEmail = fixEmail(tempData.email);
     firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('team').set(team);
+		firebase.database().ref().child('team').child(team.toLowerCase()).child('employee').push(tempData.email);
     document.getElementById("changeManager").style.display = 'none';
 }
 
