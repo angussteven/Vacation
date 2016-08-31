@@ -15,7 +15,7 @@ var activeEmployees = [];
 /*
 * Generate the HTML elements needed to create the tree and populate them with the json data.
 */
- $( window ).load(function() {
+$(document).ready(function() {
 	/*
 	* Call the function that creates the HTML objects and adds the json data to them.
 	*/
