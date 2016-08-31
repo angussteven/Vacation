@@ -385,6 +385,16 @@ function showChangeManager() {
 	}
 }
 
+function updateTeam() {
+    var team = document.getElementById("newTeam").value;
+    var tempUser = sessionStorage.getItem('user');
+    var tempData = JSON.parse(tempUser);
+    var tempEmail = fixEmail(tempData.email);
+    firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('team').set(team);
+    document.getElementById("changeManager").style.display = 'none';
+}
+
+
 /*
  	Save an event into the database
  	email: string (email)
