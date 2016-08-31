@@ -62,9 +62,8 @@ $(document).ready(function () {
 	//event that checks if user is logged in or just signed on
 	firebase.auth().onAuthStateChanged(function (user) {
 		if (user) {
-			
-				RenderCalendar();
 				initialize(user.email);
+				RenderCalendar();
 
 		} else {
 			console.log("Not logged in");
