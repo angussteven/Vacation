@@ -371,9 +371,20 @@ function updateTeam() {
     var team = document.getElementById("newTeam").value;
     var tempUser = sessionStorage.getItem('user');
     var tempData = JSON.parse(tempUser);
+		var oldTeam = tempData.team;
+		var tempAddress = tempData.email;
     var tempEmail = fixEmail(tempData.email);
     firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('team').set(team);
-		firebase.database().ref().child('team').child(team.toLowerCase()).child('employee').push(tempData.email);
+		firebase.database().ref().child('team').child(team.toLowerCase()).child('employee').push(tempAddress);
+		var ref = firebase.database().ref().child('team').child(oldTeam);
+		ref.child('employee').once('value',function(snapshot){
+			snapshot.forEach(function(childSnapshot){
+				if(childSnapshot.val().toString() === tempAddress){
+					var key = childSnapshot.getKey();
+					ref.child('employee').child(key).remove();
+				}
+			});
+		});
     document.getElementById("changeManager").style.display = 'none';
 }
 
