@@ -7,6 +7,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
+//Called from login.js Profile email is passed as an argument from firebase local storage
+//Else email is passed in from the firebase event listener
 function initialize(profileEmail) {
 	getEmployee(profileEmail).then(function (snap) {
 		sessionStorage.setItem('user', JSON.stringify(snap));
@@ -31,12 +33,11 @@ function initialize(profileEmail) {
 		localStorage.setItem("daysLeft", snap.daysLeft);
 		localStorage.getItem("profileEmail",profileEmail );
 
-		getProfileImage();
+		getProfileImage(profileEmail);
 	});
 
 	getEmployeeEvents(profileEmail).then(function (snap) {
-		employeeEvents = snap;
-		sessionStorage.setItem('myEvents', JSON.stringify(employeeEvents));
+		sessionStorage.setItem('myEvents', JSON.stringify(snap));
 	}).catch(function (error) {
 		console.log(error);
 	});
@@ -763,10 +764,8 @@ function getImage(fileName) {
 	});
 }
 
-function getProfileImage() {
-	var data = sessionStorage.getItem('user');
-    var dataResult = JSON.parse(data);
-    var ref = firebase.database().ref().child('employee/' + fixEmail(dataResult.email.toLowerCase())).child('image');
+function getProfileImage(email) {
+    var ref = firebase.database().ref().child('employee/' + fixEmail(email.toLowerCase())).child('image');
     var fileName;
     ref.on('value', function (snapshot) {
 		fileName = snapshot.val();
