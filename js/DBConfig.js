@@ -7,19 +7,6 @@ var config = {
 };
 firebase.initializeApp(config);
 
-
-var employeeCount = 0;
-var teamCount = 0;
-var allTeams = [];
-var team;
-var employee;
-var teamsEmployees;
-var keyToObject;
-var employeesManagers = [];
-var vacationLeft = 0;
-var allEvents;
-var employeeEvents;
-
 function initialize(profileEmail) {
 	getEmployee(profileEmail).then(function (snap) {
 		sessionStorage.setItem('user', JSON.stringify(snap));

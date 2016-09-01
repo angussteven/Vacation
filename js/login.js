@@ -51,13 +51,9 @@ function fireSignOut() {
 		$("#signOutButton").show();
 		$("#wrapper").removeClass("wrapper");
 
-		localStorage.removeItem('firstName');
-		localStorage.removeItem('lastName');
-		localStorage.removeItem('team');
-		localStorage.removeItem('vacationdays');
-		localStorage.removeItem('daysLeft');
-		localStorage.removeItem("managerFirstName");
-		localStorage.removeItem("managerLastName")
+		//clear out the cache
+		localStorage.clear();
+
 	}, function (error) {
 		alertify.alert("Fail");
 	});
