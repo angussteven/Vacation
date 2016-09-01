@@ -38,6 +38,14 @@ function initialize(profileEmail) {
 		localStorage.getItem("profileEmail",profileEmail );
 
 		getProfileImage(profileEmail);
+
+			getEmployeesOnTeam(snap.team).then(function (snap) {
+				populateList(snap.val());
+				$('#container').jstree();
+				test(snap.val())
+	}).catch(function (error) {
+	console.log(error)
+	})
 	});
 
 	getEmployeeEvents(profileEmail).then(function (snap) {
@@ -46,12 +54,10 @@ function initialize(profileEmail) {
 		console.log(error);
 	});
 
-	var dataResult = JSON.parse(data);
-	getEmployeesOnTeam(dataResult.team).then(function (snap) {
-		sessionStorage.setItem('teamEmployees', JSON.stringify(snap.val()));
-	}).catch(function (error) {
-		console.log("Team not found.");
-	})
+
+
+
+	renderEmployeeEvents(profileEmail);
 }
 
 function capitalizeName(name) {

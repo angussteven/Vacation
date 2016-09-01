@@ -1,10 +1,7 @@
 /*
 * Get team information from session
 */
-var data = sessionStorage.getItem('user');
-var userData = JSON.parse(data);
-var team = sessionStorage.getItem('teamEmployees');
-var teamData = JSON.parse(team);
+
 
 /*
 * Keeps track the events that are currently visible on the calendar.
@@ -12,33 +9,7 @@ var teamData = JSON.parse(team);
 var activeEvents = [];
 var activeEmployees = [];
 
-/*
-* Generate the HTML elements needed to create the tree and populate them with the json data.
-*/
-$(document).ready(function() {
-	/*
-	* Call the function that creates the HTML objects and adds the json data to them.
-	*/
-	populateList();
-	/*
-	* Populate calendar with the current users events.
-	*/
-	//var data = sessionStorage.getItem('user');
-    var dataResult = JSON.parse(data);
-	renderEmployeeEvents(dataResult.email);
-	/*
-	* Get the HTML object were we want to create the tree.
-	*/
-	$('#container').jstree();
-
-    $("#container").bind("select_node.jstree", function (e, data) {
- 		$("#container").jstree("toggle_node", data.rslt.obj);
- 		$("#container").jstree("deselect_node", data.rslt.obj);
-	})
-
-	/*
-	* This changed the background color of the items in the tree to make them appear selected
-	*/
+function test(teamData){
 	$('ul').on('click', 'li', function(e){
 		e.stopPropagation();
 		var bgID = $(this).css("background-color");
@@ -73,44 +44,34 @@ $(document).ready(function() {
 			activeEmployees.push(this.id.toString());
 			renderEmployeeEvents(teamData[this.id].email);
 		}
-		/*
-		if (bgID == 'rgba(194, 218, 218, 0.458824)') {
-			/*
-			* If the manager is selected then remove all events from the calendar.
-			*/
-			/*
-			if ($(this).attr('class').indexOf('manager') > -1) {
-				manager = document.getElementById(this.id);
-				employees = manager.getElementsByTagName("li");
-				for (var i =0; i < employees.length; i++) {
-					employees[i].style.backgroundColor ='rgba(0, 0, 0, 0)';
-					removeEmployeeEvents(teamData[employees[i].id].email);
-				}
-			}
-			$(this).css('background-color', 'rgba(0, 0, 0, 0)');
-			removeEmployeeEvents(teamData[this.id].email);
-		}
-		*/
-		/*
-		else {
-			/*
-			* If the manager is selected populate the calendar with everyones events.
-			*/
-			/*
-			if ($(this).attr('class').indexOf('manager') > -1) {
-				manager = document.getElementById(this.id);
-				employees = manager.getElementsByTagName("li");
-				for (var i =0; i < employees.length; i++) {
-					employees[i].style.backgroundColor = 'rgba(194, 218, 218, 0.89)';
-					renderEmployeeEvents(teamData[employees[i].id].email);
-				}
-			}
-			$(this).css('background-color', 'rgba(194, 218, 218, 0.46)');
-			renderEmployeeEvents(teamData[this.id].email);
-
-		}
-		*/
 	});
+}
+
+/*
+* Generate the HTML elements needed to create the tree and populate them with the json data.
+*/
+$(document).ready(function() {
+	/*
+	* Call the function that creates the HTML objects and adds the json data to them.
+	*/
+
+	/*
+	* Populate calendar with the current users events.
+	*/
+	/*
+	* Get the HTML object were we want to create the tree.
+	*/
+
+
+    // $("#container").bind("select_node.jstree", function (e, data) {
+ 	// 	$("#container").jstree("toggle_node", data.rslt.obj);
+ 	// 	$("#container").jstree("deselect_node", data.rslt.obj);
+	// })
+
+	/*
+	* This changed the background color of the items in the tree to make them appear selected
+	*/
+
 });
 
 /*
@@ -138,6 +99,8 @@ function removeEmployeeEvents(employeeID) {
 				$('#calendar').fullCalendar('removeEvents', data[currentEvent].eventID.toString());
 			}
 		}
+	}).catch(function(error){
+		console.log(error);
 	});
 }
 
@@ -197,7 +160,7 @@ function renderEmployeeEvents(employeeID) {
 /*
 * This function takes json data as an argument and uses that data to populate the tree dynamically.
 */
-function populateList() {
+function populateList(teamData) {
 	/*
 	* These vaiables hold the different HTML objects that we insert into the HTML file.
 	*/
