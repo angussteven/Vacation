@@ -9,7 +9,7 @@ $(document).ready(function () {
 	try {
 		 firebaseLocalStorageEmail = JSON.parse(localStorage.getItem(localStorage.key(1))).email
 	} catch (error) {
-		
+		console.log("No cache detected.");
 	}
 	//if the cache exists perform DOM edits right away then call initialize() database
 	if (firebaseLocalStorageEmail) {
