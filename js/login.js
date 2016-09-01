@@ -4,13 +4,14 @@ $(document).ready(function () {
 		event.preventDefault();
 	});
 
-	//load the cache else wait for DB to load(first sign on or profile create)
+	//attempt to load the cache else wait for DB to load(first sign on or profile create)
 	var firebaseLocalStorageEmail;
 	try {
 		 firebaseLocalStorageEmail = JSON.parse(localStorage.getItem(localStorage.key(1))).email
 	} catch (error) {
 		
 	}
+	//if the cache exists perform DOM edits right away then call initialize() database
 	if (firebaseLocalStorageEmail) {
 		var emailStorage = JSON.parse(localStorage.getItem(localStorage.key(1))).email;
 		document.getElementById("profileName").innerHTML = capitalizeName(localStorage.getItem("firstName")) + " " + capitalizeName(localStorage.getItem("lastName"));

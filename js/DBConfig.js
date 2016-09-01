@@ -14,6 +14,8 @@ function initialize(profileEmail) {
 		sessionStorage.setItem('user', JSON.stringify(snap));
 		document.getElementById("profileName").innerHTML = capitalizeName(snap.firstName) + " " + capitalizeName(snap.lastName);
 		document.getElementById("profileTeam").innerHTML = 'Team: ' + snap.team;
+
+		//gets the employees manager and stores in cache
 		getEmployee(snap.managers).then(function (snapshot) {
 			localStorage.setItem("managerFirstName", snapshot.firstName);
 			localStorage.setItem("managerLastName", snapshot.lastName);
@@ -21,6 +23,8 @@ function initialize(profileEmail) {
 		}).catch(function(error){
 			console.log(error);
 		});
+
+		//renders vacation days
 		var vdays = document.getElementById("vacationdays");
 		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
 		vdays.innerHTML = info;
