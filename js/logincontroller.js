@@ -6,7 +6,6 @@ $(document).ready(function () {
         popup.close();
     });
 
-    $(document).foundation();
     $("#createProfileForm").on("submit", function (ev) {
         ev.preventDefault();
         createProfile();
