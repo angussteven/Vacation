@@ -26,7 +26,7 @@ function initialize(profileEmail) {
 		document.getElementById("profileName").innerHTML = capitalizeName(snap.firstName) + " " + capitalizeName(snap.lastName);
 		document.getElementById("profileTeam").innerHTML = 'Team: ' + snap.team;
 		getEmployee(snap.managers).then(function (snapshot) {
-			localStorage.setItem("managerNameLast", snapshot.firstName);
+			localStorage.setItem("managerFirstName", snapshot.firstName);
 			localStorage.setItem("managerLastName", snapshot.lastName);
 			document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(snapshot.firstName) + " " + capitalizeName(snapshot.lastName);
 		});
@@ -60,7 +60,12 @@ function initialize(profileEmail) {
 }
 
 function capitalizeName(name) {
-	return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+	try{
+		return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+	}
+	catch(err){
+		return name;
+	}
 }
 
 function getEmployee(emailAddress) {

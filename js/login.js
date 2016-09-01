@@ -5,14 +5,20 @@ $(document).ready(function () {
 	});
 
 	//load the cache else wait for DB to load(first sign on or profile create)
-	if (JSON.parse(localStorage.getItem(localStorage.key(1))).email != undefined) {
+	var firebaseLocalStorageEmail;
+	try {
+		 firebaseLocalStorageEmail = JSON.parse(localStorage.getItem(localStorage.key(1))).email
+	} catch (error) {
+		
+	}
+	if (firebaseLocalStorageEmail) {
 		var emailStorage = JSON.parse(localStorage.getItem(localStorage.key(1))).email;
 		document.getElementById("profileName").innerHTML = capitalizeName(localStorage.getItem("firstName")) + " " + capitalizeName(localStorage.getItem("lastName"));
 		document.getElementById("profileTeam").innerHTML = 'Team: ' + localStorage.getItem("team");
 		var vdays = document.getElementById("vacationdays");
 		var info = "Total Days: " + localStorage.getItem("vacationDays") + "<br>Remaining Days: " + localStorage.getItem("daysLeft");
 		vdays.innerHTML = info;
-		document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(localStorage.getItem("managerNameLast")) + " " + capitalizeName(localStorage.getItem("managerLastName"));
+		document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(localStorage.getItem("managerFirstName")) + " " + capitalizeName(localStorage.getItem("managerLastName"));
 
 		//Render the pages NOW if in cache
 		RenderCalendar();
@@ -50,6 +56,8 @@ function fireSignOut() {
 		localStorage.removeItem('team');
 		localStorage.removeItem('vacationdays');
 		localStorage.removeItem('daysLeft');
+		localStorage.removeItem("managerFirstName");
+		localStorage.removeItem("managerLastName")
 	}, function (error) {
 		alertify.alert("Fail");
 	});
