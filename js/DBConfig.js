@@ -355,15 +355,17 @@ function updateManager() {
 	var tempData = JSON.parse(tempUser);
 	var tempEmail = fixEmail(tempData.email);
 	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('managers').set(manager);
-	document.getElementById("changeManager").style.display = 'none';
+	showChangeManager();
 }
 
 function showChangeManager() {
 	if (document.getElementById("changeManager").style.display == 'none') {
 		document.getElementById("changeManager").style.display = 'inline-block';
+		document.getElementById("nodeTreeForm").style.display = 'none';
 	}
 	else {
 		document.getElementById("changeManager").style.display = 'none';
+		document.getElementById("nodeTreeForm").style.display = 'inline';
 	}
 }
 
@@ -385,7 +387,7 @@ function updateTeam() {
 				}
 			});
 		});
-    document.getElementById("changeManager").style.display = 'none';
+    showChangeManager();
 }
 
 
