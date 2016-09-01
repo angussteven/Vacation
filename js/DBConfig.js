@@ -48,15 +48,6 @@ function initialize(profileEmail) {
 	})
 	});
 
-	getEmployeeEvents(profileEmail).then(function (snap) {
-		sessionStorage.setItem('myEvents', JSON.stringify(snap));
-	}).catch(function (error) {
-		console.log(error);
-	});
-
-
-
-
 	renderEmployeeEvents(profileEmail);
 }
 
