@@ -5,7 +5,7 @@
 #container {
 	text-align: left;
 	overflow: auto;
-	overflow-x: hidden; 
+	overflow-x: hidden;
 	max-height: 20em;
 	margin-bottom: 1em;
 }
@@ -73,6 +73,10 @@ body {
 	width: 100%;
 	font-family: Century Gothic;
 	color: white;
+}
+
+h5 {
+	font-size: 18px;
 }
 
 .login-box {
