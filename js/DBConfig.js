@@ -16,6 +16,8 @@ function initialize(profileEmail) {
 			localStorage.setItem("managerFirstName", snapshot.firstName);
 			localStorage.setItem("managerLastName", snapshot.lastName);
 			document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(snapshot.firstName) + " " + capitalizeName(snapshot.lastName);
+		}).catch(function(error){
+			console.log(error);
 		});
 		var vdays = document.getElementById("vacationdays");
 		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
