@@ -31,11 +31,7 @@ $(document).ready(function () {
 		firebase.auth().onAuthStateChanged(function (user) {
 			if (user) {
 				RenderCalendar();
-				//get profile information first
-				initialize(user.email);
-				//then render
-				
-
+				initialize(user.email);		
 			} else {
 				console.log("Not logged in");
 			}
