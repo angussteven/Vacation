@@ -40,6 +40,7 @@ function initialize(profileEmail) {
 		localStorage.setItem("team", snap.team);
 		localStorage.setItem("vacationDays", snap.totalVacationDays);
 		localStorage.setItem("daysLeft", snap.daysLeft);
+		localStorage.getItem("profileEmail",profileEmail );
 
 		getProfileImage();
 	});
@@ -246,9 +247,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 	// Team //
 	// Add a new team to the database [TODO]
-	function addTeam(teamName) {
-
-	}
 	// // Pushes all team names to a string array [DONE]
 	// function getAllTeams(){
 	// 	// Get all the teams
@@ -331,6 +329,11 @@ firebase.auth().onAuthStateChanged(function (user) {
 		});
 	}
 
+
+
+
+
+
 	// // Does all the necessary steps to move employee from one team to another [TODO]
 	// function switchTeams(emailAddress, fromTeamID, toTeamID){
 
@@ -357,7 +360,26 @@ firebase.auth().onAuthStateChanged(function (user) {
 	// 	})
 	// }
 });
+	function createTeam() {
+		var teamName = document.getElementById("teamName").value;
+		console.log(teamName);
+		if(teamName.toString() === "")
+		{
+			alertify.alert("Please enter a Team Name");
+		}else{
 
+		var userID = localStorage.getItem("profileEmail");
+		firebase.database().ref('team/' + teamName).set({
+			manager: userID,
+			name: teamName
+		});
+		var teamManagerFixedEmail = fixEmail(userID);
+		firebase.database().ref('employee/'+ teamManagerFixedEmail).child('isManager').set(true);
+
+		}
+		
+
+	}
 // Update the employee's manager
 function updateManager() {
 	var manager = document.getElementById("newManager").value;
