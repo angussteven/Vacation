@@ -80,7 +80,7 @@ function getEmployeeEvents(emailAddress) {
 				resolve(snapshot.val());
 			}
 			else {
-				console.log("Something went wrong");
+				reject();
 			}
 		});
 	});
