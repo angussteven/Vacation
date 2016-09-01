@@ -12,6 +12,7 @@ $(document).ready(function () {
 		var vdays = document.getElementById("vacationdays");
 		var info = "Total Days: " + localStorage.getItem("vacationDays") + "<br>Remaining Days: " + localStorage.getItem("daysLeft");
 		vdays.innerHTML = info;
+		document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(localStorage.getItem("managerNameLast")) + " " + capitalizeName(localStorage.getItem("managerLastName"));
 
 		//Render the pages NOW if in cache
 		RenderCalendar();
@@ -22,10 +23,11 @@ $(document).ready(function () {
 		//event that checks if user is logged in or just signed on
 		firebase.auth().onAuthStateChanged(function (user) {
 			if (user) {
+				RenderCalendar();
 				//get profile information first
 				initialize(user.email);
 				//then render
-				RenderCalendar();
+				
 
 			} else {
 				console.log("Not logged in");

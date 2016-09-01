@@ -20,42 +20,43 @@ var vacationLeft = 0;
 var allEvents;
 var employeeEvents;
 
-function initialize(profileEmail){
-		getEmployee(profileEmail).then(function (snap) {
-			sessionStorage.setItem('user', JSON.stringify(snap));
-			document.getElementById("profileName").innerHTML = capitalizeName(snap.firstName) + " " + capitalizeName(snap.lastName);
-			document.getElementById("profileTeam").innerHTML = 'Team: ' + snap.team;
-			getEmployee(snap.managers).then(function(snapshot){
-				sessionStorage.setItem('manager', JSON.stringify(snapshot));
-				document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(snapshot.firstName) + " " + capitalizeName(snapshot.lastName);
-			});
-			var vdays = document.getElementById("vacationdays");
-			var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
-			vdays.innerHTML = info;
-
-			//Update the cache
-			localStorage.setItem("firstName", snap.firstName);
-			localStorage.setItem("lastName", snap.lastName);
-			localStorage.setItem("team", snap.team);
-			localStorage.setItem("vacationDays", snap.totalVacationDays);
-			localStorage.setItem("daysLeft", snap.daysLeft);
-
-			getProfileImage();
+function initialize(profileEmail) {
+	getEmployee(profileEmail).then(function (snap) {
+		sessionStorage.setItem('user', JSON.stringify(snap));
+		document.getElementById("profileName").innerHTML = capitalizeName(snap.firstName) + " " + capitalizeName(snap.lastName);
+		document.getElementById("profileTeam").innerHTML = 'Team: ' + snap.team;
+		getEmployee(snap.managers).then(function (snapshot) {
+			localStorage.setItem("managerNameLast", snapshot.firstName);
+			localStorage.setItem("managerLastName", snapshot.lastName);
+			document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(snapshot.firstName) + " " + capitalizeName(snapshot.lastName);
 		});
+		var vdays = document.getElementById("vacationdays");
+		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
+		vdays.innerHTML = info;
 
-		getEmployeeEvents(profileEmail).then(function (snap) {
-			employeeEvents = snap;
-			sessionStorage.setItem('myEvents', JSON.stringify(employeeEvents));
-		}).catch(function (error) {
-			console.log(error);
-		});
+		//Update the cache
+		localStorage.setItem("firstName", snap.firstName);
+		localStorage.setItem("lastName", snap.lastName);
+		localStorage.setItem("team", snap.team);
+		localStorage.setItem("vacationDays", snap.totalVacationDays);
+		localStorage.setItem("daysLeft", snap.daysLeft);
 
-		var dataResult = JSON.parse(data);
-		getEmployeesOnTeam(dataResult.team).then(function (snap) {
-			sessionStorage.setItem('teamEmployees', JSON.stringify(snap.val()));
-		}).catch(function (error) {
-			console.log("Team not found.");
-		})
+		getProfileImage();
+	});
+
+	getEmployeeEvents(profileEmail).then(function (snap) {
+		employeeEvents = snap;
+		sessionStorage.setItem('myEvents', JSON.stringify(employeeEvents));
+	}).catch(function (error) {
+		console.log(error);
+	});
+
+	var dataResult = JSON.parse(data);
+	getEmployeesOnTeam(dataResult.team).then(function (snap) {
+		sessionStorage.setItem('teamEmployees', JSON.stringify(snap.val()));
+	}).catch(function (error) {
+		console.log("Team not found.");
+	})
 }
 
 function capitalizeName(name) {
@@ -377,20 +378,20 @@ function updateTeam() {
     var team = document.getElementById("newTeam").value;
     var tempUser = sessionStorage.getItem('user');
     var tempData = JSON.parse(tempUser);
-		var oldTeam = tempData.team;
-		var tempAddress = tempData.email;
+	var oldTeam = tempData.team;
+	var tempAddress = tempData.email;
     var tempEmail = fixEmail(tempData.email);
     firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('team').set(team);
-		firebase.database().ref().child('team').child(team.toLowerCase()).child('employee').push(tempAddress);
-		var ref = firebase.database().ref().child('team').child(oldTeam);
-		ref.child('employee').once('value',function(snapshot){
-			snapshot.forEach(function(childSnapshot){
-				if(childSnapshot.val().toString() === tempAddress){
-					var key = childSnapshot.getKey();
-					ref.child('employee').child(key).remove();
-				}
-			});
+	firebase.database().ref().child('team').child(team.toLowerCase()).child('employee').push(tempAddress);
+	var ref = firebase.database().ref().child('team').child(oldTeam);
+	ref.child('employee').once('value', function (snapshot) {
+		snapshot.forEach(function (childSnapshot) {
+			if (childSnapshot.val().toString() === tempAddress) {
+				var key = childSnapshot.getKey();
+				ref.child('employee').child(key).remove();
+			}
 		});
+	});
     showChangeManager();
 }
 
