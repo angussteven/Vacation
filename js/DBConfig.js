@@ -20,7 +20,7 @@ function initialize(profileEmail) {
 			localStorage.setItem("managerFirstName", snapshot.firstName);
 			localStorage.setItem("managerLastName", snapshot.lastName);
 			document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(snapshot.firstName) + " " + capitalizeName(snapshot.lastName);
-		}).catch(function(error){
+		}).catch(function (error) {
 			console.log(error);
 		});
 
@@ -35,27 +35,27 @@ function initialize(profileEmail) {
 		localStorage.setItem("team", snap.team);
 		localStorage.setItem("vacationDays", snap.totalVacationDays);
 		localStorage.setItem("daysLeft", snap.daysLeft);
-		localStorage.getItem("profileEmail",profileEmail );
+		localStorage.getItem("profileEmail", profileEmail);
 
 		getProfileImage(profileEmail);
 
-			getEmployeesOnTeam(snap.team).then(function (snap) {
-				populateList(snap.val());
-				$('#container').jstree();
-				test(snap.val())
-	}).catch(function (error) {
-	console.log(error)
-	})
+		getEmployeesOnTeam(snap.team).then(function (snap) {
+			populateList(snap.val());
+			$('#container').jstree();
+			test(snap.val())
+		}).catch(function (error) {
+			console.log(error)
+		})
 	});
 
 	renderEmployeeEvents(profileEmail);
 }
 
 function capitalizeName(name) {
-	try{
+	try {
 		return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 	}
-	catch(err){
+	catch (err) {
 		return name;
 	}
 }
@@ -117,9 +117,7 @@ function updateEvent(eventID, email, startDate, endDate, title, type, descriptio
 	var updates = {};
 	updates[eventID] = tempData;
 	return firebase.database().ref('event').update(updates);
-
 }
-
 
 firebase.auth().onAuthStateChanged(function (user) {
 	profileEmail = user.email;
@@ -320,11 +318,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 		});
 	}
 
-
-
-
-
-
 	// // Does all the necessary steps to move employee from one team to another [TODO]
 	// function switchTeams(emailAddress, fromTeamID, toTeamID){
 
@@ -351,13 +344,12 @@ firebase.auth().onAuthStateChanged(function (user) {
 	// 	})
 	// }
 });
-	function createTeam() {
-		var teamName = document.getElementById("teamName").value;
-		console.log(teamName);
-		if(teamName.toString() === "")
-		{
-			alertify.alert("Please enter a Team Name");
-		}else{
+function createTeam() {
+	var teamName = document.getElementById("teamName").value;
+	console.log(teamName);
+	if (teamName.toString() === "") {
+		alertify.alert("Please enter a Team Name");
+	} else {
 
 		var userID = localStorage.getItem("profileEmail");
 		firebase.database().ref('team/' + teamName).set({
@@ -365,12 +357,9 @@ firebase.auth().onAuthStateChanged(function (user) {
 			name: teamName
 		});
 		var teamManagerFixedEmail = fixEmail(userID);
-		firebase.database().ref('employee/'+ teamManagerFixedEmail).child('isManager').set(true);
-
-		}
-		
-
+		firebase.database().ref('employee/' + teamManagerFixedEmail).child('isManager').set(true);
 	}
+}
 // Update the employee's manager
 function updateManager() {
 	var manager = document.getElementById("newManager").value;
@@ -632,11 +621,6 @@ function deleteEvent(eventID) {
 			}
 		}
 	});
-
-
-
-	//ref.remove();
-	// Delete the event via the eventID
 }
 
 function updateDeleteEvent(eventID) {
@@ -664,8 +648,6 @@ function updateDeleteEvent(eventID) {
 		vdays.innerHTML = info;
 		updateDeleteEventDatabase(dataResult.email);
 	});
-
-	//firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
 }
 
 function updateDeleteEventDatabase(email) {
@@ -677,7 +659,6 @@ function updateDeleteEventDatabase(email) {
 }
 
 function subtractDay(day) {
-
 	day = day.split('-');
 	console.log(day[1]);
 	//endDay = day[0] + day[1] + day[2];
@@ -733,9 +714,6 @@ function dynamicUpdate() {
 	$("#daysSelected").val(vacation);
     $("#daysLeft").val(dataResult.daysLeft - vacation);
 }
-
-
-
 
 function uploadImage(file) {
 	var storageRef = firebase.storage().ref();

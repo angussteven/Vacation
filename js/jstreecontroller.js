@@ -1,16 +1,11 @@
 /*
-* Get team information from session
-*/
-
-
-/*
 * Keeps track the events that are currently visible on the calendar.
 */
 var activeEvents = [];
 var activeEmployees = [];
 
-function test(teamData){
-	$('ul').on('click', 'li', function(e){
+function test(teamData) {
+	$('ul').on('click', 'li', function (e) {
 		e.stopPropagation();
 		var bgID = $(this).css("background-color");
 		var manager;
@@ -23,7 +18,7 @@ function test(teamData){
 			if ($(this).attr('class').indexOf('manager') > -1) {
 				manager = document.getElementById(this.id);
 				employees = manager.getElementsByTagName("li");
-				for (var i =0; i < employees.length; i++) {
+				for (var i = 0; i < employees.length; i++) {
 					removeEmployeeEvents(teamData[employees[i].id].email);
 				}
 			}
@@ -37,7 +32,7 @@ function test(teamData){
 			if ($(this).attr('class').indexOf('manager') > -1) {
 				manager = document.getElementById(this.id);
 				employees = manager.getElementsByTagName("li");
-				for (var i =0; i < employees.length; i++) {
+				for (var i = 0; i < employees.length; i++) {
 					renderEmployeeEvents(teamData[employees[i].id].email);
 				}
 			}
@@ -46,33 +41,6 @@ function test(teamData){
 		}
 	});
 }
-
-/*
-* Generate the HTML elements needed to create the tree and populate them with the json data.
-*/
-$(document).ready(function() {
-	/*
-	* Call the function that creates the HTML objects and adds the json data to them.
-	*/
-
-	/*
-	* Populate calendar with the current users events.
-	*/
-	/*
-	* Get the HTML object were we want to create the tree.
-	*/
-
-
-    // $("#container").bind("select_node.jstree", function (e, data) {
- 	// 	$("#container").jstree("toggle_node", data.rslt.obj);
- 	// 	$("#container").jstree("deselect_node", data.rslt.obj);
-	// })
-
-	/*
-	* This changed the background color of the items in the tree to make them appear selected
-	*/
-
-});
 
 /*
 * This function removed the events from a calendar belonging to the employee that was deselected.
@@ -99,7 +67,7 @@ function removeEmployeeEvents(employeeID) {
 				$('#calendar').fullCalendar('removeEvents', data[currentEvent].eventID.toString());
 			}
 		}
-	}).catch(function(error){
+	}).catch(function (error) {
 		console.log(error);
 	});
 }
@@ -133,7 +101,7 @@ function renderEmployeeEvents(employeeID) {
 				*/
 				event = {
 					owner: employeeID,
-					id:  realData[currentEvent].eventID,
+					id: realData[currentEvent].eventID,
 					title: realData[currentEvent].title,
 					start: realData[currentEvent].startDate,
 					end: realData[currentEvent].endDate,
@@ -150,7 +118,7 @@ function renderEmployeeEvents(employeeID) {
 				*/
 				$('#calendar').fullCalendar('renderEvent', event, true);
 			}
-			
+
 		}
 	}).catch(function (data) {
 		console.log("No events found for: " + employeeID);
@@ -174,7 +142,7 @@ function populateList(teamData) {
 	*/
 	manager = document.createElement('li');
 	for (var key in teamData) {
-		if(teamData[key].isManager) {
+		if (teamData[key].isManager) {
 			manager.appendChild(document.createTextNode(capitalize(teamData[key].firstName) + " " + capitalize(teamData[key].lastName)));
 			manager.setAttribute('id', key.toString());
 			manager.setAttribute('class', 'manager');
