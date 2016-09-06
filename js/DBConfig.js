@@ -13,7 +13,7 @@ function initialize(profileEmail) {
 	getEmployee(profileEmail).then(function (snap) {
 		sessionStorage.setItem('user', JSON.stringify(snap));
 		document.getElementById("profileName").innerHTML = capitalizeName(snap.firstName) + " " + capitalizeName(snap.lastName);
-		document.getElementById("profileTeam").innerHTML = 'Team: ' + snap.team;
+		document.getElementById("profileTeam").innerHTML = 'Team: ' + capitalize(snap.team);
 
 		//gets the employees manager and stores in cache
 		getEmployee(snap.managers).then(function (snapshot) {
