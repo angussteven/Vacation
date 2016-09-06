@@ -134,41 +134,38 @@ function populateList(teamData) {
 	*/
 	var unorderedList = document.createElement('ul');
 	var manager;
+    var managerNode;
 	var employee;
 	var nestedList;
-
 	/*
 	* The first for loop gets the manager and addes it as a child of the container div. 
 	*/
-	manager = document.createElement('li');
 	for (var key in teamData) {
-		if (teamData[key].isManager) {
+		if(teamData[key].isManager) {
+            manager = document.createElement('li');
 			manager.appendChild(document.createTextNode(capitalize(teamData[key].firstName) + " " + capitalize(teamData[key].lastName)));
 			manager.setAttribute('id', key.toString());
 			manager.setAttribute('class', 'manager');
+            nestedList = document.createElement('ul');
+            /*
+            * This second for loop creates an HTML element for every team member which are then added
+            * as a child of the manager.
+            */
+            for (var person in teamData) {
+                if (!teamData[person].isManager &&  teamData[person].managers == teamData[key].email) { //$.inArray(teamData[key].employees, != -1)) {
+                    employee = document.createElement('li');
+                    employee.appendChild(document.createTextNode(capitalize(teamData[person].firstName) + " " + capitalize(teamData[person].lastName)));
+                    employee.setAttribute('id', person.toString());
+                    nestedList.appendChild(employee);
+                }
+            }
+            /*
+            * The current is then added as a child to thye root unorderded list.
+            */
+            unorderedList.appendChild(manager);
+	        manager.appendChild(nestedList);
 		}
 	}
-
-	nestedList = document.createElement('ul');
-	manager.appendChild(nestedList);
-
-	/*
-	* This second for loop creates an HTML element for every team member which are then added
-	* as a child of the manager.
-	*/
-	for (var key in teamData) {
-		if (!teamData[key].isManager) {
-			employee = document.createElement('li');
-			employee.appendChild(document.createTextNode(capitalize(teamData[key].firstName) + " " + capitalize(teamData[key].lastName)));
-			employee.setAttribute('id', key.toString());
-			nestedList.appendChild(employee);
-		}
-	}
-	/*
-	* The current is then added as a child to thye root unorderded list.
-	*/
-	unorderedList.appendChild(manager);
-
 	/* 
 	* The unordered list is added as a child of the container div.
 	*/
