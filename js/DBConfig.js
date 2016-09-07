@@ -7,50 +7,6 @@ var config = {
 };
 firebase.initializeApp(config);
 
-//Called from login.js Profile email is passed as an argument from firebase local storage
-//Else email is passed in from the firebase event listener
-function initialize(profileEmail) {
-	getEmployee(profileEmail).then(function (snap) {
-		sessionStorage.setItem('user', JSON.stringify(snap));
-		document.getElementById("profileName").innerHTML = capitalizeName(snap.firstName) + " " + capitalizeName(snap.lastName);
-		document.getElementById("profileTeam").innerHTML = 'Team: ' + capitalize(snap.team);
-
-		//gets the employees manager and stores in cache
-		getEmployee(snap.managers).then(function (snapshot) {
-			localStorage.setItem("managerFirstName", snapshot.firstName);
-			localStorage.setItem("managerLastName", snapshot.lastName);
-			document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(snapshot.firstName) + " " + capitalizeName(snapshot.lastName);
-		}).catch(function (error) {
-			console.log(error);
-		});
-
-		//renders vacation days
-		var vdays = document.getElementById("vacationdays");
-		var info = "Total Days: " + snap.totalVacationDays + "<br>Remaining Days: " + snap.daysLeft;
-		vdays.innerHTML = info;
-
-		//Update the cache
-		localStorage.setItem("firstName", snap.firstName);
-		localStorage.setItem("lastName", snap.lastName);
-		localStorage.setItem("team", snap.team);
-		localStorage.setItem("vacationDays", snap.totalVacationDays);
-		localStorage.setItem("daysLeft", snap.daysLeft);
-		localStorage.getItem("profileEmail", profileEmail);
-
-		getProfileImage(profileEmail);
-
-		getEmployeesOnTeam(snap.team).then(function (snap) {
-			populateList(snap.val());
-			$('#container').jstree();
-			test(snap.val())
-		}).catch(function (error) {
-			console.log(error)
-		})
-	});
-
-	renderEmployeeEvents(profileEmail);
-}
-
 function capitalizeName(name) {
 	try {
 		return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
@@ -103,7 +59,7 @@ function getEmployeesOnTeam(teamName) {
 	})
 }
 
-// Updates a given event [TODO]
+// Updates a given event
 function updateEvent(eventID, email, startDate, endDate, title, type, description) {
 	// Update the information for an event
 	var tempData = {
@@ -119,231 +75,46 @@ function updateEvent(eventID, email, startDate, endDate, title, type, descriptio
 	return firebase.database().ref('event').update(updates);
 }
 
-firebase.auth().onAuthStateChanged(function (user) {
-	profileEmail = user.email;
+// Removes employee from team [Andrew]
+function removeEmpFromTeam(userID, teamName) {
+	var refs = firebase.database().ref().child('team').child(teamName);
+	var employeeIndex;
+	refs.child('employee').once('value', function (snapshot) {
+		snapshot.forEach(function (childSnapshot) {
+			if (childSnapshot.val().toString() === userID) {
 
-	// // Implementation of getEmployeeCount
-	// var getEmpCountTest = $.Deferred(getEmployeeCount);
-	// getEmpCountTest.done(function(data){
-	// });
-
-	// // Implementation of getEmployeeCount
-	// var getTeamCountTest = $.Deferred(getTeamCount);
-	// getTeamCountTest.done(function(data){
-	// });
-
-	// // Implementation of getAllTeams
-	// var getAllTeamsCallback = $.Deferred(getAllTeams);
-	// getAllTeamsCallback.done(function(data){
-	// });
-
-	// // Implementation of getTeam
-	// var getTeamCallback = $.Deferred(getTeam("quantum"));
-	// getTeamCallback.done(function(data){
-	// 	if(team == null){
-	// 		console.log("No team found.");
-	// 	}else{
-	// 		//console.log(team);
-	// 	}
-	// });
-
-	// var getEmpManagerCallback = $.Deferred(getEmpManager(profileEmail));
-	// getEmpManagerCallback.done(function(data){
-	// 	if(employeesManagers == null){
-	// 		console.log("Could not find employee's manager");
-	// 	}else{
-	// 		//console.log("Employee manager:")
-	// 		//console.log(employeesManagers);
-	// 	}
-	// });
-
-	// var getAllEventsCallback = $.Deferred(getAllEvents());
-	// getAllEventsCallback.done(function(data){
-	// 	console.log("Events:");
-	// 	console.log(allEvents);
-	// });
-
-	//  /*Get reference example=*/
-	//  /*var value;
-	//  var dbRef = firebase.database().ref().child('employee');
-	//  dbRef.on('value', function(snapshot) {
-	//  	console.log(snapshot.val());
-	//  });*/
-
-
-	// // Adds a new event [TODO]
-	// function addEvent(userID, startDate, endDate, title, description, alert, isBusiness, vacationUsed){
-	// 	// Create a new event
-
-	// 	// Remove appropriate vacation days from employee
-	// }
-
-
-	// // Get all the events for the employees of a given team [DONE]
-	// function getAllEvents(){
-	// 	// Get all the vacation days for all employees in a given team
-	// 	var ref = firebase.database().ref().child('event');
-	// 	ref.on('value', function(snapshot){
-	// 		if(snapshot.exists()){
-	// 			allEvents = snapshot.val();
-	// 		}else{
-	// 			allEvents = null;
-	// 		}
-	// 		getAllEventsCallback.resolve();
-	// 	});
-	// }
-
-	// // Get vacation days for employee
-	// function getVacationDays(emailAddress){
-	// 	var ref = firebase.database().ref().child('employee/' + fixEmail(emailAddress));
-	// 	ref.once('value', function(snapshot){
-	// 		if(snapshot.exists()){
-	// 			employee = snapshot.val();
-	// 		}
-	// 		else{
-	// 			employee = null;
-	// 		}
-	// 		getVacationDaysCallback.resolve();
-	// 	})
-	// }
-
-	// // Gets the total number of employees in a database (included managers) [DONE]
-	//  function getEmployeeCount() {
-	//  	var count = 0;
-	//  	var ref = firebase.database().ref().child('employee');
-	//  	ref.on('value', function(snapshot) {
-	//  		employeeCount = snapshot.numChildren();
-	//  		getEmpCountTest.resolve();
-	//  	});
-	//  }
-
-
-	// //Get The employess under manager
-	// function getEmployeesByManager(userID){
-	// 	userID = fixEmail(userID);
-	// 	var ref = firebase.database().ref().child('employee');
-	// 	ref.child(userID).once('value', function(snapshot){
-	// 		if(snapshot.exists()){
-	// 			if(snapshot.child("isManager").val() == true && snapshot.child("employees").val() != null){
-	// 				snapshot.child('employees').forEach(function(childSnapshot){
-	// 					//console.log("this is the employee requested: " + childSnapshot.val());
-	// 				});
-	// 			}
-	// 		}
-	// 	});
-
-	// }
-
-	// Team //
-	// Add a new team to the database [TODO]
-	// // Pushes all team names to a string array [DONE]
-	// function getAllTeams(){
-	// 	// Get all the teams
-	// 	var ref = firebase.database().ref().child('team');
-	//  	ref.on('value', function(snapshot) {
-	//  		snapshot.forEach(function(childSnapshot){
-	//  			allTeams.push(childSnapshot.child("name").val());
-	// 		});
-	//  		getAllTeamsCallback.resolve();
-	//  	});
-	// }
-
-	// // Returns a team with a given name [DONE]
-	// function getTeam(teamName){
-	// 	var ref = firebase.database().ref().child('team/' + teamName);
-	// 	ref.once('value', function(snapshot){
-	// 		if(snapshot.exists()){
-	// 			team = snapshot.val();
-	// 		}
-	// 		else{
-	// 			team = null;
-	// 		}
-	// 		getTeamCallback.resolve();
-	// 	})
-	// }
-
-	// // Gets the total number of teams in the database [DONE]
-	// function getTeamCount() {
-	//  	var ref = firebase.database().ref().child('team');
-	//  	ref.on('value', function(snapshot) {
-	//  		teamCount = snapshot.numChildren();
-	//  		getTeamCountTest.resolve();
-	//  	});
-	// }
-
-	// Removes employee from team [Andrew]
-	function removeEmpFromTeam(userID, teamName) {
-		var refs = firebase.database().ref().child('team').child(teamName);
-		var employeeIndex;
-		refs.child('employee').once('value', function (snapshot) {
-			snapshot.forEach(function (childSnapshot) {
-				if (childSnapshot.val().toString() === userID) {
-
-					employeeIndex = childSnapshot.getKey();
-				}
-			});
-			refs.child('employee').child(employeeIndex).remove();
+				employeeIndex = childSnapshot.getKey();
+			}
 		});
-		var userIDWithoutSpecial = userID.replace(/[^a-zA-Z ]/g, "");
-		var empRef = firebase.database().ref().child('employee').child(userIDWithoutSpecial).child('team');
-		empRef.remove();
-	}
-	//
-	// Removes employee from team [Andrew]
-	function removeManagerFromTeam(userID, teamName) {
-		var refs = firebase.database().ref().child('team').child(teamName);
-		var managerIndex;
-		refs.child('manager').once('value', function (snapshot) {
-			snapshot.forEach(function (childSnapshot) {
-				if (childSnapshot.val().toString() === userID) {
-					managerIndex = childSnapshot.getKey();
-				}
-			});
-			refs.child('manager').child(managerIndex).remove();
+		refs.child('employee').child(employeeIndex).remove();
+	});
+	var userIDWithoutSpecial = userID.replace(/[^a-zA-Z ]/g, "");
+	var empRef = firebase.database().ref().child('employee').child(userIDWithoutSpecial).child('team');
+	empRef.remove();
+}
+//
+// Removes employee from team [Andrew]
+function removeManagerFromTeam(userID, teamName) {
+	var refs = firebase.database().ref().child('team').child(teamName);
+	var managerIndex;
+	refs.child('manager').once('value', function (snapshot) {
+		snapshot.forEach(function (childSnapshot) {
+			if (childSnapshot.val().toString() === userID) {
+				managerIndex = childSnapshot.getKey();
+			}
 		});
-	}
+		refs.child('manager').child(managerIndex).remove();
+	});
+}
 
-	/*
-		  Save a team into the database [UNTESTED]
-		  teamID = int
-		  employees = array of strings (emails)
-		  managers = array of strings (emails)
-	 */
-	function saveTeam(teamID, employees, managers, teamName) {
-		firebase.database().ref('team/' + teamName).set({
-			teamID: teamID,
-			employee: employees,
-			manager: managers,
-			name: teamName
-		});
-	}
-
-	// // Does all the necessary steps to move employee from one team to another [TODO]
-	// function switchTeams(emailAddress, fromTeamID, toTeamID){
-
-	// }
-
-	// // Manager //
-	// // Get the manager that oversees given employee email [TODO]
-	// function getEmpManager(emailAddress){
-	// 	var ref = firebase.database().ref().child('employee');
-	// 	ref.once('value', function(snapshot){
-	// 		if(snapshot.exists()){
-	// 			snapshot.forEach(function(childSnapshot){
-	// 				if(childSnapshot.child("isManager").val() == true && childSnapshot.child("employees").val() != null){
-	// 					var employeeArray = childSnapshot.child("employees").val();
-	// 					for(var i = 0; i < employeeArray.length; i++){
-	// 						if(emailAddress == employeeArray[i]){
-	// 							employeesManagers.push(childSnapshot.val());
-	// 						}
-	// 					}
-	// 				}
-	// 			});
-	// 		}
-	// 		getEmpManagerCallback.resolve();
-	// 	})
-	// }
-});
+function saveTeam(teamID, employees, managers, teamName) {
+	firebase.database().ref('team/' + teamName).set({
+		teamID: teamID,
+		employee: employees,
+		manager: managers,
+		name: teamName
+	});
+}
 function createTeam() {
 	var teamName = document.getElementById("teamName").value;
 	console.log(teamName);
@@ -402,7 +173,6 @@ function updateTeam() {
     showChangeManager();
 }
 
-
 /*
  	Save an event into the database
  	email: string (email)
@@ -414,8 +184,6 @@ function updateTeam() {
  	title: string
  	description: string
  */
-
-//saveEvent("zachary.dicino@gm.com",3,"08-29-2016","08-31-2016","business","vacation I need time","why");
 
 function saveEvent(email, eventID, startDate, endDate, vacationType,
 	eventTitle, eventDescription) {

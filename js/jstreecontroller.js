@@ -176,5 +176,10 @@ function populateList(teamData) {
 * This function capilizes the first letter of the string passed in.
 */
 function capitalize(string) {
-    return string[0].toUpperCase() + string.slice(1);
+	try{
+		return string[0].toUpperCase() + string.slice(1);
+	}
+    catch(error){
+		return "Returned Null";
+	}
 }
