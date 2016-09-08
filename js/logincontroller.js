@@ -28,8 +28,8 @@ function createProfile() {
     var isManager = $("#yesMan").is(":checked");
     var manager = $("#selectedManager :selected").val();
     var team = $("#selectedTeam :selected").val();
-    var totalVacationDays = document.getElementById('vacationDaysTotal').value;
-    var vacationDaysLeft = document.getElementById('vacationDaysLeft').value;
+    var totalVacationDays = parseInt(document.getElementById('vacationDaysTotal').value);
+    var vacationDaysLeft = parseInt(document.getElementById('vacationDaysLeft').value);
 
 
     /*match passwords and emails*/
