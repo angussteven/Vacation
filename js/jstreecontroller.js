@@ -5,16 +5,18 @@ var activeEvents = [];
 var activeEmployees = [];
 
 function test(teamData) {
-	$('ul').on('click', 'li', function (e) {
+	$('#container').on('click', 'li', function (e) {
 		e.stopPropagation();
 		var bgID = $(this).css("background-color");
 		var manager;
 		var employees;
-
+        
+       
+        
 		if ($.inArray(this.id.toString(), activeEmployees) != -1) {
 			/*
 			* If the manager is selected then remove all events from the calendar.
-			*/
+			
 			if ($(this).attr('class').indexOf('manager') > -1) {
 				manager = document.getElementById(this.id);
 				employees = manager.getElementsByTagName("li");
@@ -22,13 +24,14 @@ function test(teamData) {
 					removeEmployeeEvents(teamData[employees[i].id].email);
 				}
 			}
+            */
 			activeEmployees.splice(activeEmployees.indexOf(this.id.toString(), 1));
 			removeEmployeeEvents(teamData[this.id].email);
 		}
 		else {
 			/*
 			* If the manager is selected populate the calendar with everyones events.
-			*/
+			
 			if ($(this).attr('class').indexOf('manager') > -1) {
 				manager = document.getElementById(this.id);
 				employees = manager.getElementsByTagName("li");
@@ -36,9 +39,17 @@ function test(teamData) {
 					renderEmployeeEvents(teamData[employees[i].id].email);
 				}
 			}
+            */
 			activeEmployees.push(this.id.toString());
 			renderEmployeeEvents(teamData[this.id].email);
 		}
+        /*
+        console.log("Employee Selected: " + this.id.toString());
+        console.log("Active Employees: ");
+        console.log(activeEmployees);
+        console.log("Active Events: ");
+        console.log(activeEvents);
+        */
 	});
 }
 
@@ -120,6 +131,7 @@ function renderEmployeeEvents(employeeID) {
 			}
 
 		}
+        activeEmployees.push(fixEmail(employeeID.toString()));
 	}).catch(function (data) {
 		console.log("No events found for: " + employeeID);
 	});

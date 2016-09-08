@@ -125,6 +125,9 @@ function initialize(profileEmail) {
 
 		getEmployeesOnTeam(snap.team).then(function (snap) {
 			populateList(snap.val());
+            
+            
+            
 			$('#container').jstree();
 			test(snap.val())
 		}).catch(function (error) {
