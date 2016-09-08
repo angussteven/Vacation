@@ -99,25 +99,19 @@ function enoughVacationDays(newStart, newEnd){
   var originalFixedStart = originalStart.slice(-5) + "-" + originalStart.slice(0,4);
   var originalFixedEnd = originalEnd.slice(-5) + "-" + originalEnd.slice(0,4);
   var originalDaysUsed = calculateVacationDays(originalFixedStart, originalFixedEnd);
-  console.log("Clicked event dates: " + originalFixedStart + " " + originalFixedEnd);
-  console.log("Clicked event used days: " + originalDaysUsed);
 
   // Get the amount of days the new event would be using
   var newFixedStart = newStart.slice(-5) + "-" + newStart.slice(0,4);
   var newFixedEnd = subtractDay(newEnd); 
   newFixedEnd = newFixedEnd.slice(-5) + "-" + newFixedEnd.slice(0,4);
   var newDaysUsed = calculateVacationDays(newFixedStart, newFixedEnd);
-  console.log("New event dates: " + newFixedStart + " " + newFixedEnd); 
-  console.log("New event used days: " + newDaysUsed);
 
   var difference = newDaysUsed - originalDaysUsed;
-  console.log("Difference: " + difference);
   var data = sessionStorage.getItem('user');
   var dataResult = JSON.parse(data);
   var vacationRemaining = dataResult.daysLeft-difference;
 
-  console.log("Remaining Vacation: " + vacationRemaining);
-  if (vacationRemaining > -1){
+  if(vacationRemaining > -1){
     return true;
   } else{
     return false;
@@ -151,6 +145,8 @@ function enoughVacationDays(newStart, newEnd){
     var title;
     var clickedID;
     var clickedEventDates;
+    var origStartDate;
+    var origEndDate;
 
 		$('#calendar').fullCalendar({
 			header: {
@@ -175,7 +171,6 @@ function enoughVacationDays(newStart, newEnd){
         var startDate = start1.slice(-5) + "-" + start1.slice(0,4);
         endDate = subtractDay(end1); 
         var endDate = end1.slice(-5) + "-" + end1.slice(0,4);
-        console.log(startDate + " " + endDate); //////////////////////////////////////////////////////////////////
         var vacation = calculateVacationDays(startDate,endDate);
         var vacationRemaining = dataResult.daysLeft-vacation;
         var newEnd = end._d.toJSON().slice(0,10);
@@ -217,7 +212,6 @@ function enoughVacationDays(newStart, newEnd){
         $("#viewEndDate").val(subtractDay(tempEnd));
         clickedEventDates = [$("#viewStartDate").val(), $("#viewEndDate").val()];
         var today = new Date().toJSON().slice(0,10);
-        console.log(tempEnd < today);
         /*
         * If the user is not the owner of the event they will not be able to modify it.
         */
@@ -424,7 +418,6 @@ function enoughVacationDays(newStart, newEnd){
     });
 
     $("#viewEventCloseBtn").click(function () {
-      console.log(eventOwner == emailAddress);
       if (eventOwner == emailAddress) {
         alertify.confirm("Are you sure you want to exit? All progress will be lost.", function(){
           popup4.close();
@@ -437,6 +430,7 @@ function enoughVacationDays(newStart, newEnd){
 
     $("#changeEventBtn").click(function () {
       // Get the amount of days the new event would be using
+      var eventID;
       var newStart = $("#viewStartDate").val();
       var newEnd = addDay($("#viewEndDate").val());
 
@@ -450,19 +444,23 @@ function enoughVacationDays(newStart, newEnd){
         alertify.alert("The end date cannot be before the start date.");
       }
       else if (!enoughVacationDays(newStart, newEnd)){
-        alertify.alert("Not enough vacation days for this request.")
+        alertify.alert("Not enough vacation days for this request.");
       }
       else {
-        $('#calendar').fullCalendar('removeEvents', clickedID);
+        $("#calendar").fullCalendar('removeEvents',clickedID);
+        activeEvents.splice(activeEvents.indexOf(clickedID), 1);
+        updateDeleteEvent(clickedID);
         deleteEvent(clickedID);
+
         if(Date.parse(newStart) >= Date.parse(newEnd))
         {
           newEnd = addDay(newStart);
         }
-        console.log(newStart + ", " + newEnd);
+        eventID = guid();
+
         changedEvent = {
           owner: emailAddress,
-          id: guid(),
+          id: eventID,
           title: $("#eventTitle").val(),
           start: newStart,
           end: newEnd,
@@ -471,8 +469,9 @@ function enoughVacationDays(newStart, newEnd){
         alert = $('input:radio[name=alert_viewModal]:checked').val();
         isVacation = $('input:radio[name=isVacation_viewModal]:checked').val();
         $('#calendar').fullCalendar('renderEvent', changedEvent, true);
-        saveEvent(emailAddress, guid(), newStart, newEnd, isVacation, $("#eventTitle").val(), $("#createEventDescription").val());
+        saveEvent(emailAddress, eventID, newStart, newEnd, isVacation, $("#eventTitle").val(), $("#createEventDescription").val());
         popup4.close();
+
         if ($("#downloadICSCheckbox_viewModal").is(':checked') === true) {
           var data = sessionStorage.getItem('user');
           var dataResult = JSON.parse(data);
@@ -487,7 +486,6 @@ function enoughVacationDays(newStart, newEnd){
       var file = this.files[0];
       if(file) {
         uploadImage(file);
-        console.log(file);
         getImage(file.name);
         sessionStorage.setItem('image',file.name);
       }

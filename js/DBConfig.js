@@ -627,8 +627,8 @@ function updateDeleteEvent(eventID) {
 	var startDate;
 	var endDate;
 	var vacation;
-	var ref = firebase.database().ref().child('event');
-	ref.child(eventID).once('value', function (snapshot) {
+	var ref = firebase.database().ref().child('event').child(eventID);
+	ref.once('value', function (snapshot) {
 		startDate = snapshot.child("startDate").val();
 		endDate = snapshot.child("endDate").val();
 		//switching the dates around
@@ -855,4 +855,12 @@ function addDay(eventDay) {
 		eventDay[2] = "0" + eventDay[2];
 	eventDay = eventDay[0] + '-' + eventDay[1] + '-' + eventDay[2];
 	return eventDay;
+}
+
+function updateSessionVacation(vacation){
+	var data = sessionStorage.getItem('user');
+	var dataResult = JSON.parse(data);
+	//changing the session storage object
+	dataResult.daysLeft = dataResult.daysLeft + vacation;
+	sessionStorage.setItem('user', JSON.stringify(dataResult));
 }
