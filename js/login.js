@@ -7,7 +7,7 @@ $(document).ready(function () {
 	//attempt to load the cache else wait for DB to load(first sign on or profile create)
 	var firebaseLocalStorageEmail;
 	try {
-		 firebaseLocalStorageEmail = JSON.parse(localStorage.getItem(localStorage.key(1))).email
+		 firebaseLocalStorageEmail = JSON.parse(localStorage.getItem(localStorage.key(1))).email;
 	} catch (error) {
 		console.log("No cache detected.");
 	}
@@ -60,7 +60,7 @@ function logIn() {
 	var email = document.getElementById('email').value;
 	var password = document.getElementById('password').value;
 
-	if (password == "") {
+	if (password === "") {
 		alertify.alert("Enter a password");
 		return;
 	}
@@ -124,15 +124,12 @@ function initialize(profileEmail) {
 		getProfileImage(profileEmail);
 
 		getEmployeesOnTeam(snap.team).then(function (snap) {
-			populateList(snap.val());
-            
-            
-            
+			populateList(snap.val());   
 			$('#container').jstree();
-			test(snap.val())
+			test(snap.val());
 		}).catch(function (error) {
-			console.log(error)
-		})
+			console.log(error);
+		});
 	});
 
 	renderEmployeeEvents(profileEmail);

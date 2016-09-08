@@ -465,8 +465,6 @@ function subtractDay(day) {
 			case '11':
 				day = day[0] + '-' + (day[1] - 1) + '-' + "31";
 				break;
-
-			case '02': case '04': case '06': case '08': case '09':
 			default:
 				day = day[0] + '-0' + (day[1] - 1) + '-' + "31";
 				break;

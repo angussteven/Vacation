@@ -330,7 +330,7 @@ function enoughVacationDays(newStart, newEnd){
             var classNames = $("th:contains(' " + holidayMoment.format('M/D') + "')").attr("class");
             if (classNames != null) {
               var classNamesArray = classNames.split(" ");
-              for(var i = 0; i < classNamesArray.length; i++) {
+              for(var j = 0; j < classNamesArray.length; j++) {
                 if(classNamesArray[i].indexOf('fc-col') > -1) {
                   $("td." + classNamesArray[i]).addClass('holiday');
                   break;
