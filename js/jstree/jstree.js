@@ -403,12 +403,12 @@
 			 * a boolean indicating if connecting dots are shown
 			 * @name $.jstree.defaults.core.themes.dots
 			 */
-			dots			: true,
+			dots			: false,
 			/**
 			 * a boolean indicating if node icons are shown
 			 * @name $.jstree.defaults.core.themes.icons
 			 */
-			icons			: true,
+			icons			: false,
 			/**
 			 * a boolean indicating if the tree background is striped
 			 * @name $.jstree.defaults.core.themes.stripes
@@ -423,7 +423,7 @@
 			 * a boolean specifying if a reponsive version of the theme should kick in on smaller screens (if the theme supports it). Defaults to `false`.
 			 * @name $.jstree.defaults.core.themes.responsive
 			 */
-			responsive		: true
+			responsive		: true,
 		},
 		/**
 		 * if left as `true` all parents of all selected nodes will be opened once the tree loads (so that all selected nodes are visible to the user)
@@ -3137,7 +3137,7 @@
 					dom = this._open_to(obj);
 				}
 				if(dom && dom.length) {
-					dom.attr('aria-selected', true).children('.jstree-anchor').addClass('jstree-clicked');
+					//dom.attr('aria-selected', true).children('.jstree-anchor').addClass('jstree-clicked');
 				}
 				/**
 				 * triggered when an node is selected

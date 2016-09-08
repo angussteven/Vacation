@@ -11,8 +11,6 @@ function test(teamData) {
 		var manager;
 		var employees;
         
-       
-        
 		if ($.inArray(this.id.toString(), activeEmployees) != -1) {
 			/*
 			* If the manager is selected then remove all events from the calendar.
@@ -25,6 +23,7 @@ function test(teamData) {
 				}
 			}
             */
+            document.getElementById(this.id.toString()).style.color = "#ffffff";
 			activeEmployees.splice(activeEmployees.indexOf(this.id.toString(), 1));
 			removeEmployeeEvents(teamData[this.id].email);
 		}
@@ -40,6 +39,7 @@ function test(teamData) {
 				}
 			}
             */
+            document.getElementById(this.id.toString()).style.color = "#76a1cf";
 			activeEmployees.push(this.id.toString());
 			renderEmployeeEvents(teamData[this.id].email);
 		}
