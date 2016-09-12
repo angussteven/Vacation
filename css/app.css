@@ -55,12 +55,12 @@ li {
 }
 #wrap {
 	position: relative;
-	top: 3%;
-	width: 75%;
-	height: 750px;
+	/*top: 3%;*/
+	width: 85%;
+	/*height: 97%;*/
 	margin: 0 auto;
-	border: solid 1px lightgrey;
-	padding: .5% 0% 2% 2;
+	/*border: solid 1px lightgrey;*/
+	/*padding: .5% 0% 2% 2;*/
 	display: none;
 }
 
