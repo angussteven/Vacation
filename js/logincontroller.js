@@ -80,7 +80,7 @@ function addUser(email, password, firstName, lastName, totalVacationDays, daysle
 }
 
 function saveEmployee(firstname, lastname, totalVacation, daysleft, teamName, managers, isManager, email, password) {
-    var tempEmail = fixsEmail(email);
+    var tempEmail = fixEmail(email);
     firebase.database().ref('employee/' + tempEmail).set({
         firstName: firstname,
         lastName: lastname,
@@ -112,26 +112,6 @@ function saveEmployee(firstname, lastname, totalVacation, daysleft, teamName, ma
 
 }
 
-function addEmpToManager(managerEmail, email) {
-    var tempEmail = fixsEmail(managerEmail);
-    firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('employees').push(email);
-}
-
-
-function addEmpToTeam(email, teamName) {
-    var tempEmail = fixsEmail(email);
-    firebase.database().ref().child('team').child(teamName.toLowerCase()).child('employee').push(email);
-}
-
-function addManagerToTeam(email, teamName) {
-    var tempEmail = fixsEmail(email);
-    firebase.database().ref().child('team').child(teamName.toLowerCase()).child('manager').push(email);
-}
-// TRakes an email and returns the email with no special characters [DONE]
-function fixsEmail(tempEmail) {
-    var result = tempEmail.replace(/[^a-zA-Z0-9]/g, '');
-    return result;
-}
 
 var allManagers = [];
 var managerObject = {};
@@ -141,32 +121,10 @@ getAllManagersCallback.done(function(data) {
     var select = document.getElementById("selectedManager");
     var select2 = document.getElementById("newManager");
     for (var i = 0; i < allManagers.length; i++) {
-        // var el = document.createElement("option");
-        // el.textContent = allmanagers[i].firstName + " " allmanagers[i].lastName;
-        // el.value = allmanagers[i].email;
-        // select.appendChild(el);
-        //var managerName = allManagers[i].firstName + " " + allManagers[i].lastName;
-
-
         select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
         select2[select2.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
-
-        //console.log(allManagers[i].email);
-        //managerObject[allManagers[i].firstName + " " + allManagers[i].lastName] = allManagers[i].email;
     }
 });
-
-function getAllManagers() {
-    var ref = firebase.database().ref().child('employee');
-    ref.on('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            if (childSnapshot.child("isManager").val() === true) {
-                allManagers.push(childSnapshot.val());
-            }
-        });
-        getAllManagersCallback.resolve();
-    });
-}
 
 var allTeams = [];
 

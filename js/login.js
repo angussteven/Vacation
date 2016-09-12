@@ -119,7 +119,7 @@ function initialize(profileEmail) {
 		localStorage.setItem("team", snap.team);
 		localStorage.setItem("vacationDays", snap.totalVacationDays);
 		localStorage.setItem("daysLeft", snap.daysLeft);
-		localStorage.getItem("profileEmail", profileEmail);
+		localStorage.setItem("profileEmail", profileEmail);
 
 		getProfileImage(profileEmail);
 

@@ -381,6 +381,7 @@ function deleteEvent(eventID) {
 
 		//snapshot.ref().remove();
 	});
+	var profileEmail = localStorage.getItem("profileEmail");
 	var fixedEmail = fixEmail(profileEmail);
 	var empRef = firebase.database().ref().child('employee').child(fixedEmail).child('events');
 	empRef.once('value', function (snapshot) {
@@ -638,4 +639,42 @@ function updateSessionVacation(vacation) {
 	//changing the session storage object
 	dataResult.daysLeft = dataResult.daysLeft + vacation;
 	sessionStorage.setItem('user', JSON.stringify(dataResult));
+}
+
+function addEmpToManager(managerEmail, email) {
+    var tempEmail = fixEmail(managerEmail);
+    firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('employees').push(email);
+}
+
+
+function addEmpToTeam(email, teamName) {
+    var tempEmail = fixEmail(email);
+    firebase.database().ref().child('team').child(teamName.toLowerCase()).child('employee').push(email);
+}
+
+function addManagerToTeam(email, teamName) {
+    var tempEmail = fixEmail(email);
+    firebase.database().ref().child('team').child(teamName.toLowerCase()).child('manager').push(email);
+}
+
+function getAllManagers() {
+    var ref = firebase.database().ref().child('employee');
+    ref.on('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            if (childSnapshot.child("isManager").val() === true) {
+                allManagers.push(childSnapshot.val());
+            }
+        });
+        getAllManagersCallback.resolve();
+    });
+}
+
+function getAllTeams() {
+    var ref = firebase.database().ref().child('team');
+    ref.on('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            allTeams.push(childSnapshot.val());
+        });
+        getAllTeamsCallback.resolve();
+    });
 }
