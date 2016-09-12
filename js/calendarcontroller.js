@@ -243,62 +243,6 @@ function enoughVacationDays(newStart, newEnd){
 
         $("#daysSelected").val(1);//Should be added to vacation balance calculator
       },
-//			events: [
-//				{
-//					title: 'All Day Event',
-//					start: '2016-06-01'
-//				},
-//				{
-//					title: 'Long Event',
-//					start: '2016-06-07',
-//					end: '2016-06-10'
-//				},
-//				{
-//					id: 999,
-//					title: 'Repeating Event',
-//					start: '2016-06-09T16:00:00'
-//				},
-//				{
-//					id: 999,
-//					title: 'Repeating Event',
-//					start: '2016-06-16T16:00:00'
-//				},
-//				{
-//					title: 'Conference',
-//					start: '2016-06-11',
-//					end: '2016-06-13'
-//				},
-//				{
-//					title: 'Meeting',
-//					start: '2016-06-12T10:30:00',
-//					end: '2016-06-12T12:30:00'
-//				},
-//				{
-//					title: 'Lunch',
-//					start: '2016-06-12T12:00:00'
-//				},
-//				{
-//					title: 'Meeting',
-//					start: '2016-06-12T14:30:00'
-//				},
-//				{
-//					title: 'Happy Hour',
-//					start: '2016-06-12T17:30:00'
-//				},
-//				{
-//					title: 'Dinner',
-//					start: '2016-06-12T20:00:00'
-//				},
-//				{
-//					title: 'Birthday Party',
-//					start: '2016-06-13T07:00:00'
-//				},
-//				{
-//					title: 'Click for Google',
-//					url: 'http://google.com/',
-//					start: '2016-06-28'
-//				}
-//			]
         eventAfterAllRender: function (view) {
         //Use view.intervalStart and view.intervalEnd to find date range of holidays
         //Make ajax call to find holidays in range.
@@ -491,3 +435,245 @@ function enoughVacationDays(newStart, newEnd){
     }, false);
 
 	});
+
+function isDateHasEvent(start_d, end_d) {
+	var allEvents = [];
+	var count = 0;
+	allEvents = $('#calendar').fullCalendar('clientEvents');
+	var data = sessionStorage.getItem('user');
+    var dataResult = JSON.parse(data);
+	var event = $.grep(allEvents, function (v) {
+		var startDate = v.start._d;
+		var endDate = v.end._i;
+		var endDate1 = end_d._d.toJSON().slice(0, 10);
+		var startDate1 = start_d._d.toJSON().slice(0, 10);
+		startDate1 = addDay(startDate1);
+		var newStartDate1 = new Date(startDate1);
+		endDate1 = subtractDay(endDate1);
+		var newEndDate1 = new Date(endDate1);
+		endDate = subtractDay(endDate);
+		var newEndDate = new Date(endDate);
+		var range = moment().range(startDate, newEndDate);
+		var range1 = moment().range(newStartDate1, newEndDate1);
+		var result = range.contains(start_d._d);
+		var result1 = range.contains(newEndDate1);
+		var result2 = range.contains(range1);
+		var result3 = range1.contains(range);
+		if (dataResult.email == v.owner) {
+			if (result || result1 || result3) {
+				count++;
+			}
+		}
+    });
+    return count > 0;
+}
+
+function addDay(eventDay) {
+	eventDay = eventDay.split('-');
+	var tempMonth;
+	switch (eventDay[1]) {
+		case '01': case '03': case '05': case '07': case '08': case '10':
+			if (eventDay[2] === '31') {
+				eventDay[2] = '0';
+				tempMonth = parseInt(eventDay[1]);
+				eventDay[1] = (tempMonth + 1).toString();
+				if (eventDay[1] <= 9) {
+					eventDay[1] = '0' + eventDay[1];
+				}
+			}
+			break;
+
+		case '04': case '06': case '09': case '11':
+			if (eventDay[2] === '30') {
+				eventDay[2] = '0';
+				tempMonth = parseInt(eventDay[1]);
+				eventDay[1] = (tempMonth + 1).toString();
+				if (eventDay[1] <= 9)
+					eventDay[1] = "0" + eventDay[1];
+			}
+			break;
+
+		case '12':
+			if (eventDay[2] === '31') {
+				eventDay[2] = '0';
+				eventDay[1] = '01';
+				var tempYear = parseInt(eventDay[0]);
+				eventDay[0] = (tempYear + 1).toString();
+			}
+			break;
+
+		case '02':
+			var testYear = parseInt(eventDay[0]);
+			if ((testYear % 4 === 0) && (testYear % 100 !== 0) || (testYear % 400 === 0)) {
+				if (eventDay[2] === '29')
+					eventDay[2] = '0';
+				eventDay[1] = '03';
+			}
+			else if (eventDay[2] === '28') {
+				eventDay[2] = '0';
+				eventDay[1] = '03';
+			}
+			break;
+	}
+	num = parseInt(eventDay[2]);
+	num += 1;
+	eventDay[2] = num.toString();
+	if (eventDay[2] <= 9)
+		eventDay[2] = "0" + eventDay[2];
+	eventDay = eventDay[0] + '-' + eventDay[1] + '-' + eventDay[2];
+	return eventDay;
+}
+function subtractDay(day) {
+	day = day.split('-');
+	console.log(day[1]);
+	//endDay = day[0] + day[1] + day[2];
+
+	if (day[2] === '01') {//if the day is 1 it is actually the last day of the previous month
+		switch (day[1]) {//switching on month
+			case '01':
+				day = (day[0] - 1) + '-' + "12" + '-' + "31";
+				break;
+
+			case '03':
+				if ((day[0] % 4 === 0) && (day[0] % 100 !== 0) || (day[0] % 400 === 0)) {
+					day = day[0] + '-' + "02" + '-' + "29";
+				} else {
+					day = day[0] + '-' + "02" + '-' + "28";
+				}
+
+				break;
+
+			case '05': case '07': case '10':
+				day = day[0] + '-0' + (day[1] - 1) + '-' + "30";
+				break;
+
+			case '12':
+				day = day[0] + '-' + (day[1] - 1) + '-' + "30";
+				break;
+
+			case '11':
+				day = day[0] + '-' + (day[1] - 1) + '-' + "31";
+				break;
+			default:
+				day = day[0] + '-0' + (day[1] - 1) + '-' + "31";
+				break;
+		}
+    } else {
+		day[2] -= '1';
+		if (day[2] <= 9) { day[2] = "0" + day[2]; }
+		day = day[0] + '-' + day[1] + '-' + day[2];
+    }
+	return day;
+}
+function dynamicUpdate() {
+	var startDate = document.getElementById('startDate').value;
+	var endDate = document.getElementById('endDate').value;
+	startDate = startDate.slice(-5) + "-" + startDate.slice(0, 4);
+	endDate = endDate.slice(-5) + "-" + endDate.slice(0, 4);
+	vacation = calculateVacationDays(startDate, endDate);
+	var data = sessionStorage.getItem('user');
+    var dataResult = JSON.parse(data);
+	$("#daysSelected").val(vacation);
+    $("#daysLeft").val(dataResult.daysLeft - vacation);
+}
+
+// Misc
+// Function takes 2 dates and returns inclusive number of business days (no weekends/holidays)
+function calculateVacationDays(start_date, end_date) {
+	/*
+	Based off of Suitoku's formula.js library NETWORKDAYS function, license info:
+	Copyright (c) 2014 Sutoiku, Inc. - MIT License (below)
+	Other libraries included:
+	BESSELI, BESSELJ, BESSELK, BESSELY functions:
+	Copyright (c) 2013 SheetJS - MIT License (below)
+	The MIT License (MIT)
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
+   	// call parseData to take inputs and convert to Date object
+    start_date = parseDate(start_date);
+    start_date = validStart(start_date);
+    end_date = parseDate(end_date);
+
+
+    // contants for weekends and holidays; holiday array should include all company holidays in string format "MM-DD-YYYY"
+    weekend = [6, 0]; // don't change this
+    holidays = ["09-05-2016", "11-08-2016", "11-11-2016", "11-24-2016", "11-25-2016", "12-26-2016", "12-27-2016", "12-28-2016", "12-29-2016", "12-30-2016"];
+
+    // for loop parses holiday array into Date objects
+    for (var i = 0; i < holidays.length; i++) {
+		var h = parseDate(holidays[i]);
+		holidays[i] = h;
+    }
+
+    // variables used in calculations
+    var days = (end_date - start_date) / (1000 * 60 * 60 * 24) + 1;
+    var total = days;
+    var day = start_date;
+
+    // for loop iterates for each day and decrements the total for each holiday or weekend day
+    for (i = 0; i < days; i++) {
+		var d = (new Date().getTimezoneOffset() > 0) ? day.getUTCDay() : day.getDay();
+		var dec = false;
+		if (d === weekend[0] || d === weekend[1]) {
+			dec = true;
+		}
+		for (var j = 0; j < holidays.length; j++) {
+			var holiday = holidays[j];
+			if (holiday.getDate() === day.getDate() &&
+				holiday.getMonth() === day.getMonth() &&
+				holiday.getFullYear() === day.getFullYear()) {
+				dec = true;
+				break;
+			}
+		}
+		if (dec) {
+			total--;
+		}
+		day.setDate(day.getDate() + 1);
+    }
+    return total;
+}
+
+// function checks if start date has passed; if so, today's date is returned
+function validStart(date) {
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1;
+    var year = today.getFullYear();
+    if (day < 10)
+		day = '0' + day;
+    if (month < 10)
+		month = '0' + month;
+    today = month + '-' + day + '-' + year;
+    today = parseDate(today);
+
+    if (date.getTime() < today.getTime())
+		return today;
+    else
+		return date;
+}
+
+// function takes input and returns a Date object
+function parseDate(date) {
+    if (!isNaN(date)) {
+		if (date instanceof Date) {
+			return new Date(date);
+		}
+		var d = parseInt(date, 10);
+		if (d < 0) {
+			return null;
+		}
+		if (d <= 60) {
+			return new Date(d1900.getTime() + (d - 1) * 86400000);
+		}
+		return new Date(d1900.getTime() + (d - 2) * 86400000);
+    }
+    if (typeof date === 'string') {
+		date = new Date(date);
+		if (!isNaN(date)) {
+			return date;
+		}
+    }
+    return null;
+}

@@ -56,63 +56,6 @@ function createProfile() {
     }
 }
 
-// User
-//This method will add the user to the User table(firebase), and also store the rest of the information in the database [UNTESTED]
-function addUser(email, password, firstName, lastName, totalVacationDays, dayslefts, isManager, managers, team, employees, pathToPicture, title) {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(function(data) {
-            saveEmployee(firstName, lastName, totalVacationDays, dayslefts, team, managers, isManager, email, "No save");
-        })
-        .catch(function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-
-            if (errorCode == 'auth/weak-password') {
-                console.log(errorCode);
-            } else if (errorCode == 'auth/email-already-in-use') {
-                console.log(errorCode);
-            } else if (errorCode == 'auth/invalid-email') {
-                console.log(errorCode);
-            } else {
-                console.log(errorMessage);
-            }
-        });
-}
-
-function saveEmployee(firstname, lastname, totalVacation, daysleft, teamName, managers, isManager, email, password) {
-    var tempEmail = fixEmail(email);
-    firebase.database().ref('employee/' + tempEmail).set({
-        firstName: firstname,
-        lastName: lastname,
-        totalVacationDays: totalVacation,
-        daysLeft: daysleft,
-        team: teamName,
-        managers: managers,
-        isManager: isManager,
-        email: email,
-        password: password,
-        employees: null
-    });
-
-    /**
-     *	Now we must add this employee in their manager's employees list
-     *	Do a get Manager call based on each manager in the managers array
-     * 	insert this employee in the manager's employee list
-     */
-    addEmpToManager(managers, email);
-
-    /**
-     *	Now we must add the employee to their team
-     */
-    if (isManager) {
-        addManagerToTeam(email, teamName);
-    } else {
-        addEmpToTeam(email, teamName);
-    }
-
-}
-
-
 var allManagers = [];
 var managerObject = {};
 
@@ -139,13 +82,3 @@ getAllTeamsCallback.done(function(data) {
         //console.log(allTeams[i]);
     }
 });
-
-function getAllTeams() {
-    var ref = firebase.database().ref().child('team');
-    ref.on('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            allTeams.push(childSnapshot.val());
-        });
-        getAllTeamsCallback.resolve();
-    });
-}
