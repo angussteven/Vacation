@@ -11,8 +11,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     //emailAddress = fixEmail(emailAddress);
   }
 });
-
-
+    
 function checkDate(date) {
   var today = new Date().toJSON().slice(0,10);
   if(date < today) {
