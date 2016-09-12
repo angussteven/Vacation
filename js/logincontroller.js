@@ -33,7 +33,7 @@ function createProfile() {
 
 
     /*match passwords and emails*/
-    if (password == "") {
+    if (password === "") {
         alertify.alert("Enter a password");
         return;
     } else if (password != passwordVerify) {
@@ -160,7 +160,7 @@ function getAllManagers() {
     var ref = firebase.database().ref().child('employee');
     ref.on('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
-            if (childSnapshot.child("isManager").val() == true) {
+            if (childSnapshot.child("isManager").val() === true) {
                 allManagers.push(childSnapshot.val());
             }
         });

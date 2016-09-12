@@ -27,8 +27,8 @@ function getEmployee(emailAddress) {
 			else {
 				reject();
 			}
-		})
-	})
+		});
+	});
 }
 
 function getEmployeeEvents(emailAddress) {
@@ -55,8 +55,8 @@ function getEmployeesOnTeam(teamName) {
 			} else {
 				reject();
 			}
-		})
-	})
+		});
+	});
 }
 
 // Updates a given event [TODO]
@@ -317,7 +317,7 @@ function calculateVacationDays(start_date, end_date) {
 		day.setDate(day.getDate() + 1);
     }
     return total;
-};
+}
 
 // function checks if start date has passed; if so, today's date is returned
 function validStart(date) {
@@ -336,7 +336,7 @@ function validStart(date) {
 		return today;
     else
 		return date;
-};
+}
 
 // function takes input and returns a Date object
 function parseDate(date) {
@@ -360,7 +360,7 @@ function parseDate(date) {
 		}
     }
     return null;
-};
+}
 
 // TRakes an email and returns the email with no special characters [DONE]
 function fixEmail(tempEmail) {
@@ -375,7 +375,7 @@ function deleteEvent(eventID) {
 	var ref = firebase.database().ref().child('event');
 	ref.orderByChild("eventID").equalTo(eventID).once('value', function (snapshot) {
 		keyToObject = Object.keys(snapshot.val()).toString();
-		if (keyToObject != null) {
+		if (keyToObject !== null) {
 			ref.child(keyToObject).remove();
 		}
 
@@ -392,8 +392,8 @@ function deleteEvent(eventID) {
 				//console.log("this is the employee requested: " + childSnapshot.val());
 			});
 
-			if (key != null) {
-				empRef.child(key).remove()
+			if (key !== null) {
+				empRef.child(key).remove();
 			}
 		}
 	});
@@ -446,7 +446,7 @@ function subtractDay(day) {
 				break;
 
 			case '03':
-				if ((day[0] % 4 == 0) && (day[0] % 100 != 0) || (day[0] % 400 == 0)) {
+				if ((day[0] % 4 === 0) && (day[0] % 100 !== 0) || (day[0] % 400 === 0)) {
 					day = day[0] + '-' + "02" + '-' + "29";
 				} else {
 					day = day[0] + '-' + "02" + '-' + "28";
@@ -578,11 +578,12 @@ function isDateHasEvent(start_d, end_d) {
 
 function addDay(eventDay) {
 	eventDay = eventDay.split('-');
+	var tempMonth;
 	switch (eventDay[1]) {
 		case '01': case '03': case '05': case '07': case '08': case '10':
 			if (eventDay[2] === '31') {
 				eventDay[2] = '0';
-				var tempMonth = parseInt(eventDay[1]);
+				tempMonth = parseInt(eventDay[1]);
 				eventDay[1] = (tempMonth + 1).toString();
 				if (eventDay[1] <= 9) {
 					eventDay[1] = '0' + eventDay[1];
@@ -611,7 +612,7 @@ function addDay(eventDay) {
 
 		case '02':
 			var testYear = parseInt(eventDay[0]);
-			if ((testYear % 4 == 0) && (testYear % 100 != 0) || (testYear % 400 == 0)) {
+			if ((testYear % 4 === 0) && (testYear % 100 !== 0) || (testYear % 400 === 0)) {
 				if (eventDay[2] === '29')
 					eventDay[2] = '0';
 				eventDay[1] = '03';

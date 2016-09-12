@@ -135,7 +135,7 @@ function renderEmployeeEvents(employeeID) {
 	}).catch(function (data) {
 		console.log("No events found for: " + employeeID);
 	});
-};
+}
 
 /*
 * This function takes json data as an argument and uses that data to populate the tree dynamically.
@@ -182,7 +182,7 @@ function populateList(teamData) {
 	* The unordered list is added as a child of the container div.
 	*/
 	document.getElementById("container").appendChild(unorderedList);
-};
+}
 
 /*
 * This function capilizes the first letter of the string passed in.

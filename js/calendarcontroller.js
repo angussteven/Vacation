@@ -125,7 +125,7 @@ function enoughVacationDays(newStart, newEnd){
     this.Manager = Manager;
     this.TotalVacation = TotalVacation;
     this.UsedVacation = UsedVacation;
-  };
+  }
 
   function loadProfile(account) {
     $("#GMIN").val(account.GMIN);
@@ -135,7 +135,7 @@ function enoughVacationDays(newStart, newEnd){
     $("#manager").val(account.Manager);
     $("#totalVacationDays").val(account.TotalVacation);
     $("#usedVacationDays").val(account.UsedVacation);
-  };
+  }
 
     var popup2 = new Foundation.Reveal($('#viewProfileModal'));
     var popup3 = new Foundation.Reveal($('#addEventModal'));
@@ -199,7 +199,7 @@ function enoughVacationDays(newStart, newEnd){
             $("#daysSelected").val(vacation);
             $("#daysLeft").val(vacationRemaining);
             //$("#createEventTitle").val("Variable for your name");//update to include name dynamically
-          };
+          }
           $('#calendar').fullCalendar('unselect');
         }
 			},
@@ -328,7 +328,7 @@ function enoughVacationDays(newStart, newEnd){
             $("td[data-date=" + holidayMoment.format('YYYY-MM-DD') + "]").addClass('holiday');
           } else if (view.name =='agendaWeek') {
             var classNames = $("th:contains(' " + holidayMoment.format('M/D') + "')").attr("class");
-            if (classNames != null) {
+            if (classNames !== null) {
               var classNamesArray = classNames.split(" ");
               for(var j = 0; j < classNamesArray.length; j++) {
                 if(classNamesArray[i].indexOf('fc-col') > -1) {
@@ -340,7 +340,7 @@ function enoughVacationDays(newStart, newEnd){
           } else if (view.name == 'agendaDay') {
             if(holidayMoment.format('YYYY-MM-DD') == $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD')) {
               $("td.fc-col0").addClass('holiday');
-            };
+            }
           }
         }
       }
@@ -375,7 +375,7 @@ function enoughVacationDays(newStart, newEnd){
          alertify.alert("You already have vacation on this day!");
       }
       else if ($("#daysLeft").val() < 0){
-      	alertify.alert("You do not have enough vacation days left for this request.")
+      	alertify.alert("You do not have enough vacation days left for this request.");
       }
       else {
         if(Date.parse(startd) >= Date.parse(endd)) {
@@ -489,6 +489,6 @@ function enoughVacationDays(newStart, newEnd){
         getImage(file.name);
         sessionStorage.setItem('image',file.name);
       }
-    }, false)
+    }, false);
 
 	});
