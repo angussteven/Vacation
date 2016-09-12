@@ -45,7 +45,7 @@ function test(teamData) {
 		}
         /*
         console.log("Employee Selected: " + this.id.toString());
-        console.log("Active Employees: ");
+        cofnsole.log("Active Employees: ");
         console.log(activeEmployees);
         console.log("Active Events: ");
         console.log(activeEvents);
