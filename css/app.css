@@ -58,7 +58,7 @@ li {
 	/*top: 3%;*/
 	width: 85%;
 	/*height: 97%;*/
-	margin: 0 auto;
+	margin: auto;
 	/*border: solid 1px lightgrey;*/
 	/*padding: .5% 0% 2% 2;*/
 	display: none;
@@ -175,7 +175,7 @@ h5 {
 	padding: 5% 1%;
 	display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     transition: 0.5s;
     
 }
