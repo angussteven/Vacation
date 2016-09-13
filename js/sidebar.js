@@ -10,7 +10,7 @@ function toggleSideBar(burgerBar) {
     if (width <= 0) {
         sidebarContainer.style.width = "100%";
         sidebar.style.width = "25em";
-        calendarContainer.style.width = "70%";
+        // calendarContainer.style.width = "70%";
         //sidebar.style.backgroundColor = "#80b3ff"
         sidebar.style.backgroundImage = "url('img/background.png')";
         menuOpen = true;

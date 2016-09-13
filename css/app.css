@@ -167,12 +167,12 @@ h5 {
 #sidebar {
 	color: white;
 	position: absolute;
-	height: 90%;
+	height: 100%;
 	width: 0;
 	left: 0;
-	top: 10%;
+	top: 0;
 	text-align: center;
-	padding: 5% 1%;
+	padding: 5em 1%;
 	display: none;
     position: fixed;
     z-index: 2;
