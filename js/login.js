@@ -3,7 +3,8 @@ $(document).ready(function () {
 	$("#loginForm").submit(function (event) {
 		event.preventDefault();
 	});
-
+    
+    animateButton(document.getElementById("burgerMenu"));
 	//attempt to load the cache else wait for DB to load(first sign on or profile create)
 	var firebaseLocalStorageEmail;
 	try {

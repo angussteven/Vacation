@@ -1,4 +1,4 @@
-var menuOpen = false;
+var menuOpen = true;
 
 function toggleSideBar(burgerBar) {
     var sidebar = document.getElementById("sidebar");
@@ -7,6 +7,16 @@ function toggleSideBar(burgerBar) {
     var width = sidebarContainer.offsetWidth;
     
     console.log("Menu width: " + width);
+    
+    if (menuOpen) {
+        sidebar.style.left = "-500px";
+        menuOpen = false;
+    }
+    else {
+        sidebar.style.left = "0";
+        menuOpen = true;
+    }
+    /*
     if (width <= 0) {
         sidebarContainer.style.width = "100%";
         sidebar.style.width = "25em";
@@ -24,5 +34,10 @@ function toggleSideBar(burgerBar) {
         menuOpen = false;
         $("#sidebarContainer").hide();
     }
+    */
+    animateButton(burgerBar);
+}
+
+function animateButton(burgerBar) {
     burgerBar.classList.toggle("animate");
 }
