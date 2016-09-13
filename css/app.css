@@ -1,6 +1,11 @@
 #calendar {
-	max-width: 900px;
+	max-width: 1000px;
 	margin: 0 auto;
+    padding: 1em;
+}
+.fc-view-container {
+    min-height: 600px;
+    min-width: 460px;
 }
 #container {
 	text-align: left;
@@ -41,7 +46,9 @@
 	width: 100%;
 	height: 75%;
 }
-
+.fc-center {
+    margin: 1em;
+}
 ul {
 	list-style-type:none;
 
@@ -56,7 +63,7 @@ li {
 #wrap {
 	position: relative;
 	/*top: 3%;*/
-	width: 85%;
+	width: 100%;
 	/*height: 97%;*/
 	margin: auto;
 	/*border: solid 1px lightgrey;*/
@@ -65,10 +72,11 @@ li {
 }
 
 body {
-  background-color: #F0F0F3;
+    background-color: #F0F0F3;
 	background-image: url("../img/background.png");
 	background-repeat: no-repeat;
 	background-size: cover;
+    
 	height: 100%;
 	width: 100%;
 	font-family: Century Gothic;
@@ -128,13 +136,15 @@ h5 {
 	width: 80%;
 	bottom: 0;
 	right: 0;*/
+    margin: auto;
+    transition: 0.5s;
 }
 .burgerMenu {
     cursor: pointer;
-    top: 0px;
-    right: 0px;
-    position: absolute;
-    
+    position: fixed;
+    top: 1em;
+    left: 1em;
+    right: 0;
 }
 
 .burgerBar {
@@ -168,7 +178,7 @@ h5 {
 	color: white;
 	position: absolute;
 	height: 100%;
-	width: 0;
+	width: -1em;
 	left: 0;
 	top: 0;
 	text-align: center;
@@ -179,15 +189,7 @@ h5 {
     transition: 0.5s;
     
 }
-#sidebar:after{
-	content: "";
-	position: absolute;
-	right: 0;
-	top: 7.5%;
-	height: 85%;
-	width: 1px;
-	border-right: solid 1px lightgrey;
-}
+
 .circle {
   border-radius: 50%;
 	height: 125px;
@@ -239,4 +241,47 @@ label{
 .fc-toolbar .fc-center{
 	margin-bottom: 0px;
 	padding-top: 1em;
+}
+
+@media only screen and (max-width: 521px) {
+    .wrapper {
+        padding-top: 20%;
+        transition: 0.5s;
+        text-align: center;
+    }
+    .fc-view {
+        overflow: hidden; 
+    }
+    #sidebar {
+        
+        height: 100%;
+    }
+    .burgerMenu {
+        margin-top: 0em;
+    } 
+    #header {
+        padding-top: .4em;
+        margin-left: 100px;
+        font-size: 2em;
+    }
+}
+
+@media only screen and (max-width: 595px) {
+    #header {
+        text-align: center;
+        margin-left: 1em;
+    }
+}
+/*
+@media only screen and (max-width: 521px) {
+    .burgerMenu {
+        margin-top: 1em;
+    }
+}
+*/
+@media only screen and (max-width: 450px) {
+    .fc-view-container {
+        min-height: 100px;
+        min-width: 100px;
+    }
 }

@@ -18,8 +18,8 @@ function toggleSideBar(burgerBar) {
     }
     else {
         sidebarContainer.style.width = "0";
-        sidebar.style.width = "0";
-        calendarContainer.style.width = "95%";
+        sidebar.style.width = "0em";
+        calendarContainer.style.width = "100%";
         sidebar.style.backgroundImage = "none";
         menuOpen = false;
         $("#sidebarContainer").hide();
