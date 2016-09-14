@@ -6,7 +6,7 @@
 
 
 .fc {
-	direction: ltr;
+	direction: ltr;	
 	text-align: left;
 }
 
@@ -795,7 +795,6 @@ a.fc-more:hover {
 
 .fc-toolbar {
 	text-align: center;
-	margin-bottom: 1em;
 }
 
 .fc-toolbar .fc-left {
