@@ -262,7 +262,7 @@ label{
     margin: 0;
     background-image: url("../img/background.png");
     background-size: cover;
-    position: absolute;
+    position: fixed;
     right: -800px;
     width: 40em;
     height: 100%;
