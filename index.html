@@ -34,16 +34,21 @@
 		<script src="js/logincontroller.js"></script>
 		<script src="js/jstree/jstree.js"></script>
 		<script src="js/jstreecontroller.js"></script>
-        <script src="js/sidebar.js"></script>
+        <script src="js/menucontroller.js"></script>
 		<!--Sources are Foundation and for calendar: http://fullcalendar.io/-->
 	</HEAD>
 	<body>
 		<div id="header">
 			Vacation Calendar
 		</div>
-        <div id="settingsButtonContainer">
-            <button id="settingsButton"></button>
+        
+        <div id="profileSettings" onclick="toggleProfileSettings(this)">
+            <h2> Profile Settings </h2>
+            <div id="settingsButtonContainer">
+                <button id="settingsButton"></button>
+            </div>
         </div>
+        
         <div id="sidebar" disabled="false">
             <div id="burgerMenu" class="burgerMenu" onclick="toggleSideBar(this)">
                 <div class="burgerBar" id="topBar"></div>
@@ -116,9 +121,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-        <div id="profileSettings">
-        
         </div>
 		<div style='clear:both'></div>
 		<div id="wrapper" class="wrapper-pad">

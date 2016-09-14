@@ -68,7 +68,7 @@ body {
 	background-image: url("../img/background.png");
 	background-repeat: no-repeat;
 	background-size: cover;
-    
+    overflow: hidden;
 	height: 100%;
 	width: 100%;
 	font-family: Century Gothic;
@@ -160,6 +160,7 @@ h5 {
     transition: 0.5s;
 }
 
+
 /*.wrapper-pad{
 	padding-top: 2%;
 }*/
@@ -175,7 +176,6 @@ h5 {
 	top: 0;
 	text-align: center;
 	padding: 5em 1%;
-    position: fixed;
     z-index: 2;
     transition: 0.5s;
     
@@ -247,12 +247,31 @@ label{
     background-size: cover;
     width: 40px;
     height: 40px;
-    transform: rotate(-90deg);
-    -webkit-transition: 0.5s;
+
 }
 #settingsButton:hover {
     transform: rotate(90deg);
     -webkit-transition: 1s;
+}
+
+#settingsButton:active {
+    transform: rotate(-90deg);
+    -webkit-transition: 0.1s;
+}
+#profileSettings {
+    margin: 0;
+    background-image: url("../img/background.png");
+    background-size: cover;
+    position: absolute;
+    right: -800px;
+    width: 40em;
+    height: 100%;
+    transition: 0.5s;
+    z-index: 2;
+    text-align: center;
+}
+h2 {
+    padding: 1em;
 }
 
 @media only screen and (max-width: 521px) {
