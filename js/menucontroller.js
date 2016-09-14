@@ -3,17 +3,17 @@ var settingsMenuOpen = false;
 
 function toggleSideBar(burgerBar) {
     var sidebar = document.getElementById("sidebar");
-    var sidebarContainer = document.getElementById("sidebarContainer");
-    var calendarContainer = document.getElementById("wrap");
-    var width = sidebarContainer.offsetWidth;
-    
-    console.log("Menu width: " + width);
+    var settingsButton = document.getElementById("settingsButton");
     
     if (sideBarOpen) {
         sidebar.style.left = "-500px";
         sideBarOpen = false;
     }
     else {
+        if (settingsMenuOpen) {
+            toggleProfileSettings(settingsButton);
+        }
+        
         sidebar.style.left = "0";
         sideBarOpen = true;
     }
@@ -22,15 +22,16 @@ function toggleSideBar(burgerBar) {
 
 function toggleProfileSettings(settings) {
     var settingsMenu = document.getElementById("profileSettings");
+    var burgerBar = document.getElementById("burgerMenu");
     
     if (settingsMenuOpen) {
-        console.log("Moved menu to the left");
         settingsMenu.style.right = "-800px";
         settingsMenuOpen = false;
     }
     else {
-        console.log("Moved menu to the right");
-
+        if(sideBarOpen) {
+            toggleSideBar(burgerBar);
+        }
         settingsMenu.style.right = "0";
         settingsMenuOpen = true;
     }
