@@ -32,14 +32,6 @@
 	background-color: #AAA;
 	border-radius: 10px;
 	background-color: #2199e8;
-	/*background-image: -webkit-linear-gradient(90deg,
-	                                          rgba(0, 0, 0, .2) 25%,
-											  transparent 25%,
-											  transparent 50%,
-											  rgba(0, 0, 0, .2) 50%,
-											  rgba(0, 0, 0, .2) 75%,
-											  transparent 75%,
-											  transparent)*/
 }
 
 #cHeight{
@@ -241,11 +233,32 @@ label{
 	margin-bottom: 0px;
 	padding-top: 1em;
 }
+#profileSettings {
+    background-image: url("../img/background.png");
+    margin: 1em;
+}
+#settingsButtonContainer {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+}
+#settingsButton {
+    background-image: url("../img/settingsicon.png");
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    transform: rotate(-90deg);
+    -webkit-transition: 0.5s;
+}
+#settingsButton:hover {
+    transform: rotate(90deg);
+    -webkit-transition: 1s;
+}
 
 @media only screen and (max-width: 521px) {
     .wrapper {
         padding-top: 20%;
-        transition: 0.5s;
+        transition: 1s;
         text-align: center;
     }
     .fc-view {
