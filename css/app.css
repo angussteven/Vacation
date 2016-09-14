@@ -160,7 +160,6 @@ h5 {
     transition: 0.5s;
 }
 
-
 /*.wrapper-pad{
 	padding-top: 2%;
 }*/
@@ -178,7 +177,7 @@ h5 {
 	padding: 5em 1%;
     z-index: 2;
     transition: 0.5s;
-    
+
 }
 
 .circle {
@@ -281,15 +280,15 @@ h2 {
         text-align: center;
     }
     .fc-view {
-        overflow: hidden; 
+        overflow: hidden;
     }
     #sidebar {
-        
+
         height: 100%;
     }
     .burgerMenu {
         margin-top: 0em;
-    } 
+    }
     #header {
         padding-top: .4em;
         margin-left: 100px;

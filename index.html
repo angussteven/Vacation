@@ -40,10 +40,51 @@
 </HEAD>
 
 <body>
-	<div id="profileSettings" onclick="toggleProfileSettings(this)">
+	<div class="row" id="profileSettings">
 		<h2> Profile Settings </h2>
-		<div id="settingsButtonContainer">
+		<div id="settingsButtonContainer"  onclick="toggleProfileSettings(this)">
 			<button id="settingsButton"></button>
+		</div>
+		<div class="large-2 columns">
+			<div class="row">
+				<div class="large-2 medium-6 columns">
+					<label>First Name</label>
+					<input id="firstName" type="text"/>
+				</div>
+				<div class="large-4 medium-6 columns">
+					<label>Last Name</label>
+					<input id="lastName" type="text"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-4 medium-6 columns">
+					<label>Email Address</label>
+					<input type="email"/>
+				</div>
+				<div class="large-6 medium-6 columns">
+					<label>GMIN</label>
+					<input id="GMIN" type="number"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-6 medium-4 columns">
+					<label>Manager</label>
+					<input type="text"/>
+				</div>
+				<div class="large-2 medium-4 columns">
+					<label>Total Vacation Days</label>
+					<input type="number"/>
+				</div>
+				<div class="large-2 medium-4 columns">
+					<label>Used Vacation Days</label>
+					<input id="userDays" type="number" readonly/>
+				</div>
+				<div class="large-8 medium-4 columns">
+				</div>
+			</div>
+			<div id="saveProfileInfoContainer">
+				<a href="#" onclick="toggleProfileSettings(this)" id="saveProfileInfo" class="button">Save</a>
+			</div>
 		</div>
 	</div>
 	<div id="sidebar" disabled="false">
@@ -161,55 +202,7 @@
 			<!--<span class="text-center">Select the date(s) you would like to take off</span>-->
 		</div>
 	</div>
-	<div id="viewProfileModal" class="reveal-modal large-centered" data-reveal aria labelledby="modalTitle" aria-hidden="true"
-		role="dialog" data-close-on-click="false">
-		<h1>View Profile</h1>
-		<div class="row">
-			<div class="large-4 medium-4 columns">
-				<label>First Name</label>
-				<input id="firstName" type="text" value="Robert" />
-			</div>
-			<div class="large-4 medium-4 columns">
-				<label>Last Name</label>
-				<input id="lastName" type="text" value="Kasper" />
-			</div>
-			<div class="large-4 medium-4 columns">
-				<label>Email Address</label>
-				<input type="email" value="robert.kasperiv@gm.com" />
-			</div>
-		</div>
-		<div class="row">
-			<div class="large-6 medium-4 columns">
-				<label>GMIN</label>
-				<input id="GMIN" type="number" value="242348733" />
-			</div>
-			<div class="large-6 medium-4 columns">
-				<label>Manager</label>
-				<input type="text" value="Michael Eilers" />
-			</div>
-		</div>
-		<div class="row">
-			<div class="large-2 medium-4 columns">
-				<label>Total Vacation Days</label>
-				<input type="number" value="15" />
-			</div>
-			<div class="large-2 medium-4 columns">
-				<label>Used Vacation Days</label>
-				<input id="userDays" type="number" value="3" readonly/>
-			</div>
-			<div class="large-8 medium-4 columns">
-			</div>
-		</div>
-		<div class="row">
-			<button id="submitBtn" class="success button" unselectable="on">Submit</button>
-			<button id="cancelBtn" class="alert button" unselectable="on">Cancel</button>
-		</div>
-		<button id="viewCloseBtn" class="close-button" type="button" unselectable="on">
-			<span aria-hidden="true">&times;</span>
-			</button>
-	</div>
-	<div id="addEventModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog"
-		data-close-on-click="false">
+	<div id="addEventModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" data-close-on-click="false">
 		<h1>Add Vacation Time</h1>
 		<div class="row">
 			<div class="large-6 medium-4 columns">
@@ -268,8 +261,7 @@
 			<span aria-hidden="true">&times;</span>
 			</button>
 	</div>
-	<div id="viewEventModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true"
-		role="dialog" data-close-on-click="true">
+	<div id="viewEventModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" data-close-on-click="true">
 		<h1>View Event</h1>
 		<div class="row">
 			<div class="large-6 medium-4 columns">
@@ -320,8 +312,7 @@
 			</button>
 	</div>
 	<!--Create a new team modal-->
-	<div id="createTeamModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true"
-		role="dialog" data-close-on-click="true">
+	<div id="createTeamModal" class="reveal-modal large-centered" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" data-close-on-click="true">
 		<h1>View Event</h1>
 		<div class="row">
 			<div class="large-6 medium-4 columns">
@@ -359,8 +350,7 @@
 				</div>
 				<div class="large-6 medium-6 columns">
 					<label>Verify Email Address</label>
-					<input type="email" id="emailAddressVerify" name="emailAddressVerify" data-equalto="emailAddress" required autocomplete="off"
-					/>
+					<input type="email" id="emailAddressVerify" name="emailAddressVerify" data-equalto="emailAddress" required autocomplete="off" />
 				</div>
 			</div>
 			<div class="row">
@@ -370,8 +360,7 @@
 				</div>
 				<div class="large-6 medium-6 columns">
 					<label>Verify Password</label>
-					<input type="password" min="6" id="profilePasswordVerify" name="profilePasswordVerify" data-equalto="profilePassword" required
-						autocomplete="off" />
+					<input type="password" min="6" id="profilePasswordVerify" name="profilePasswordVerify" data-equalto="profilePassword" required autocomplete="off" />
 				</div>
 			</div>
 			<div class="row">
