@@ -100,7 +100,7 @@ h5 {
 #header {
 	text-align: center;
 	font-family: Century Gothic;
-	font-size: 50px;
+	font-size: 2em;
 }
 
 #header:after{
