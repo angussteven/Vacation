@@ -10,7 +10,7 @@ function toggleSideBar(burgerBar) {
     console.log("Menu width: " + width);
     
     if (sideBarOpen) {
-        sidebar.style.left = "500px";
+        sidebar.style.left = "-500px";
         sideBarOpen = false;
     }
     else {
