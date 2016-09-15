@@ -92,6 +92,7 @@ body {
     font-family: Century Gothic;
     color: white;
 		position: relative;
+        overflow: hidden;
 
 }
 
@@ -157,6 +158,11 @@ h5 {
 	right: 0;*/
     margin: auto;
     transition: 0.5s;
+    overflow: hidden;
+}
+/*override foundation modal*/
+.reveal-overlay{
+    overflow: auto;
 }
 
 .burgerMenu {
