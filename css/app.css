@@ -1,6 +1,6 @@
 #calendar {
     max-width: 100%;
-    max-height: 100%;
+		max-height: 100%;
     margin: 0 auto;
     padding: 1em;
 }
@@ -10,8 +10,16 @@
     min-width: 460px;
 }
 
+
+.fc-prev-button{
+    float: left;
+}
+.fc-next-button{
+    float: right;
+}
+
 #container {
-    margin-left: 30%;
+	margin-left: 30%;
     text-align: left;
     overflow: auto;
     overflow-x: hidden;
@@ -41,9 +49,14 @@
     height: 75%;
 }
 
+ul {
+	list-style-type:none;
+
+}
 .fc-center {
     margin: 1em;
 }
+
 
 ul {
     list-style-type: none;
@@ -73,12 +86,14 @@ body {
     background-image: url("../img/background.png");
     background-repeat: no-repeat;
     background-size: cover;
-    margin: 0;
+		margin: 0;
     max-height: 100%;
     max-width: 100%;
     font-family: Century Gothic;
     color: white;
-    position: relative;
+		position: relative;
+        overflow: hidden;
+
 }
 
 h5 {
@@ -123,9 +138,17 @@ h5 {
     bottom: 1%;
 }
 
-#fc-center {}
 
-#fc-right {}
+.fc-center {
+    padding-bottom: 1em;
+}
+.fc-right {
+    position: relative;
+    top: 6.5em;
+}
+.fc-toolbar h2{
+    padding: 0px;
+}
 
 .wrapper {
     /*position: absolute;
@@ -135,6 +158,11 @@ h5 {
 	right: 0;*/
     margin: auto;
     transition: 0.5s;
+    overflow: hidden;
+}
+/*override foundation modal*/
+.reveal-overlay{
+    overflow: auto;
 }
 
 .burgerMenu {
@@ -174,11 +202,9 @@ h5 {
 
 #sidebarContainer {
     overflow-x: hidden;
-    /*overflow-y: auto;*/
+		/*overflow-y: auto;*/
     height: inherit;
 }
-
-
 /*
 #profileSettings::-webkit-scrollbar-track, #sidebarContainer::-webkit-scrollbar-track {
 -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -197,16 +223,16 @@ border-radius: 10px;
 background-color: #2199e8;
 }
 */
-
 #header {
-    postion: fixed;
+	postion: fixed;
 }
+
 
 #sidebar {
     color: white;
     position: fixed;
     background-image: url("../img/background.png");
-    background-size: cover;
+ 		background-size: cover;
     height: 100%;
     left: 0;
     top: 0;
@@ -214,7 +240,8 @@ background-color: #2199e8;
     padding: 2em 0 5em 0em;
     z-index: 2;
     transition: 0.5s;
-    margin: 0;
+		margin: 0;
+
 }
 
 .circle {
@@ -250,9 +277,15 @@ label {
     pointer-events: none;
 }
 
+
+#profileSettings {
+    background-image: url("../img/background.png");
+    margin: 1em;
+}
 .fc-toolbar {
     position: relative;
     float: none;
+    top: -3em;
 }
 
 .fc-toolbar .fc-left {
@@ -275,14 +308,13 @@ label {
 
 .fc-toolbar .fc-center {
     margin-bottom: 0px;
-    padding-top: 1em;
 }
+
 
 #settingsButtonContainer {
     position: fixed;
     top: 1em;
     right: 1em;
-    z-index: 4;
 }
 
 #settingsButton {
@@ -290,7 +322,6 @@ label {
     background-size: cover;
     width: 40px;
     height: 40px;
-
 }
 
 #settingsButton:hover {
@@ -299,8 +330,8 @@ label {
 }
 
 #settingsButton:active {
-    transform: rotate(-180deg);
-    -webkit-transition: 1s;
+    transform: rotate(-90deg);
+    -webkit-transition: 0.1s;
 }
 
 #profileSettings {
@@ -313,8 +344,8 @@ label {
     z-index: 2;
     text-align: center;
     margin: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+		overflow-y: auto;
+		overflow-x: hidden;
 }
 
 h2 {
@@ -323,7 +354,6 @@ h2 {
 
 @media only screen and (max-width: 620px) {
     .wrapper {
-        padding-top: 3em;
         transition: 1s;
         text-align: center;
     }
@@ -348,15 +378,6 @@ h2 {
         margin-left: 1em;
     }
 }
-
-
-/*
-@media only screen and (max-width: 521px) {
-    .burgerMenu {
-        margin-top: 1em;
-    }
-}
-*/
 
 @media only screen and (max-width: 450px) {
     .fc-view-container {
