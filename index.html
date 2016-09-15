@@ -39,13 +39,13 @@
 	<!--Sources are Foundation and for calendar: http://fullcalendar.io/-->
 </HEAD>
 
-<body>
-	<div class="row small-12 columns" id="profileSettings">
+<body class="row">
+	<div class="large-6 medium-10 small-12 columns" id="profileSettings">
 		<h2> Profile Settings </h2>
 		<div id="settingsButtonContainer" onclick="toggleProfileSettings(this)">
 			<button id="settingsButton"></button>
 		</div>
-		<div class="large-12 columns" >
+		<div class="large-12 medium-12 small-12 columns" >
 			<div class="row">
 				<div class="large-6 medium-6 columns">
 					<label>First Name</label>
@@ -87,17 +87,19 @@
 			</div>
 		</div>
 	</div>
-	<div id="sidebar" disabled="false">
+	<div class="large-4 medium-6 small-12 columns" id="sidebar" disabled="false">
+		<div id="header">
+			Vacation Calendar
+		</div>
 		<div id="burgerMenu" class="burgerMenu" onclick="toggleSideBar(this)">
 			<div class="burgerBar" id="topBar"></div>
 			<div class="burgerBar" id="middleBar"></div>
 			<div class="burgerBar" id="bottomBar"></div>
 		</div>
+
 		<div id="sidebarContainer">
-			<div class="row">
-				<div id="header">
-					Vacation Calendar
-				</div>
+
+			<div class="row" >
 				<div class="panel text-center">
 					<label for="exampleFileUpload" class="button no-click" id="uploadBtn" style="background: none"><img class="circle" src="img/temp.jpg" id="picture"></label>
 					<input type="file" id="exampleFileUpload" class="show-for-sr">
@@ -196,8 +198,8 @@
 				</div>
 			</div>
 		</div>
-		<div id='wrap'>
-			<div id='calendar'></div>
+		<div id='wrap' class="row">
+			<div id='calendar' class="large-10"></div>
 			<div style='clear:both'></div>
 			<!--<span class="text-center">Select the date(s) you would like to take off</span>-->
 		</div>

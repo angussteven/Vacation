@@ -6,7 +6,7 @@ function toggleSideBar(burgerBar) {
     var settingsButton = document.getElementById("settingsButton");
 
     if (sideBarOpen) {
-        sidebar.style.left = "-500px";
+        sidebar.style.left = "-1000px";
         sideBarOpen = false;
     } else {
         if (settingsMenuOpen) {
@@ -24,7 +24,7 @@ function toggleProfileSettings(settings) {
     var burgerBar = document.getElementById("burgerMenu");
 
     if (settingsMenuOpen) {
-        settingsMenu.style.right = "-800px";
+        settingsMenu.style.right = "-2000px";
         settingsMenuOpen = false;
     } else {
         if (sideBarOpen) {
@@ -38,4 +38,8 @@ function toggleProfileSettings(settings) {
 
 function animateButton(burgerBar) {
     burgerBar.classList.toggle("animate");
+}
+
+function populateProfileSettings() {
+
 }
