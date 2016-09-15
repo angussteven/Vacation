@@ -181,24 +181,21 @@ NOTE: use percentage font sizes or else old IE chokes
 
 /* Previous month button */
 .fc-state-default.fc-corner-left { /* non-theme */
-	position: absolute;
-	top: 1%;
-	right: 85%;
+	position: relative;
+	display: inline-block;
 }
 
 /* Next month button */
-.fc-state-default.fc-corner-right { /* non-theme */
+/*.fc-state-default.fc-corner-right {
 	position: absolute;
-	top: 1%;
 	right: 10%;
-}
+}*/
 
 /* Today button */
-.fc-state-default.fc-corner-left.fc-corner-right {
+/*.fc-state-default.fc-corner-left.fc-corner-right {
 	position: absolute;
-	top: 8%;
 	right: 47%;
-}
+}*/
 
 /* icons in buttons */
 
@@ -258,7 +255,7 @@ NOTE: use percentage font sizes or else old IE chokes
 --------------------------------------------------------------------------------------------------*/
 
 .fc-button-group {
-	display: inline-block;
+	/*display: inline-block;*/
 }
 
 /*
@@ -267,8 +264,8 @@ previous button's border...
 */
 
 .fc .fc-button-group > * { /* extra precedence b/c buttons have margin set to zero */
-	float: left;
-	margin: 0 0 0 -1px;
+	/*float: left;
+	margin: 0 0 0 -1px;*/
 }
 
 .fc .fc-button-group > :first-child { /* same */
@@ -801,20 +798,20 @@ a.fc-more:hover {
 	float: left;
 }
 
-.fc-toolbar .fc-right {
+/*.fc-toolbar .fc-right {
 	float: right;
-}
+}*/
 
-.fc-toolbar .fc-center {
+/*.fc-toolbar .fc-center {
 	display: inline-block;
 	margin-bottom: 3%;
-}
+}*/
 
 /* the things within each left/right/center section */
-.fc .fc-toolbar > * > * { /* extra precedence to override button border margins */
+/*.fc .fc-toolbar > * > * {
 	float: left;
 	margin-left: .75em;
-}
+}*/
 
 /* the first thing within each left/center/right section */
 .fc .fc-toolbar > * > :first-child { /* extra precedence to override button border margins */
