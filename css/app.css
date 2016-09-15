@@ -139,7 +139,7 @@ h5 {
 
 
 .fc-center {
-    padding-bottom: 4em;
+    padding-bottom: 1em;
 }
 .fc-right {
     position: relative;
@@ -279,6 +279,7 @@ label {
 .fc-toolbar {
     position: relative;
     float: none;
+    top: -3em;
 }
 
 .fc-toolbar .fc-left {
@@ -347,7 +348,6 @@ h2 {
 
 @media only screen and (max-width: 620px) {
     .wrapper {
-        padding-top: 3em;
         transition: 1s;
         text-align: center;
     }
