@@ -3,7 +3,7 @@ $(document).ready(function () {
 	$("#loginForm").submit(function (event) {
 		event.preventDefault();
 	});
-    
+
     animateButton(document.getElementById("burgerMenu"));
 	//attempt to load the cache else wait for DB to load(first sign on or profile create)
 	var firebaseLocalStorageEmail;
@@ -21,7 +21,8 @@ $(document).ready(function () {
 		var info = "Total Days: " + localStorage.getItem("vacationDays") + "<br>Remaining Days: " + localStorage.getItem("daysLeft");
 		vdays.innerHTML = info;
 		document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(localStorage.getItem("managerFirstName")) + " " + capitalizeName(localStorage.getItem("managerLastName"));
-
+		//Populate profile settings
+		populateProfileSettings();
 		//Render the pages NOW if in cache
 		RenderCalendar();
 		//update the cache
@@ -32,7 +33,9 @@ $(document).ready(function () {
 		firebase.auth().onAuthStateChanged(function (user) {
 			if (user) {
 				RenderCalendar();
-				initialize(user.email);		
+				initialize(user.email);
+				//Populate profile settings
+				populateProfileSettings();
 			} else {
 				console.log("Not logged in");
 			}
@@ -125,7 +128,7 @@ function initialize(profileEmail) {
 		getProfileImage(profileEmail);
 
 		getEmployeesOnTeam(snap.team).then(function (snap) {
-			populateList(snap.val());   
+			populateList(snap.val());
 			$('#container').jstree();
 			test(snap.val());
 		}).catch(function (error) {
