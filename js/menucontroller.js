@@ -44,9 +44,7 @@ function populateProfileSettings() {
     document.getElementById("firstName").value = localStorage.getItem("firstName");
     document.getElementById("lastName").value = localStorage.getItem("lastName");
     document.getElementById("email").value = localStorage.getItem("profileEmail");
-    document.getElementById("manager").value = capitalizeName(localStorage.getItem("managerFirstName"))
-                                                + " " +
-                                                capitalizeName(localStorage.getItem("managerLastName"));
+    document.getElementById("manager").value = capitalizeName(localStorage.getItem("managerFirstName")) + " " + capitalizeName(localStorage.getItem("managerLastName"));
     document.getElementById("totalVacationDays").value = localStorage.getItem("vacationDays");
     document.getElementById("userDays").value = localStorage.getItem("daysLeft");
 }
