@@ -45,7 +45,7 @@
 	</div>
 	<div class="large-6 medium-10 small-12 columns" id="profileSettings">
 		<h2> Profile Settings </h2>
-		<div class="large-12 medium-12 small-12 columns" >
+		<div class="large-12 medium-12 small-12 columns">
 			<div class="row">
 				<div class="large-6 medium-6 columns">
 					<label>First Name</label>
@@ -59,11 +59,11 @@
 			<div class="row">
 				<div class="large-6 medium-6 columns">
 					<label>Email Address</label>
-					<input id="email" type="email" />
+					<input id="email" type="email" readonly/>
 				</div>
 				<div class="large-6 medium-6 columns">
 					<label>Manager</label>
-					<input id="manager" type="text" />
+					<input id="manager" type="text" readonly/>
 				</div>
 			</div>
 			<div class="row">
@@ -75,11 +75,27 @@
 					<label>Used Vacation Days</label>
 					<input id="userDays" type="number" readonly/>
 				</div>
-				<div class="large-8 medium-4 columns">
+			</div>
+			<div class="row">
+				<div id="changeManager">
+					<form class="large-6 columns" data-abide id="changeManagerForm" name="changeManager">
+						<label>Change Manager</label>
+						<select id="newManager" required>
+									<option value=""></option>
+								</select>
+					</form>
 				</div>
+				<form class="large-6 columns" data-abide id="changeTeamForm" name="changeTeam">
+						<label>Select Team</label>
+						<div>
+							<select id="newTeam" required>
+								<option value=""></option>
+							</select>
+						</div>
+				</form>
 			</div>
 			<div id="saveProfileInfoContainer">
-				<a href="#" onclick="toggleProfileSettings(this)" id="saveProfileInfo" class="button">Save</a>
+				<a href="#" onclick="updateProfileSettings()" id="saveProfileInfo" class="button">Save</a>
 			</div>
 		</div>
 	</div>
@@ -95,7 +111,7 @@
 
 		<div id="sidebarContainer">
 
-			<div class="row" >
+			<div class="row">
 				<div class="panel text-center">
 					<label for="exampleFileUpload" class="button no-click" id="uploadBtn" style="background: none"><img class="circle" src="img/temp.jpg" id="picture"></label>
 					<input type="file" id="exampleFileUpload" class="show-for-sr">
@@ -128,35 +144,6 @@
 			<div class="row">
 				<br>
 				<button type="submit" id="showAddTeamButton" data-open="createTeamModal" class="button" unselectable="on">Create Team</button>
-				<button type="submit" id="showMgrButton" onclick="showChangeManager()" class="button" unselectable="on">Edit Profile</button>
-			</div>
-			<div id="changeManager" style="display: none">
-				<form data-abide id="changeManagerForm" name="changeManager">
-					<div class="row">
-						<label>Select Manager</label>
-						<div class="small-10 columns">
-							<select id="newManager" required>
-                                    <option value=""></option>
-                                </select>
-						</div>
-						<div class="small-2 columns">
-							<button id="changeManagerButton" class="success button" type="submit" onclick="updateManager()" unselectable="on">Save</button>
-						</div>
-					</div>
-				</form>
-				<form data-abide id="changeTeamForm" name="changeTeam">
-					<div class="row">
-						<label>Select Team</label>
-						<div class="small-10 columns">
-							<select id="newTeam" required>
-                                    <option value=""></option>
-                                </select>
-						</div>
-						<div class="small-2 columns">
-							<button id="changeTeamButton" class="success button" type="submit" onclick="updateTeam()" unselectable="on">Save</button>
-						</div>
-					</div>
-				</form>
 			</div>
 		</div>
 	</div>

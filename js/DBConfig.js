@@ -112,8 +112,7 @@ function removeManagerFromTeam(userID, teamName) {
 	  employees = array of strings (emails)
 	  managers = array of strings (emails)
  */
-function saveTeam(teamID, employees, managers, teamName) {
-	firebase.database().ref('team/' + teamName).set({
+function saveTeam(teamID, employees, managers, teamName) {	firebase.database().ref('team/' + teamName).set({
 		teamID: teamID,
 		employee: employees,
 		manager: managers,
@@ -138,7 +137,7 @@ function createTeam() {
 }
 
 // Update the employee's manager
-function updateManager() {
+/*function updateManager() {
 	var manager = document.getElementById("newManager").value;
 	var tempUser = sessionStorage.getItem('user');
 	var tempData = JSON.parse(tempUser);
@@ -146,18 +145,7 @@ function updateManager() {
 	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('managers').set(manager);
 	showChangeManager();
 }
-
-function showChangeManager() {
-	if (document.getElementById("changeManager").style.display == 'none') {
-		document.getElementById("changeManager").style.display = 'inline-block';
-		document.getElementById("nodeTreeForm").style.display = 'none';
-	}
-	else {
-		document.getElementById("changeManager").style.display = 'none';
-		document.getElementById("nodeTreeForm").style.display = 'inline';
-	}
-}
-
+*/
 function updateTeam() {
     var team = document.getElementById("newTeam").value;
     var tempUser = sessionStorage.getItem('user');
@@ -259,6 +247,24 @@ function getImage(fileName) {
 function updateDaysLeft(email, daysLeft) {
 	var tempEmail = fixEmail(email);
 	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('daysLeft').set(daysLeft);
+}
+
+function updateName(email, firstName, lastName) {
+	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('firstName').set(firstName);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('lastName').set(lastName);
+}
+
+function updateManager(email, manager) {
+	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('manager').set(manager);
+
+}
+
+function updatetotalVacationDays(email, totalVacationDays) {
+	var tempEmail = fixEmail(email);
+	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('totalVacationDays').set(totalVacationDays);
+
 }
 
 // Takes an email and returns the email with no special characters [DONE]
@@ -389,7 +395,6 @@ function getProfileImage(email) {
     }
 }
 
-
 function updateSessionVacation(vacation) {
 	var data = sessionStorage.getItem('user');
 	var dataResult = JSON.parse(data);
@@ -402,7 +407,6 @@ function addEmpToManager(managerEmail, email) {
     var tempEmail = fixEmail(managerEmail);
     firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('employees').push(email);
 }
-
 
 function addEmpToTeam(email, teamName) {
     var tempEmail = fixEmail(email);

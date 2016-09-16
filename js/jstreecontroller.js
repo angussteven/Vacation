@@ -10,11 +10,11 @@ function test(teamData) {
 		var bgID = $(this).css("background-color");
 		var manager;
 		var employees;
-        
+
 		if ($.inArray(this.id.toString(), activeEmployees) != -1) {
 			/*
 			* If the manager is selected then remove all events from the calendar.
-			
+
 			if ($(this).attr('class').indexOf('manager') > -1) {
 				manager = document.getElementById(this.id);
 				employees = manager.getElementsByTagName("li");
@@ -30,7 +30,7 @@ function test(teamData) {
 		else {
 			/*
 			* If the manager is selected populate the calendar with everyones events.
-			
+
 			if ($(this).attr('class').indexOf('manager') > -1) {
 				manager = document.getElementById(this.id);
 				employees = manager.getElementsByTagName("li");
@@ -119,12 +119,12 @@ function renderEmployeeEvents(employeeID) {
 					description: realData[currentEvent].description
 				};
 				/*
-				* We use the eventID to keep track of currently rendered events so that is 
+				* We use the eventID to keep track of currently rendered events so that is
 				* saved into the array.
 				*/
 				activeEvents.push(realData[currentEvent].eventID.toString());
 				/*
-				* The current event is then rendered using the information in the event 
+				* The current event is then rendered using the information in the event
 				* variable.
 				*/
 				$('#calendar').fullCalendar('renderEvent', event, true);
@@ -150,7 +150,7 @@ function populateList(teamData) {
 	var employee;
 	var nestedList;
 	/*
-	* The first for loop gets the manager and addes it as a child of the container div. 
+	* The first for loop gets the manager and addes it as a child of the container div.
 	*/
 	for (var key in teamData) {
 		if(teamData[key].isManager) {
@@ -178,7 +178,7 @@ function populateList(teamData) {
 	        manager.appendChild(nestedList);
 		}
 	}
-	/* 
+	/*
 	* The unordered list is added as a child of the container div.
 	*/
 	document.getElementById("container").appendChild(unorderedList);
