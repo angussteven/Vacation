@@ -59,6 +59,44 @@ function getEmployeesOnTeam(teamName) {
 	});
 }
 
+function getAllManagers() {
+	var allManagers = [];
+	return new Promise(function (resolve, reject) {
+		var ref = firebase.database().ref().child('employee');
+		ref.on('value', function (snapshot) {
+			if (snapshot.exists()) {
+				snapshot.forEach(function (childSnapshot) {
+					if (childSnapshot.child("isManager").val() === true) {
+						allManagers.push(childSnapshot.val());
+					}
+				});
+				resolve(allManagers);
+			}
+			else{
+				reject();
+			}
+		});
+	});
+}
+
+function getAllTeams() {
+	var allTeams = [];
+	return new Promise(function (resolve, reject) {
+		var ref = firebase.database().ref().child('team');
+		ref.on('value', function (snapshot) {
+			if (snapshot.exists) {
+				snapshot.forEach(function (childSnapshot) {
+					allTeams.push(childSnapshot.val());
+				});
+				resolve(allTeams);
+			}
+			else{
+				reject();
+			}
+		});
+	});
+}
+
 // Updates a given event [TODO]
 function updateEvent(eventID, email, startDate, endDate, title, type, description) {
 	// Update the information for an event
@@ -227,23 +265,6 @@ function addEventToEmp(email, eventID) {
 	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('events').push(eventID);
 }
 
-function getImage(fileName) {
-	var storage = firebase.storage();
-	// Create a storage reference from our storage service
-	var storageRef = storage.ref();
-	var imagesRef = storageRef.child("images/" + fileName);
-	var path = imagesRef.fullPath;
-	//return path;
-
-	// Get the download URL
-	imagesRef.getDownloadURL().then(function (url) {
-		// Insert url into an <img> tag to "download"
-		var Image = document.getElementById("picture");
-		Image.src = url;
-	});
-}
-
-
 function updateDaysLeft(email, daysLeft) {
 	var tempEmail = fixEmail(email);
 	firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('daysLeft').set(daysLeft);
@@ -395,14 +416,6 @@ function getProfileImage(email) {
     }
 }
 
-function updateSessionVacation(vacation) {
-	var data = sessionStorage.getItem('user');
-	var dataResult = JSON.parse(data);
-	//changing the session storage object
-	dataResult.daysLeft = dataResult.daysLeft + vacation;
-	sessionStorage.setItem('user', JSON.stringify(dataResult));
-}
-
 function addEmpToManager(managerEmail, email) {
     var tempEmail = fixEmail(managerEmail);
     firebase.database().ref().child('employee').child(tempEmail.toLowerCase()).child('employees').push(email);
@@ -416,44 +429,6 @@ function addEmpToTeam(email, teamName) {
 function addManagerToTeam(email, teamName) {
     var tempEmail = fixEmail(email);
     firebase.database().ref().child('team').child(teamName.toLowerCase()).child('manager').push(email);
-}
-
-function getAllManagers() {
-	var allManagers = [];
-	return new Promise(function (resolve, reject) {
-		var ref = firebase.database().ref().child('employee');
-		ref.on('value', function (snapshot) {
-			if (snapshot.exists()) {
-				snapshot.forEach(function (childSnapshot) {
-					if (childSnapshot.child("isManager").val() === true) {
-						allManagers.push(childSnapshot.val());
-					}
-				});
-				resolve(allManagers);
-			}
-			else{
-				reject();
-			}
-		});
-	});
-}
-
-function getAllTeams() {
-	var allTeams = [];
-	return new Promise(function (resolve, reject) {
-		var ref = firebase.database().ref().child('team');
-		ref.on('value', function (snapshot) {
-			if (snapshot.exists) {
-				snapshot.forEach(function (childSnapshot) {
-					allTeams.push(childSnapshot.val());
-				});
-				resolve(allTeams);
-			}
-			else{
-				reject();
-			}
-		});
-	});
 }
 
 //This method will add the user to the User table(firebase), and also store the rest of the information in the database [UNTESTED]
