@@ -41,12 +41,12 @@ function animateButton(burgerBar) {
 }
 
 function populateProfileSettings() {
-    document.getElementById("firstName").value = localStorage.getItem("firstName");
-    document.getElementById("lastName").value = localStorage.getItem("lastName");
-    document.getElementById("email").value = localStorage.getItem("profileEmail");
-    document.getElementById("manager").value = capitalizeName(localStorage.getItem("managerFirstName")) + " " + capitalizeName(localStorage.getItem("managerLastName"));
-    document.getElementById("totalVacationDays").value = localStorage.getItem("vacationDays");
-    document.getElementById("userDays").value = localStorage.getItem("daysLeft");
+    document.getElementById("menuFirstName").value = localStorage.getItem("firstName");
+    document.getElementById("menuLastName").value = localStorage.getItem("lastName");
+    document.getElementById("menuEmail").value = localStorage.getItem("profileEmail");
+    document.getElementById("menuManager").value = capitalizeName(localStorage.getItem("managerFirstName")) + " " + capitalizeName(localStorage.getItem("managerLastName"));
+    document.getElementById("menuTotalVacationDays").value = localStorage.getItem("vacationDays");
+    document.getElementById("menuUserDays").value = localStorage.getItem("daysLeft");
 }
 
 function updateProfileSettings() {
@@ -67,7 +67,7 @@ function updateProfileSettings() {
   updatetotalVacationDays(currentEmail, newTotalVacationDays);
   localStorage.setItem("vacationDays", newTotalVacationDays);
 
-  location.reload();
+  //location.reload();
   //localStorage.setItem("manager")
 
 }
