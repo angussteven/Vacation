@@ -15,7 +15,6 @@ $(document).ready(function () {
     });
 });
 
-var isNewAccount = false;
 var validInput = false;
 
 function createProfile() {
@@ -30,7 +29,6 @@ function createProfile() {
     var team = $("#selectedTeam :selected").val();
     var totalVacationDays = parseInt(document.getElementById('vacationDaysTotal').value);
     var vacationDaysLeft = parseInt(document.getElementById('vacationDaysLeft').value);
-
 
     /*match passwords and emails*/
     if (password === "") {
@@ -56,30 +54,24 @@ function createProfile() {
     }
 }
 
-
-var managerObject = {};
-
-getAllManagers().then(function (allManagers){
+getAllManagers().then(function(allManagers){
     var select = document.getElementById("selectedManager");
     var select2 = document.getElementById("newManager");
     for (var i = 0; i < allManagers.length; i++) {
         select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
         select2[select2.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
     }
-}).catch(function (error){
+}).catch(function(error){
     console.log(error);
 });
 
-var allTeams = [];
-
-var getAllTeamsCallback = $.Deferred(getAllTeams);
-getAllTeamsCallback.done(function(data) {
+getAllTeams().then(function(allTeams) {
     var select = document.getElementById("selectedTeam");
     var select2 = document.getElementById("newTeam");
-
     for (var i = 0; i < allTeams.length; i++) {
         select[select.length] = new Option(allTeams[i].name, allTeams[i].name);
         select2[select2.length] = new Option(allTeams[i].name, allTeams[i].name);
-        //console.log(allTeams[i]);
     }
+}).catch(function(error){
+    console.log(error);
 });

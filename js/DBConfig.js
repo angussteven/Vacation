@@ -434,19 +434,26 @@ function getAllManagers() {
 			else{
 				reject();
 			}
-
 		});
 	});
 }
 
 function getAllTeams() {
-    var ref = firebase.database().ref().child('team');
-    ref.on('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            allTeams.push(childSnapshot.val());
-        });
-        getAllTeamsCallback.resolve();
-    });
+	var allTeams = [];
+	return new Promise(function (resolve, reject) {
+		var ref = firebase.database().ref().child('team');
+		ref.on('value', function (snapshot) {
+			if (snapshot.exists) {
+				snapshot.forEach(function (childSnapshot) {
+					allTeams.push(childSnapshot.val());
+				});
+				resolve(allTeams);
+			}
+			else{
+				reject();
+			}
+		});
+	});
 }
 
 //This method will add the user to the User table(firebase), and also store the rest of the information in the database [UNTESTED]
