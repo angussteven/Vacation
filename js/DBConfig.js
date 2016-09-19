@@ -419,15 +419,24 @@ function addManagerToTeam(email, teamName) {
 }
 
 function getAllManagers() {
-    var ref = firebase.database().ref().child('employee');
-    ref.on('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            if (childSnapshot.child("isManager").val() === true) {
-                allManagers.push(childSnapshot.val());
-            }
-        });
-        getAllManagersCallback.resolve();
-    });
+	var allManagers = [];
+	return new Promise(function (resolve, reject) {
+		var ref = firebase.database().ref().child('employee');
+		ref.on('value', function (snapshot) {
+			if (snapshot.exists()) {
+				snapshot.forEach(function (childSnapshot) {
+					if (childSnapshot.child("isManager").val() === true) {
+						allManagers.push(childSnapshot.val());
+					}
+				});
+				resolve(allManagers);
+			}
+			else{
+				reject();
+			}
+
+		});
+	});
 }
 
 function getAllTeams() {

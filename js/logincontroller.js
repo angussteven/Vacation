@@ -56,17 +56,18 @@ function createProfile() {
     }
 }
 
-var allManagers = [];
+
 var managerObject = {};
 
-var getAllManagersCallback = $.Deferred(getAllManagers);
-getAllManagersCallback.done(function(data) {
+getAllManagers().then(function (allManagers){
     var select = document.getElementById("selectedManager");
     var select2 = document.getElementById("newManager");
     for (var i = 0; i < allManagers.length; i++) {
         select[select.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
         select2[select2.length] = new Option((allManagers[i].firstName + " " + allManagers[i].lastName), allManagers[i].email);
     }
+}).catch(function (error){
+    console.log(error);
 });
 
 var allTeams = [];
