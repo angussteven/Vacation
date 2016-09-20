@@ -11,7 +11,8 @@ function test(teamData) {
         var manager;
         var employees;
 
-        if ($.inArray(this.parentNode.id.toString(), activeEmployees) != -1) {
+        console.log("Selected: " + this.parentNode.id);
+        if ($.inArray(this.id.toString(), activeEmployees) != -1) {
             /*
 			* If the manager is selected then remove all events from the calendar.
 
@@ -23,24 +24,21 @@ function test(teamData) {
 				}
 			}
             */
-            document.getElementById(this.parentNode.id.toString()).style.color = "#ffffff";
-            activeEmployees.splice(activeEmployees.indexOf(this.parentNode.id.toString(), 0));
+            document.getElementById(this.id.toString()).style.color = "#ffffff";
+            popEmployee(this.id);
             removeEmployeeEvents(teamData[this.parentNode.id].email);
         } else {
-            /*
-			* If the manager is selected populate the calendar with everyones events.
 
-			if ($(this).attr('class').indexOf('manager') > -1) {
-				manager = document.getElementById(this.parentNode.id);
-				employees = manager.getElementsByTagName("li");
-				for (var i = 0; i < employees.length; i++) {
-					renderEmployeeEvents(teamData[employees[i].id].email);
-				}
-			}
+            /*
+            * If a manager is selected highlight the employees that currently have
+            * events in the calendar.
             */
-            document.getElementById(this.parentNode.id.toString()).style.color = "#76a1cf";
-            activeEmployees.push(this.parentNode.id.toString());
+            if (this.parentNode.className.indexOf("manager") != -1) {
+                highlightSelected();
+            }
+            document.getElementById(this.id.toString()).style.color = "#76a1cf";
             renderEmployeeEvents(teamData[this.parentNode.id].email);
+            pushEmployee(this.id);
         }
         /*
         console.log("Employee Selected: " + this.parentNode.id.toString());
@@ -50,8 +48,34 @@ function test(teamData) {
         console.log(activeEvents);
         */
     });
+    /*
+    * If the arrow is clicked highlight employees with events in the calendar.
+    */
+    $('#container').on('click', 'i', function(e) {
+        highlightSelected();
+    });
 }
-
+/*
+* Highlights every employee in the tree that is currently in the activeEmployees array.
+*/
+function highlightSelected(currentManager) {
+  var currentNode;
+  try {
+    for (var employee in activeEmployees) {
+      currentNode = document.getElementById(activeEmployees[employee]);
+      /*
+      * If the node selected is under a manager other than the current one it will be null
+      * those nodes are ignored.
+      */
+      if (currentNode != null) {
+        currentNode.style.color = "#76a1cf";
+      }
+    }
+  } catch (error) {
+    console.log("Error: " + error);
+    console.log("Tree may be collapsed");
+  }
+}
 /*
  * This function removed the events from a calendar belonging to the employee that was deselected.
  * It takes that persons employeeID as an argument.
@@ -81,7 +105,6 @@ function removeEmployeeEvents(employeeID) {
         console.log(error);
     });
 }
-
 /*
  * This function displays all of the events belonging to a given employee. It takes the employeeID
  * as an argument.
@@ -133,9 +156,7 @@ function renderEmployeeEvents(employeeID) {
     }).catch(function(data) {
         console.log("No events found for: " + employeeID);
     });
-		activeEmployees.push(fixEmail(employeeID.toString()));
 }
-
 /*
  * This function takes json data as an argument and uses that data to populate the tree dynamically.
  */
@@ -182,7 +203,6 @@ function populateList(teamData) {
      */
     document.getElementById("container").appendChild(unorderedList);
 }
-
 /*
  * This function capilizes the first letter of the string passed in.
  */
@@ -192,4 +212,16 @@ function capitalize(string) {
     } catch (error) {
         return "Returned Null";
     }
+}
+/*
+* Inserts an employees dom ID into the active employees array.
+*/
+function pushEmployee(domID) {
+    activeEmployees.push(domID.toString());
+}
+/*
+* Removes an employees dom ID from the active employees array.
+*/
+function popEmployee(domID) {
+  activeEmployees.splice(activeEmployees.indexOf(domID.toString()), 1);
 }
