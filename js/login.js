@@ -131,6 +131,7 @@ function initialize(profileEmail) {
 
 		//Populate team list based on employees assigned team
 		getEmployeesOnTeam(snap.team).then(function (snap) {
+			$('#container').jstree("destroy");
 			populateList(snap.val());
 			$('#container').jstree();
 			test(snap.val());
