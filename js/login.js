@@ -21,8 +21,6 @@ $(document).ready(function () {
 		var info = "Total Days: " + localStorage.getItem("vacationDays") + "<br>Remaining Days: " + localStorage.getItem("daysLeft");
 		vdays.innerHTML = info;
 		document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(localStorage.getItem("managerFirstName")) + " " + capitalizeName(localStorage.getItem("managerLastName"));
-		//Populate profile settings
-		populateProfileSettings();
 		//Render the pages NOW if in cache
 		RenderCalendar();
 		//update the cache
@@ -34,8 +32,6 @@ $(document).ready(function () {
 			if (user) {
 				RenderCalendar();
 				initialize(user.email);
-				//Populate profile settings
-				populateProfileSettings();
 			} else {
 				console.log("Not logged in");
 			}
@@ -106,10 +102,11 @@ function initialize(profileEmail) {
 		document.getElementById("profileTeam").innerHTML = 'Team: ' + capitalize(snap.team);
 
 		//gets the employees manager and stores in cache
-		getEmployee(snap.managers).then(function (snapshot) {
+		getEmployee(snap.manager).then(function (snapshot) {
 			localStorage.setItem("managerFirstName", snapshot.firstName);
 			localStorage.setItem("managerLastName", snapshot.lastName);
 			document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(snapshot.firstName) + " " + capitalizeName(snapshot.lastName);
+			populateProfileSettings();
 		}).catch(function (error) {
 			console.log(error);
 		});
@@ -129,6 +126,10 @@ function initialize(profileEmail) {
 
 		getProfileImage(profileEmail);
 
+		//Populate profile settings
+		populateProfileSettings();
+
+		//Populate team list based on employees assigned team
 		getEmployeesOnTeam(snap.team).then(function (snap) {
 			populateList(snap.val());
 			$('#container').jstree();
@@ -140,5 +141,6 @@ function initialize(profileEmail) {
 		console.log(error);
 	});
 
+	//display employee's events in the calendar
 	renderEmployeeEvents(profileEmail);
 }

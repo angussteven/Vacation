@@ -52,20 +52,24 @@ function populateProfileSettings() {
 function updateProfileSettings() {
   var currentEmail = localStorage.getItem("profileEmail");
 
-  var newFirstName = document.getElementById("firstName").value;
-  var newLastName = document.getElementById("lastName").value;
+  var newFirstName = document.getElementById("menuFirstName").value;
+  var newLastName = document.getElementById("menuLastName").value;
   //var newEmail = document.getElementById("newManager").value;
   var newManager = document.getElementById("newManager").value;
-  var newTotalVacationDays = document.getElementById("totalVacationDays").value;
+  var newTotalVacationDays = document.getElementById("menuTotalVacationDays").value;
   //var daysLeft = document.getElementById("userDays").value;
 
   updateName(currentEmail, newFirstName, newLastName);
-    localStorage.setItem("firstName", newFirstName);
-    localStorage.setItem("lastName", newLastName);
+    // localStorage.setItem("firstName", newFirstName);
+    // localStorage.setItem("lastName", newLastName);
 
   updateManager(currentEmail, newManager);
   updatetotalVacationDays(currentEmail, newTotalVacationDays);
-  localStorage.setItem("vacationDays", newTotalVacationDays);
+
+  initialize(currentEmail);
+//   localStorage.setItem("vacationDays", newTotalVacationDays);
+
+
 
   //location.reload();
   //localStorage.setItem("manager")
