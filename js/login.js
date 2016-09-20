@@ -105,6 +105,7 @@ function initialize(profileEmail) {
 		getEmployee(snap.manager).then(function (snapshot) {
 			localStorage.setItem("managerFirstName", snapshot.firstName);
 			localStorage.setItem("managerLastName", snapshot.lastName);
+			localStorage.setItem("managerEmail", snapshot.email);
 			document.getElementById("profileManager").innerHTML = 'Manager: ' + capitalizeName(snapshot.firstName) + " " + capitalizeName(snapshot.lastName);
 			populateProfileSettings();
 		}).catch(function (error) {
