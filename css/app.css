@@ -309,6 +309,7 @@ label {
     top: 1em;
     right: 1em;
     z-index: 3;
+    display: none;
 }
 
 #settingsButton {

@@ -50,6 +50,7 @@ function fireSignOut() {
 		$("#wrap").hide();
 		$("#sidebar").hide();
 		$("#signOutButton").show();
+		$("#settingsButtonContainer").hide();
 		$("#wrapper").removeClass("wrapper");
 
 		//clear out the cache
@@ -91,6 +92,7 @@ function RenderCalendar() {
 	$("#signOutButton").show();
 	$("#uploadBtn").removeClass("no-click");
 	$("#sidebar").show();
+	$("#settingsButtonContainer").show();
 	$("#wrapper").addClass("wrapper");
 	$('#calendar').fullCalendar('render');
 }
@@ -134,6 +136,8 @@ function initialize(profileEmail) {
 		}).catch(function (error) {
 			console.log(error);
 		});
+	}).catch(function(error){
+		console.log(error);
 	});
 
 	renderEmployeeEvents(profileEmail);
