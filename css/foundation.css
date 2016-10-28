@@ -1500,7 +1500,7 @@ kbd {
     background-color: #3adb76;
     color: #fefefe; }
     .button.success:hover, .button.success:focus {
-      background-color: #22bb5b;
+      /*background-color: #22bb5b; */
       color: #fefefe; }
   .button.warning {
     background-color: #ffae00;
@@ -2060,7 +2060,7 @@ select {
   [data-whatinput='mouse'] .close-button {
     outline: 0; }
   .close-button:hover, .close-button:focus {
-    color: #0a0a0a; }
+    /* color: #0a0a0a; */}
 
 .menu {
   margin: 0;

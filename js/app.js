@@ -3738,15 +3738,15 @@ $(document).foundation()
 		timezone: !1,
 		isRTL: !1,
 		buttonText: {
-			prev: "prev",
-			next: "next",
-			prevYear: "prev year",
-			nextYear: "next year",
-			year: "year",
-			today: "today",
-			month: "month",
-			week: "week",
-			day: "day"
+			prev: "Prev",
+			next: "Pext",
+			prevYear: "Prev Year",
+			nextYear: "Next Year",
+			year: "Year",
+			today: "Today",
+			month: "Month",
+			week: "Week",
+			day: "Day"
 		},
 		buttonIcons: {
 			prev: "left-single-arrow",
